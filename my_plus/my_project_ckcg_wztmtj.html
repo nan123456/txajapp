@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			.my_disabled{
+				color:#BBBBBB;				
+			}			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav my_backgroundcolor_blue2">			
+			<h1 class="mui-title my_color_white">违章条目添加</h1>
+		</header>		
+		<div class="mui-content">
+			<form class="mui-input-group" style="margin-top: 5px;">
+				<div class="mui-input-row">
+					<label>违章大类：</label>	
+					<select id="wzdl" multiple="multiple"  onchange="wzdl_dl(this.value)">
+	        			<option value ="安全管理">安全管理</option>
+	        			<option value ="文明施工">文明施工</option>
+	        			<option value ="扣件式钢管脚手架">扣件式钢管脚手架</option>
+	        			<option value ="门式钢管脚手架">门式钢管脚手架</option>
+	        			<option value ="承插型盘扣式钢管脚手架">承插型盘扣式钢管脚手架</option>
+	        			<option value ="悬挑式脚手架">悬挑式脚手架</option>
+	        			<option value ="高处作业吊篮">高处作业吊篮</option>
+	        			<option value ="附着式升降脚手架">附着式升降脚手架</option>
+	        			<option value ="基坑工程">基坑工程</option>
+	        			<option value ="模板支架">模板支架</option>
+	        			<option value ="高处作业">高处作业</option>
+	        			<option value ="施工用电">施工用电</option>
+	        			<option value ="物料提升机">物料提升机</option>
+	        			<option value ="施工升降机">施工升降机</option>
+	        			<option value ="塔式起重机">塔式起重机</option>
+	        			<option value ="起重吊装">起重吊装</option>
+	        			<option value ="施工机具">施工机具</option>
+	        			<option value ="碗扣式钢管脚手架">碗扣式钢管脚手架</option>
+	        			<option value ="满堂脚手架">满堂脚手架</option>
+	        			<option value ="其他">其他</option>
+	        			<option value ="实体质量">实体质量</option>
+	        			<option value ="质量行为">质量行为</option>
+	        		</select>
+				</div>				
+			</form>	
+			<form class="mui-input-group" style="margin-top: 5px;">
+				<div class="mui-input-row">
+					<label>检查项目：</label>
+					<select id="jcxm" multiple="multiple">
+	        			<option id="jcxm_option" value =""></option>
+	        		</select>
+				</div>				
+			</form>
+			<form class="mui-input-group" style="margin-top: 5px;">
+				<div id="tiaomu" class="mui-input-row">
+					<a href="my_change_wztm.html"></a>
+					<label>违章条目：</label>		
+					<input id="wztm1" type="text" class="" readonly="readonly" placeholder="点击选择"  value=""/>
+				</div>
+				<div id="tiaomu" class="mui-input-row my_none">
+					<label>已选择了违章条目：</label>
+					<input id="okwetm" type="text" class="" value="" placeholder="违章条目" readonly="readonly"/>
+				</div>
+				<div id="tiaomu" class="mui-input-row my_none">
+					<label>部位：</label>
+					<input id="buwei" type="text" class="" value="" placeholder="部位" readonly="readonly"/>
+				</div>
+			</form>
+			
+			<div class="mui-button-row" style="margin-top: 10px;">
+				<button id="no" type="button" class="mui-btn mui-btn-primary">关闭</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="ok" type="button" class="mui-btn mui-btn-primary">确定</button>
+			</div>			
+		</div>			
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script>
+		mui.init({
+				swipeBack:true //启用右滑关闭功能
+		});
+		
+		//获取点击检查项目内的值
+		function wzdl_dl(sel){
+			var obj = document.getElementById("wzdl").getElementsByTagName("option");
+			var sel='';
+   			for(var i=0;i<obj.length;i++){
+   				if(obj[i].selected){ 
+   					sel+=obj[i].value+','; //如果选中，将value添加到变量s中
+   				}
+   			}
+   			wzdl(sel);
+		}
+		//异步获取检查项目内容
+		var wzdl=function(sel){
+			var jcxm = jcxm;
+			var myjcxm = document.getElementById("jcxm");
+			myjcxm.innerHTML="";
+				mui.ajax(url+'my_plus/my_cgxz_jcxm.php',{
+				data:{
+					sel:sel
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+//					alert(data); 
+					var length=data.length;
+					for (var i=0;i<length-1;i++) {
+						jcxm=data[i].检查项目;
+						hqjcxm1(jcxm);
+					}  
+				},
+				error:function(xhr,type,errorThrown){
+					return callback('ajax错误'+type+errorThrown);
+				}
+			});
+		}
+		function hqjcxm1(jcxm){
+			//alert(jcxm);
+			var myjcxm = document.getElementById("jcxm");
+			var option = document.createElement("option");
+			option.value = jcxm;
+			option.innerHTML=jcxm;
+			myjcxm.appendChild(option);
+		};
+		
+		window.addEventListener('ckcg',function(event){
+			var wztm=event.detail.wztm;
+			var buwei=event.detail.buwei;
+			//alert(wztm);
+			var wztm1=document.getElementById("wztm1");
+			var okwetm=document.getElementById("okwetm");
+			var buweiHtml=document.getElementById("buwei");
+			okwetm.value=wztm;
+			buweiHtml.value=buwei;
+			var wz=new Array;
+   			var wz=wztm.split("||");
+   			var length = wz.length-1;
+   			var zhi='已选择'+length+'条违章条目';
+   			wztm1.setAttribute("value",zhi);
+		})
+		
+		mui.plusReady(function(){	
+			var tiaomu=document.getElementById("tiaomu");
+			var okwetm=document.getElementById("okwetm");
+			var buweiHtml=document.getElementById("buwei");
+			var self = plus.webview.currentWebview();
+			var xztm = self.xztm;
+			var wztp = self.wztp;
+			var  tmNew = "";
+			var part ="";
+//			alert(xztm);
+			var Lee = xztm.split("||");
+			for(i=1;i<Lee.length;i++){
+				var tmxz = Lee[i].split("部位：");
+				      tmNew = tmNew+"**"+tmxz[0];
+				      part = part+"**"+tmxz[1];
+			}  
+			//确定按钮点击事件
+			ok.addEventListener('tap', function() {
+   				var target = plus.webview.currentWebview().opener();
+   				if(tmNew!=""){
+	   				var Newtm=tmNew.split("**");
+	   				var Part=part.split("**");
+	   				var NewTm=Newtm[1];
+	   				var bw=Part[1];
+   				    var length=Newtm.length;
+// 				    alert(length); 
+   				for(var i=1;i<length-1;i++){
+   					if(length>2){
+   						NewTm=NewTm+"||"+Newtm[i+1];
+   						bw=bw+"||"+Part[i+1];
+   					}else if(length<=2){
+   						NewTm=NewTm;
+   						bw=bw;
+   					}
+   				}
+   				var NewTm = NewTm+"||"+okwetm.value;
+   				var bw = bw+"||"+buweiHtml.value;
+   				}else{
+   					var NewTm= okwetm.value;
+   					var bw = buweiHtml.value;
+   				}
+   				
+				mui.fire(target,'json',{
+					flag3:okwetm.value,
+					flag4:buweiHtml.value,
+					photo:wztp,
+					length:length
+				});
+				mui.back();
+			});
+			
+			tiaomu.addEventListener('tap',function(){
+				var obji = document.getElementById("jcxm").getElementsByTagName("option");
+				var sel='';
+	   			for(var i=0;i<obji.length;i++){
+	   				if(obji[i].selected){
+	   					sel+=obji[i].value+','; //如果选中，将value添加到变量s中
+	   				}
+	   			}
+	   				mui.openWindow({
+						url: 'my_change_wztm_tianjia.html',
+						id: 'my_change_wztm_tianjia',
+						styles: {
+							hardwareAccelerated:false
+						},
+						extras:{
+							//传递参数
+							name:'wushaohang_lidegejing',
+							jcxm_jc:sel
+						},
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示
+							aniShow:'slide-in-right',//页面显示动画
+							duration:'100'//页面动画持续时间
+						},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					});
+	   			
+			});
+			
+			
+			//关闭按钮点击事件
+			no.addEventListener('tap', function() {
+				var target = plus.webview.currentWebview().opener();
+				mui.fire(target,'json_bj',{
+					flag:'no'
+				});
+				mui.back();
+			});
+			
+			//处理手机自身返回键或者home键
+			plus.key.addEventListener("backbutton",function(){
+				var target = plus.webview.currentWebview().opener();
+				mui.fire(target,'json_bj',{
+					flag:'backbutton'
+				});
+				mui.back();
+			});
+			
+		});		
+		</script>
+	</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>总公司</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">			
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>			
+			<h1 class="mui-title">加载中...</h1>
+		</header>
+		<div class="mui-content">
+	        <ul id="my_list" class="mui-table-view mui-grid-view mui-grid-9 my_list">
+	            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+	            	<a href="my_project_info.html">
+	                    <span class="mui-icon mui-icon-compose"></span>
+	                    <div class="mui-media-body">工程信息</div>
+	            	</a>
+	            </li>
+	            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+	            	<a id="wxy" href="">
+	                    <span class="mui-icon mui-icon-search"></span>
+	                    <div class="mui-media-body">危险源管理</div>
+	            	</a>
+	            </li>
+	            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+	            	<a id="shebei" href="">
+	                    <span class="mui-icon mui-icon-spinner-cycle "></span>
+	                    <div class="mui-media-body">设备管理</div>
+	            	</a>
+	            </li>
+	            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+	            	<a href="my_change_list.html">
+	                    <span class="mui-icon mui-icon-location"></span>
+	                    <div class="mui-media-body">巡查整改</div>
+	         	   </a>
+	            </li>
+	            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+	            	<a href="my_project_zhcx.html">
+	                    <span class="mui-icon mui-icon-phone"></span>
+	                    <div class="mui-media-body">综合查询</div>
+	            	</a>
+	            </li>
+	             <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+	            	<a href="my_project_zlsc.html">
+	                    <span class="mui-icon mui-icon-navigate"></span>
+	                    <div class="mui-media-body">质量实测</div>
+	            	</a>
+	            </li>
+	            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+	            	<a href="my_control_cool.html">
+	                    <span class="mui-icon mui-icon-navigate"></span>
+	                    <div class="mui-media-body">风险管控</div>
+	            	</a>
+	            </li>
+	            <!--<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+	            	<a href="../map/map.html">
+	                    <span class="mui-icon mui-icon-navigate"></span>
+	                    <div class="mui-media-body">云阵地图</div>
+	            	</a>
+	            </li>-->
+	        </ul> 
+		</div>		
+		<script src="../js/mui.min.js"></script>		
+		<script src="../js/service.js" ></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			
+			//获取url参数值
+			function geturl(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]);
+				return null;
+			}
+			//获取地址栏参数
+			var gcid=geturl("id");
+			var mobile=geturl("mobile");
+			var gcmc=geturl("gcmc");
+			var dq=geturl("dq");
+			var xmlb=geturl("xmlb");
+			var gczt=geturl("gczt");
+			//var xmmc=geturl("xmmc");
+			var sheng=geturl("sheng");
+			var shi=geturl("shi");
+			//对汉字的编码进行还原
+			gcmc=decodeURI(gcmc);
+			dq=decodeURI(dq);
+			xmlb=decodeURI(xmlb);
+			gczt=decodeURI(gczt);
+			sheng=decodeURI(sheng);
+			shi=decodeURI(shi);
+			//xmmc=decodeURI(xmmc);
+//			console.log(gcmc);
+//			alert(gcmc+"  "+dq+"  "+xmlb+"  "+gczt+"  "+mobile);
+			//获取接收值后插入到超级链接里
+			var gcmcBm=encodeURI(encodeURI(gcmc));
+			var wxy=document.getElementById("wxy");
+			var shebei=document.getElementById("shebei");
+			wxy.setAttribute("href","my_danger_list.html?gcid="+gcid+"&gcmc="+gcmcBm+"&dq="+dq);
+			shebei.setAttribute("href","my_equipment.html?gcid="+gcid+"&gcmc="+gcmcBm+"&dq="+dq);
+			
+			//动态生成标题
+			var h1=document.getElementsByTagName('h1');
+			h1[0].firstChild.nodeValue=gcmc;
+			
+			//主列表点击事件 ,把项目id传到所有子页面中
+			mui('#my_list').on('tap', 'a', function() {
+				//alert("测试");
+				var id = this.getAttribute('href');
+				var href = this.href;
+				var webview_style = {
+					popGesture: "close",					
+					hardwareAccelerated:false
+				};
+				//alert(href);
+				mui.openWindow({
+					id: id,
+					url: this.href,
+					styles: webview_style,
+					extras:{
+						gcid:gcid,
+						gcmc:gcmc,
+						dq:dq,
+						mobile:mobile,
+						sheng:sheng,
+						shi:shi
+					},
+					show: {
+						aniShow:"pop-in"
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

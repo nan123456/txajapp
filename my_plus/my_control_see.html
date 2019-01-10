@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>同欣</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">危险源巡查记录</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media" style="font-size:14px">
+						<a href="#">
+							起始日期：2018年1月1日-2018年12月31日
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div id="xxx" class="mui-table-view">
+				<li class="mui-table-view-cell" style="font-size:14px">
+					<div style="margin: 0 0;">巡检日期</div>
+					<div style="margin-top: -21px;margin-left: 25%;">风险等级</div>
+					<div style="margin-top: -21px;margin-left: 50%;">风险项数</div>
+					<div style="margin-top: -21px;margin-left: 78%;">整改情况</div>
+				</li>
+				<!--<li class="mui-table-view-cell">
+					 	<div style="margin: 0 0;">2018-7-20</div>
+					 	<div style="margin-top: -21px;margin-left: 30%;">18</div>
+					 	<div style="margin-top: -21px;margin-left: 56%;">B</div>
+					 	<div style="margin-top: -21px;margin-left: 80%;">已完成</div>
+				</li>-->
+			</div>
+			
+			<!--A级 -->
+			<div class="mui-control-content mui-active">
+				<div id="xxxx" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+
+					</div>
+				</div>
+			</div>
+			<!--A级 -->
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/service.js"></script>
+	<!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
+	<script>
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+
+		mui.plusReady(function() {
+
+			var self = plus.webview.currentWebview();
+			var gcid = self.gcid;
+			var gcmc = self.gcmc;
+			var userid = self.userid;
+			var sheng = self.sheng;
+			var shi = self.shi;
+			var mobile = self.mobile;
+
+			function geturl(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+			}
+			//基本信息异步获取
+			//var wxyid=geturl("riskLevel");
+			var gcid = geturl("gcid");
+			var wxyid = geturl("wxyid");
+			var recState = geturl("recState");
+//			alert(gcid) 
+  
+
+			//动态创建
+			var found = function(id, sjcCgao,cheDate,recState,riskLevel,riskNum) {
+//				alert(sjcCgao);
+				var sjc = sjcCgao;
+				var id = id;
+				var cheDate = cheDate; //巡查日期
+				var riskNum = riskNum; //风险项数 
+				var riskLevel = riskLevel; //风险等级 
+				var recState = recState; //整改情况
+//				var braName = braName; //危险源分部
+//				var subiName = subiName; //危险源分项
+				//var jcdw = jcdw;//检查单位
+//				alert(id); 
+ 
+				var xxx = document.getElementById("xxx");
+				var li = document.createElement("li");
+				li.className = "mui-table-view-cell";
+//				ul.id = id + '|' + gcid;
+				li.innerHTML = '<a href="../my_plus/query_list.html?id='+id+'&gcid='+gcid+'&sjcCgao='+sjcCgao+'&flag=xczg&mobile='+mobile+'"><div style="margin: 0 0;font-size:15px">'+cheDate+'</div><div style="margin-top: -21px;margin-left: 32%;font-size:14px">'+riskLevel+'</div><div style="margin-top: -21px;margin-left: 56%;font-size:14px">'+riskNum+'</div><div style="margin-top: -21px;margin-left: 80%;font-size:14px">'+recState+'</div>'; 
+				xxx.appendChild(li);
+			}
+			//异步获取信息 
+			mui.ajax(url + 'my_plus/my_control_see.php', {
+				data: {
+					gcid: gcid, 
+					wxyid: wxyid
+				},
+				dataType: 'json',  
+				type: 'post', 
+				timeout: 10000,
+				success: function(data) {
+//					alert(data);  
+					var lenght = data.length;
+					if(lenght > 1) {
+						for(var i = 0; i < lenght - 1; i++) {
+							var id = data[i].id;
+							var cheDate = data[i].巡查日期;
+							var riskLevel = data[i].风险等级;
+							var riskNum = data[i].风险项数;
+							var recState = data[i].整改情况;
+//							var braName = data[i].危险源分部;
+//							var subiName = data[i].危险源分项;
+//							var effDate = data[i].有效日期;
+//							var resMan = data[i].责任人;
+//							var conNum = data[i].联系电话;
+							var sjcCgao = data[i].时间戳;
+//							var gps = data[i].危险源编号;
+							found(id, sjcCgao,cheDate,recState,riskLevel,riskNum);
+
+						}
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					alert('ajax错误' + type + '---' + errorThrown);
+				}
+			});
+
+		});
+	</script>
+
+</html>

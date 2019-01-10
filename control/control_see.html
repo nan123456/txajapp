@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>同欣</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-action-back mui-icon mui-icon-right-nav mui-pull-right">查询</a>
+			<h1 class="mui-title">危险源巡查记录</h1>
+		</header>
+		<div class="mui-content">
+				<ul class="mui-table-view">
+					 <li class="mui-table-view-cell">起止日期:<input type="text" style="width: 75%;height: 30px;" ></li>
+					 <li class="mui-table-view-cell">
+					 	<div style="margin: 0 0;">巡检日期</div>
+					 	<div style="margin-top: -21px;margin-left: 25%;">风险项数</div>
+					 	<div style="margin-top: -21px;margin-left: 50%;">风险等级</div>
+					 	<div style="margin-top: -21px;margin-left: 78%;">整改状态</div>
+					 </li>
+					 <li class="mui-table-view-cell">
+					 	<div style="margin: 0 0;">2018-7-20</div>
+					 	<div style="margin-top: -21px;margin-left: 30%;">18</div>
+					 	<div style="margin-top: -21px;margin-left: 56%;">B</div>
+					 	<div style="margin-top: -21px;margin-left: 80%;">已完成</div>
+					 </li>
+					 <li class="mui-table-view-cell">
+					 	<div style="margin: 0 0;">2018-7-20</div>
+					 	<div style="margin-top: -21px;margin-left: 30%;">8</div>
+					 	<div style="margin-top: -21px;margin-left: 56%;">A</div>
+					 	<div style="margin-top: -21px;margin-left: 80%;">逾期</div>
+					 </li>
+				</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script>
+		mui.init({
+			swipeBack:true //启用右滑关闭功能
+		});
+		
+		
+	</script>
+</html>

@@ -1,0 +1,350 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+		<style>
+			html,
+			body,
+			#container {
+				width: 100%;
+				height: 100%;
+			}
+			/*标记样式*/
+			
+			.amap-icon img {
+				width: 20px;
+				height: 28px;
+			}
+			
+			.myinfo {
+		    padding: .75rem 1.25rem;
+		    margin-bottom: 1rem;
+		    border-radius: .25rem;
+		    position: fixed;
+		    top: 1rem;
+		    background-color: white;
+		    width: auto;
+		    /*min-width: 22rem;*/
+		    border-width: 0;
+		    right: 1rem;
+		    box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+			}
+			
+			.myinput-card {
+				z-index:999;
+			    display: flex;
+			    flex-direction: column;
+			    min-width: 0;
+			    word-wrap: break-word;
+			    background-color: #fff;
+			    border-radius: .25rem;
+			    position: fixed;
+			    bottom: 0rem;
+			    flex: 1 1 auto;
+			    padding: 1.75rem 1.25rem;
+			}
+			
+			.myinput-card .btn{
+            	font-size: 20px;
+	            margin-left: 1.8rem;
+	        }
+	        
+	        .myinput-card .sel{
+            	font-size: 18px;
+	            height: 38px;
+	        }
+		</style>
+		<title></title>
+		<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+		<script src="https://webapi.amap.com/maps?v=1.4.10&key=6441f53831cd39962d12597089d1a5db&plugin=AMap.PolyEditor"></script>
+		<script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+	</head>
+
+	<body>
+		<div id="container"></div>
+		<div  class="myinfo" id="tip">
+			 <!--<button id="state" class="btn">查看危险源工作状态</button>-->
+			 <!--<input id="gzzt" class="my_none" />-->
+			 <!--<button id="s" class="btn">搜索危险源</button>-->
+		</div>
+		<div class="myinput-card" style="width:100%;">
+	    <div>
+	      <div class="input-item">
+	        <select id="sel" class="sel">
+			  <option value="F1">F1</option>
+			  <option value="F2">F2</option>
+			  <option value="F3">F3</option>
+			  <option value="F4">F4</option>
+			</select>
+	        <button id="bt2" class="btn">选择</button>
+	      </div>
+	    </div>
+	</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js"></script>
+		<script type="text/javascript">
+			//获取url参数值
+			function geturl(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+			}
+			gcid = geturl("gcid");
+			wxyid = geturl("wxyid");
+			var path = {}
+			var strAll = ''
+			
+			mui.ajax(url + 'wxyzt.php', {
+					data:{
+						gcid:gcid,  
+						id:wxyid
+					},
+					dataType:'json',
+					type:'POST',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						var gzzt = data[0].工作状态;
+						creatgzzt(gzzt);
+					},
+					error:function(xhr, type, errorThrown) {
+	//					alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+
+			//地图初始化
+			var map = new AMap.Map("container", {
+				center: [113.09088, 22.527858],
+				zoom: 2
+			});
+			
+			
+//			path = [
+//						[113.389854,22.527116],
+//						[113.388727,22.527587],
+//						[113.388963,22.527988],
+//						[113.388963,22.527988],
+//						[113.390036,22.527627]
+//					];
+//			var polygon = new AMap.Polygon({
+//				path: path,
+//				isOutline: true,
+//				borderWeight: 10,
+//				strokeColor: "#FF33FF",
+//				strokeWeight: 6,
+//				strokeOpacity: 0.2,
+//				fillOpacity: 0.4,
+//				// 线样式还支持 'dashed'
+//				fillColor: '#1791fc',
+//				zIndex: 50,
+//			})
+//
+//			polygon.setMap(map)
+//			// 缩放地图到合适的视野级别
+//			map.setFitView([polygon])
+//			var polyEditor = new AMap.PolyEditor(map, polygon)
+			var bt2=document.getElementById("bt2"); //按钮
+			var sel=document.getElementById("sel"); //按钮
+			var state=document.getElementById("state"); //按钮
+			
+//			state.addEventListener('tap',function(){
+//					mui.openWindow({
+//						url: 'mapmax.html',
+//						id: 'mapmax',
+//						styles: {
+//							hardwareAccelerated:false
+//						},
+//						extras:{
+//							gcid:gcid,
+//							wxyid:wxyid,
+////							gzzt:gzzt
+//						},
+//						show:{
+//							autoShow:true,//页面loaded事件发生后自动显示
+//							aniShow:'slide-in-right',//页面显示动画
+//							duration:'100'//页面动画持续时间
+//						},
+//						waiting:{
+//							autoShow:false,//自动显示等待框
+//						},
+//					});
+//				});
+				
+			var polygon2 = "";
+			bt2.addEventListener('tap',function(){
+				alert("开发中，敬请期待")
+//				setTimeout(function(){
+//				if(polygon2){
+//					map.remove(polygon2);
+//				}
+//				
+//				switch(sel.value)
+//					{
+//					case "F1":
+//					  path = [
+//							[113.389854,22.527116],
+//							[113.388727,22.527587],
+//							[113.388963,22.527988],
+//							[113.388963,22.527988],
+//							[113.390036,22.527627]
+//						];
+//					  break;
+//					case "F2":
+//					 path = [
+//					[113.392167,22.529596],
+//					[113.392156,22.52943],
+//					[113.39339,22.529445],
+//					[113.393405,22.529601]
+//				];
+//					  break;
+//					default:
+////					  n 与 case 1 和 case 2 不同时执行的代码
+//					}	
+//				polygon2 = new AMap.Polygon({
+//					path: path,
+//					isOutline: true,
+//					borderWeight: 10,
+//					strokeColor: "#FF33FF",
+//					strokeWeight: 6,
+//					strokeOpacity: 0.2,
+//					fillOpacity: 0.4,
+//					// 线样式还支持 'dashed'
+//					fillColor: '#1791fc',
+//					zIndex: 50,
+//				})
+//	
+//				polygon2.setMap(map)
+//				// 缩放地图到合适的视野级别
+//				map.setFitView([polygon2])
+//				var polyEditor = new AMap.PolyEditor(map, polygon2)
+////			},5000);
+			});
+			
+			
+//			datad = [113.39088, 22.527858]
+
+			// 实例化点标记
+
+//				marker = new AMap.Marker({
+//					icon: "../images/red.png",
+//					position: datad,
+//					offset: new AMap.Pixel(-13, -30)
+//				});
+//				marker.setMap(map);
+//
+//				marker = new AMap.Marker({
+//					icon: "../images/blue.png",
+//					position: [113.38826,22.524938],
+//					offset: new AMap.Pixel(-13, -30)
+//				});
+//				marker.setMap(map);
+//				alert(typeof  [113.38826,22.524938])
+			function creatgzzt(gzzt){
+			if(gzzt=="未巡检"){
+				icon1 ="../images/red.png";
+			}else{
+				icon1 ="../images/blue.png";
+			}
+			mui.ajax(url + 'mapspot.php', {
+				data: {
+					wxyid: wxyid
+				},
+				dataType: 'json',
+				type: 'POST',
+				timeout: 10000,
+				success: function(data) {
+					for(ky in data.data){
+//						alert(data.data[ky]);
+						marker = new AMap.Marker({
+							icon:icon1 ,
+							position: data.data[ky],
+							offset: new AMap.Pixel(-13, -30)
+						});
+						marker.setMap(map);
+					}
+					},
+				error: function(xhr, type, errorThrown) {
+//					alert('ajax错误'+type+'---'+errorThrown);
+				}
+			});
+			}
+			//动态创建
+//			var spotcs = function(spot) {
+//
+//				//定义函数
+//				spot = spot; //
+////				alert(typeof spot)
+//
+//				marker = new AMap.Marker({
+//					icon: "../images/red.png",
+//					position: spot,
+//					offset: new AMap.Pixel(-13, -30)
+//				});
+//				marker.setMap(map);
+//
+//			}
+
+			mui.ajax(url + 'map.php', {
+				data: {
+					gcid: gcid
+				},
+				dataType: 'json',
+				type: 'POST',
+				timeout: 10000,
+				success: function(data) {
+//					alert(data);
+//					path = [
+//						[116.403322, 39.920255],
+//						[116.410703, 39.897555],
+//						[116.402292, 39.892353],
+//						[116.389846, 39.891365]
+//					]
+
+					var polygon = new AMap.Polygon({
+						path: data,
+						isOutline: true,
+						borderWeight: 10,
+						strokeColor: "#FF33FF",
+						strokeWeight: 6,
+						strokeOpacity: 0.2,
+						fillOpacity: 0.4,
+						// 线样式还支持 'dashed'
+						fillColor: '#1791fc',
+						zIndex: 50,
+					})
+
+					polygon.setMap(map)
+					// 缩放地图到合适的视野级别
+					map.setFitView([polygon])
+
+					var polyEditor = new AMap.PolyEditor(map, polygon)
+
+					polyEditor.on('addnode', function(event) {
+						log.info('触发事件：addnode')
+					})
+
+					polyEditor.on('adjust', function(event) {
+						log.info('触发事件：adjust')
+					})
+
+					polyEditor.on('removenode', function(event) {
+						log.info('触发事件：removenode')
+					})
+
+					polyEditor.on('end', function(event) {
+						log.info('触发事件： end')
+						// event.target 即为编辑后的多边形对象
+					})
+				},
+				error: function(xhr, type, errorThrown) {
+					//alert('ajax错误'+type+'---'+errorThrown);
+				}
+			});
+		</script>
+	</body>
+
+</html>

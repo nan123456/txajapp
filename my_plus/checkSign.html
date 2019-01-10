@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>同欣巡检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />
+		<style type="text/css">
+			.mui-control-content {
+				bottom: 0px;
+			}
+			
+			.my_table {
+				float: left;
+				text-align: center;
+			}
+			
+			.my_th_weight {
+				font-weight: bold;
+			}
+			
+			.my_td_width30 {
+				width: 30%;
+			}
+			
+			.my_td_width40 {
+				width: 40%;
+			}
+			/*媒体查询，横屏效果*/
+			
+			@media only screen and (orientation:landscape) {
+				.mui-control-content {
+					bottom: 0px;
+				}
+			}
+			
+			.mui-popover {
+				height: 260px;
+			}
+			
+			#middlePopover {
+				min-width: 282px;
+				top: 15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			
+			#cdbzPopover {
+				min-width: 282px;
+				top: 15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			
+			.mui-popover .mui-popover-arrow {
+				display: none !important;
+			}
+			
+			#mydiv {
+				width: 100%;
+				height: 310px;
+				border: 1px #C6C6C6 solid;
+				background-size: cover;
+				/*背景图片充满div*/
+			}
+			
+			.bzcd {
+				margin: 10px;
+				height: 80px;
+				border: 1px #C6C6C6 solid;
+			}
+			
+			p {
+				font-size: 1em;
+				color: #000000;
+			}
+			
+			span {
+				margin-left: 15px;
+			}
+			
+			.myposition {
+				position: absolute;
+			}
+			
+			.out {
+				margin: 10px;
+				height: 60px;
+				border: 1px #C6C6C6 solid;
+			}
+			
+			.backgroundColor {
+				background-color: #C8C7CC;
+			}
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			
+			* {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+			
+			.btn_size {
+				background: #0000FF;
+				color: white;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">人员签到情况</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>起始日期：</label>
+						<input id="star_time" type="text" class="mui-input-clear" placeholder="请选择开始日期">
+					</div>
+					<div class="mui-input-row">
+						<label>截止日期：</label>
+						<input id="end_time" type="text" class="mui-input-clear" placeholder="请选择结束日期">
+					</div>
+				</form>
+				<button id="sure" type="button" class="mui-btn mui-btn-success mui-btn-block btn_size" disabled="disabled">确定</button>
+			</div>
+			<!--区域滚动  -->
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a id="projectNmae" class="mui-control-item mui-active" href="">
+						xxx工程
+					</a>
+				</div>
+			</div>
+			<!--人员签到查看  -->
+			<div>
+				<div id="item1" class="mui-control-content  mui-active">
+					<!--区域滚动  -->
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div class="mui-scroll rwdiv">
+							<ul id="jjdq" class="mui-table-view">
+								<li class="mui-table-view-cell my_th_weight mui-disabled">
+									<div class="my_table my_td_width30">姓名</div>
+									<div class="my_table my_td_width40">签到时间</div>
+									<div class="my_table my_td_width30">签到情况</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--人员签到查看  -->
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/immersed.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});
+
+			})(mui);
+			mui.init({
+				swipeBack: true, //启用右滑关闭功能
+				gestureConfig: {
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+
+				}
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				gcid = self.gcid;
+				gcmc = self.gcmc;
+				//alert(gcid);
+
+				var projectNmae = document.getElementById("projectNmae");
+				var star_time = document.getElementById("star_time");
+				var end_time = document.getElementById("end_time");
+				var sureButton = document.getElementById('sure');
+				var jjdq = document.getElementById("jjdq");
+				projectNmae.innerHTML = gcmc;
+
+				star_time.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						star_time.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						if(star_time.value && end_time.value) {
+							var gksrq = star_time.value;
+							var gjsrq = end_time.value;
+							var xgksrq = new Date(Date.parse(gksrq.replace(/-/g, "/")));
+							var xgksrq = xgksrq.getTime();
+							var xgjsrq = new Date(Date.parse(gjsrq.replace(/-/g, "/")));
+							var xgjsrq = xgjsrq.getTime();
+							if(xgjsrq >= xgksrq) {
+								sureButton.disabled = false;
+							} else {
+								alert('起始日期不能大于结束日期！');
+								sureButton.disabled = true;
+							}
+						}
+
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});
+				});
+
+				end_time.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						end_time.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						if(star_time.value && end_time.value) {
+							var gksrq = star_time.value;
+							var gjsrq = end_time.value;
+							var xgksrq = new Date(Date.parse(gksrq.replace(/-/g, "/")));
+							var xgksrq = xgksrq.getTime();
+							var xgjsrq = new Date(Date.parse(gjsrq.replace(/-/g, "/")));
+							var xgjsrq = xgjsrq.getTime();
+							if(xgjsrq >= xgksrq) {
+								sureButton.disabled = false;
+							} else {
+								alert('起始日期不能大于结束日期！');
+								sureButton.disabled = true;
+							}
+						}
+
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});
+				});
+
+				//确定按钮的监听事件
+				sureButton.addEventListener('tap', function(event) {
+					jjdq.innerHTML = '';
+					//跳转函数
+					transfer();
+				});
+				//跳转函数
+				var transfer = function() {
+					//					alert(star_time.value+"  "+end_time.value);
+					//人员签到信息获取
+					mui.ajax(url + 'my_plus/checkSign.php', {
+						data: {
+							gcid: gcid,
+							star_time: star_time.value,
+							end_time: end_time.value
+						},
+						dataType: 'json',
+						type: 'post',
+						timeout: 10000,
+						success: function(data) {
+							//alert(data);
+							var length = data.length;
+							for(var i = 0; i < length - 1; i++) {
+								var nameName = data[i].姓名;
+								var qdTime = data[i].签到时间;
+								var qdState = data[i].签到状态;
+								sign(i, nameName, qdTime, qdState);
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							//alert('ajax错误'+type);
+							return callback('ajax错误' + type + errorThrown);
+						}
+					});
+				}
+
+				//动态创建
+				var sign = function(i, nameName, qdTime, qdState) {
+					if(nameName == "") {
+						var xingming = "无姓名";
+					} else {
+						var xingming = nameName;
+					}
+					if(qdTime == "") {
+						var time = "";
+					} else {
+						var time = qdTime;
+					}
+					if(qdState == "") {
+						var state = "已签到";
+					} else {
+						var state = qdState;
+					}
+					if(i % 2 == 0) {
+						var color = "backgroundColor";
+					} else {
+						var color = ""
+					}
+
+					var ul = document.getElementsByClassName('mui-table-view');
+					var li = document.createElement("li");
+					li.className = "mui-table-view-cell " + color;
+					li.innerHTML = '<div class="my_table my_td_width30">' + xingming + '</div><div class="my_table my_td_width40">' + time + '</div><div class="my_table my_td_width30">' + state + '</div>';
+					ul[0].appendChild(li);
+				};
+			});
+		</script>
+	</body>
+
+</html>

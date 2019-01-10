@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title>质量实测二维码</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<link rel="stylesheet" href="../css/mui.min.css">	
+<link rel="stylesheet" href="../css/my_css.css">
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/qrcode.min.js"></script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	</header><br /><br /><br />
+	<div id="xx" style="margin-left:15%;"></div>
+<div id="qrcode" style="margin:10% 10px"></div>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/service.js" ></script>
+<script type="text/javascript">
+	mui.init({
+		swipeBack:true, //启用右滑关闭功能
+	});
+	mui.plusReady(function(){
+		//获取屏幕宽度，并修改div的宽高
+		var wid = document.documentElement.clientWidth*0.95;//获取屏幕的宽度
+		var qrcode = new QRCode(document.getElementById("qrcode"), {
+			width : wid,
+			height : wid
+		}); 
+		//生成二维码的函数
+		function makeCode (lj) {		
+			if (!lj) {
+				alert("连接为空");
+				elText.focus();
+				return;
+			}
+			qrcode.makeCode(lj);
+		} 
+	
+		//获取上个页面的传值
+		var self = plus.webview.currentWebview();
+		var gcmc = self.gcmc;
+		var time = self.time;
+		var jcxm = self.jcxm;
+		var jcbw = self.jcbw;
+		var lj = urlx+self.ewmlj;//二维码所需的路径
+		xxxx(gcmc,time,jcxm,jcbw);//二维码的信息;
+		makeCode(lj);//生成二维码函数
+		
+		//二维码的信息
+		function xxxx(gcmc,time,jcxm,jcbw){
+			var div = document.getElementById("xx");
+			var p = document.createElement("p");
+			var p1 = document.createElement("p");
+			var p2 = document.createElement("p");
+			var p3 = document.createElement("p");
+			p.innerHTML = "工程名称："+gcmc;
+			p1.innerHTML = "检查部位："+jcbw;
+			p2.innerHTML = "检查时间："+time;
+			p3.innerHTML = "检查项目："+jcxm;
+			div.appendChild(p);
+			div.appendChild(p1);
+			div.appendChild(p2);
+			div.appendChild(p3);
+		}
+	
+	});
+
+	
+</script>
+</body>
+</html>

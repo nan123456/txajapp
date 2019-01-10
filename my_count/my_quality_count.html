@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			#count{
+				background-color: #FFFFFF;
+				height: 460px;
+				width: 380px;
+				padding: 25px;
+                margin: 15px;
+                line-height:70% 
+			}
+			p{
+				font-family: 宋体;
+				font-size: 16px;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">质量实测统计分析</h1>
+		</header>
+		<div class="mui-content">
+			<div id="count" >
+				<h>检查项目：</h><br /><br />
+				<p id ="jcxm"></p><br />
+				<h>检查内容：</h><br /><br />
+				<div id="jcnr">
+					
+				</div>
+				<!--<p>垂直度：<span>已有  份检查内容</span></p><br />
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>合格数：</span><span>不合格数：</span><span>合格率：</span></p><br />
+				<p>表面平整度：<span>已有  份检查内容</span></p><br />
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>合格数：</span><span>不合格数：</span><span>合格率：</span></p><br />
+				<p>截面尺寸：<span>已有  份检查内容</span></p><br />
+				<p><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数：</span><span>不合格数：</span><span>合格率：</span></p><br />-->
+			</div>
+		</div>		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/chart.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			mui.init({ 
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				var star_time = self.star;
+				var end_time = self.end;
+				var selected = self.selected;
+				var jcnr = document.getElementById("jcxm");
+					  jcnr.innerText=selected;
+//				alert(star_time+"|"+end_time+"|"+selected);
+				var pass = new Array();
+				
+				//动态创建统计
+				var tongji = function(jcxm,x,y,z,zz,n1,m1,n2,m2,n3,m3,n4,m4){
+//					alert(jcxm+'|'+x+'|'+y+'|'+z+'|'+zz+'|'+n1+'|'+m1+'|'+n2+'|'+m2+'|'+n3+'|'+m3+'|'+n4+'|'+m4);
+					 var div = document.getElementById("jcnr");
+					 if(jcxm=="现浇混凝土结构观感质量及尺寸偏差"){
+					 	var jgl1 = n1/(n1+m1)*100 + '%';
+					 	var jgl2 = n2/(n2+m2)*100 + '%';
+					 	var jgl3 = n3/(n3+m3)*100 + '%';
+					 	if(n1==0){
+					 		jgl1='--%';
+					 	}
+					 	if(n2==0){
+					 		jgl2='--%';
+					 	}
+					 	if(n3==0){
+					 		jgl3='--%';
+					 	}
+//					 	alert(jgl1+'|'+jgl2+'|'+jgl3);
+					 	var p1 = document.createElement('p');
+					 	      div.appendChild(p1);
+					 	      p1.innerText='垂直度：已有'+x+'份检查内容';
+					 	var p2 = document.createElement('p');
+					 	      div.appendChild(p2);
+			p2.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n1+'&nbsp;&nbsp;不合格数:'+m1+'&nbsp;&nbsp;合格率:'+jgl1+'</span>';
+					 	var p3 = document.createElement('p');
+					 	      div.appendChild(p3);
+					 	      p3.innerText='表面平整度：已有'+y+'份检查内容';
+					 	var p4 = document.createElement('p');
+					 	      div.appendChild(p4);
+					 	      p4.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n2+'&nbsp;&nbsp;不合格数:'+m2+'&nbsp;&nbsp;合格率:'+jgl2+'</span>';
+					 	var p5 = document.createElement('p');
+					 	      div.appendChild(p5);
+					 	      p5.innerText='截面尺寸：已有'+z+'份检查内容';
+					 	var p6 = document.createElement('p');
+					 	      div.appendChild(p6);
+					 	      p6.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n3+'&nbsp;&nbsp;不合格数:'+m3+'&nbsp;&nbsp;合格率:'+jgl3+'</span>';
+					 }else if(jcxm=="填充墙砌体工程"){
+					 	var jgl1 = n1/(n1+m1)*100 + '%';
+					 	var jgl2 = n2/(n2+m2)*100 + '%';
+					 	var jgl3 = n3/(n3+m3)*100 + '%';
+					 	if(n1==0){
+					 		jgl1='--%';
+					 	}
+					 	if(n2==0){
+					 		jgl2='--%';
+					 	}
+					 	if(n3==0){
+					 		jgl3='--%';
+					 	}
+//					 	alert(jgl1+'|'+jgl2+'|'+jgl3);
+					 	var p1 = document.createElement('p');
+					 	      div.appendChild(p1);
+					 	      p1.innerText='墙面垂直度≤3m、≤5mm：已有'+x+'份检查内容';
+					 	var p2 = document.createElement('p');
+					 	      div.appendChild(p2);
+			p2.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n1+'&nbsp;&nbsp;不合格数:'+m1+'&nbsp;&nbsp;合格率:'+jgl1+'</span>';
+					 	var p3 = document.createElement('p');
+					 	      div.appendChild(p3);
+					 	      p3.innerText='墙面垂直度>3m、≤10mm：已有'+y+'份检查内容';
+					 	var p4 = document.createElement('p');
+					 	      div.appendChild(p4);
+					 	      p4.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n2+'&nbsp;&nbsp;不合格数:'+m2+'&nbsp;&nbsp;合格率:'+jgl2+'</span>';
+					 	var p5 = document.createElement('p');
+					 	      div.appendChild(p5);
+					 	      p5.innerText='表面平整度：已有'+z+'份检查内容';
+					 	var p6 = document.createElement('p');
+					 	      div.appendChild(p6);
+					 	      p6.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n3+'&nbsp;&nbsp;不合格数:'+m3+'&nbsp;&nbsp;合格率:'+jgl3+'</span>';
+					 }else if(jcxm=="一般抹灰工程"){
+					 	var jgl1 = n1/(n1+m1)*100 + '%';
+					 	var jgl2 = n2/(n2+m2)*100 + '%';
+					 	var jgl3 = n3/(n3+m3)*100 + '%';
+					 	var jgl4 = n4/(n4+m4)*100 + '%';
+					 	if(n1==0){
+					 		jgl1='--%';
+					 	}
+					 	if(n2==0){
+					 		jgl2='--%';
+					 	}
+					 	if(n3==0){
+					 		jgl3='--%';
+					 	}
+					 	if(n4==0){
+					 		jgl4='--%';
+					 	}
+//					 	alert(jgl1+'|'+jgl2+'|'+jgl3);
+					 	var p1 = document.createElement('p');
+					 	      div.appendChild(p1);
+					 	      p1.innerText='立面垂直度-普通：已有'+x+'份检查内容';
+					 	var p2 = document.createElement('p');
+					 	      div.appendChild(p2);
+			p2.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n1+'&nbsp;&nbsp;不合格数:'+m1+'&nbsp;&nbsp;合格率:'+jgl1+'</span>';
+					 	var p3 = document.createElement('p');
+					 	      div.appendChild(p3);
+					 	      p3.innerText='表面平整度-普通：已有'+y+'份检查内容';
+					 	var p4 = document.createElement('p');
+					 	      div.appendChild(p4);
+					 	      p4.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n2+'&nbsp;&nbsp;不合格数:'+m2+'&nbsp;&nbsp;合格率:'+jgl2+'</span>';
+					 	var p5 = document.createElement('p');
+					 	      div.appendChild(p5);
+					 	      p5.innerText='立面垂直度-高级：已有'+z+'份检查内容';
+					 	var p6 = document.createElement('p');
+					 	      div.appendChild(p6);
+					 	      p6.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n3+'&nbsp;&nbsp;不合格数:'+m3+'&nbsp;&nbsp;合格率:'+jgl3+'</span>';
+					    var p7 = document.createElement('p');
+					 	      div.appendChild(p7);
+					 	      p7.innerText='表面平整度-高级：已有'+zz+'份检查内容';
+					 	var p8 = document.createElement('p');
+					 	      div.appendChild(p8);
+					 	      p8.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n4+'&nbsp;&nbsp;不合格数:'+m4+'&nbsp;&nbsp;合格率:'+jgl4+'</span>';
+					 }else if(jcxm=="饰面砖粘贴"){
+					 	var jgl1 = n1/(n1+m1)*100 + '%';
+					 	var jgl2 = n2/(n2+m2)*100 + '%';
+					 	var jgl3 = n3/(n3+m3)*100 + '%';
+					 	var jgl4 = n4/(n4+m4)*100 + '%';
+					 	if(n1==0){
+					 		jgl1='--%';
+					 	}
+					 	if(n2==0){
+					 		jgl2='--%';
+					 	}
+					 	if(n3==0){
+					 		jgl3='--%';
+					 	}
+					 	if(n4==0){
+					 		jgl4='--%';
+					 	}
+//					 	alert(jgl1+'|'+jgl2+'|'+jgl3);
+					 	var p1 = document.createElement('p');
+					 	      div.appendChild(p1);
+					 	      p1.innerText='立面垂直度-外墙面砖：已有'+x+'份检查内容';
+					 	var p2 = document.createElement('p');
+					 	      div.appendChild(p2);
+			p2.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n1+'&nbsp;&nbsp;不合格数:'+m1+'&nbsp;&nbsp;合格率:'+jgl1+'</span>';
+					 	var p3 = document.createElement('p');
+					 	      div.appendChild(p3);
+					 	      p3.innerText='表面平整度-外墙面砖：已有'+y+'份检查内容';
+					 	var p4 = document.createElement('p');
+					 	      div.appendChild(p4);
+					 	      p4.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n2+'&nbsp;&nbsp;不合格数:'+m2+'&nbsp;&nbsp;合格率:'+jgl2+'</span>';
+					 	var p5 = document.createElement('p');
+					 	      div.appendChild(p5);
+					 	      p5.innerText='立面垂直度-内墙面砖：已有'+z+'份检查内容';
+					 	var p6 = document.createElement('p');
+					 	      div.appendChild(p6);
+					 	      p6.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n3+'&nbsp;&nbsp;不合格数:'+m3+'&nbsp;&nbsp;合格率:'+jgl3+'</span>';
+					    var p7 = document.createElement('p');
+					 	      div.appendChild(p7);
+					 	      p7.innerText='表面平整度-内墙面砖：已有'+zz+'份检查内容';
+					 	var p8 = document.createElement('p');
+					 	      div.appendChild(p8);
+					 	      p8.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n4+'&nbsp;&nbsp;不合格数:'+m4+'&nbsp;&nbsp;合格率:'+jgl4+'</span>';
+					 }else if(jcxm=="大理石面层和花岗石面层"){
+					 	var jgl1 = n1/(n1+m1)*100 + '%';
+					 	var jgl2 = n2/(n2+m2)*100 + '%';
+					 	if(n1==0){
+					 		jgl1='--%';
+					 	}
+					 	if(n2==0){
+					 		jgl2='--%';
+					 	}
+//					 	alert(jgl1+'|'+jgl2+'|'+jgl3);
+					 	var p1 = document.createElement('p');
+					 	      div.appendChild(p1);
+					 	      p1.innerText='大理石面层和花岗石面层：已有'+x+'份检查内容';
+					 	var p2 = document.createElement('p');
+					 	      div.appendChild(p2);
+			p2.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n1+'&nbsp;&nbsp;不合格数:'+m1+'&nbsp;&nbsp;合格率:'+jgl1+'</span>';
+					 	var p3 = document.createElement('p');
+					 	      div.appendChild(p3);
+					 	      p3.innerText='缝格平直：已有'+y+'份检查内容';
+					 	var p4 = document.createElement('p');
+					 	      div.appendChild(p4);
+					 	      p4.innerHTML='<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合格数:'+n2+'&nbsp;&nbsp;不合格数:'+m2+'&nbsp;&nbsp;合格率:'+jgl2+'</span>';
+					 	
+					 }
+				}
+				
+			mui.ajax(url+"my_count/my_quality_count.php",{
+				data:{
+					star_time : star_time,
+					end_time : end_time,
+					jcxm : selected
+				},
+				dataType:"json",     
+	  			type:"post",
+				timeout:10000,
+				success:function(data){
+					var zt = new Array();
+					var length = data.length;
+					var x=0,y=0,z=0,zz=0,n1=0,m1=0,n2=0,m2=0,n3=0,m3=0,n4=0,m4=0;
+//					alert(data);
+					for(var i=0; i<length; i++){
+						var jcxm = data[i].检查项目;
+						var jcnr  = data[i].检查内容;
+							 zt[0] = data[i].状态1;
+							 zt[1] = data[i].状态2;
+						     zt[2] = data[i].状态3;
+							 zt[3] = data[i].状态4;
+							 zt[4] = data[i].状态5;
+							 zt[5] = data[i].状态6;
+							 zt[6] = data[i].状态7;
+							 zt[7] = data[i].状态8;
+							 zt[8] = data[i].状态9;
+							 zt[9] = data[i].状态10;
+//						 alert(jcxm);     
+						if(jcxm=="现浇混凝土结构观感质量及尺寸偏差"){
+							if(jcnr=="现浇混凝土-垂直度"){
+								x++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n1++;
+									}else if(zt[j]==0){
+										m1++;
+									}
+								}
+							}else if(jcnr=="现浇混凝土-表面平整度"){
+								y++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n2++;
+									}else if(zt[j]==0){
+										m2++;
+									}
+								}
+							}else if(jcnr=="现浇混凝土-截面尺寸"){
+								z++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n3++;
+									}else if(zt[j]==0){
+										m3++;
+									}
+								}
+							}	
+						}else if(jcxm=="填充墙砌体工程"){
+							if(jcnr=="填充墙砌体-墙面垂直度≤3m、≤5mm"){
+								x++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n1++;
+									}else if(zt[j]==0){
+										m1++;
+									}
+								}
+							}else if(jcnr=="填充墙砌体-墙面垂直度>3m、≤10mm"){
+								y++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n2++;
+									}else if(zt[j]==0){
+										m2++;
+									}
+								}
+							}else if(jcnr=="填充墙砌体-表面平整度"){
+								z++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n3++;
+									}else if(zt[j]==0){
+										m3++;
+									}
+								}
+							}	
+						}else if(jcxm=="一般抹灰工程"){
+							if(jcnr=="一般抹灰-立面垂直度-普通"){
+								x++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n1++;
+									}else if(zt[j]==0){
+										m1++;
+									}
+								}
+							}else if(jcnr=="一般抹灰-表面平整度-普通"){
+								y++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n2++;
+									}else if(zt[j]==0){
+										m2++;
+									}
+								}
+							}else if(jcnr=="一般抹灰-立面垂直度-高级"){
+								z++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n3++;
+									}else if(zt[j]==0){
+										m3++;
+									}
+								}
+							}else if(jcnr=="一般抹灰-表面平整度-高级"){
+								zz++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n4++;
+									}else if(zt[j]==0){
+										m4++;
+									}
+								}
+							}	
+						}else if(jcxm=="饰面砖粘贴"){
+							if(jcnr=="饰面砖粘贴-立面垂直度-外墙面砖"){
+								x++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n1++;
+									}else if(zt[j]==0){
+										m1++;
+									}
+								}
+							}else if(jcnr=="饰面砖粘贴-表面平整度-外墙面砖"){
+								y++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n2++;
+									}else if(zt[j]==0){
+										m2++;
+									}
+								}
+							}else if(jcnr=="饰面砖粘贴-立面垂直度-内墙面砖"){
+								z++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n3++;
+									}else if(zt[j]==0){
+										m3++;
+									}
+								}
+							}else if(jcnr=="饰面砖粘贴-表面平整度-内墙面砖"){
+								zz++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n4++;
+									}else if(zt[j]==0){
+										m4++;
+									}
+								}
+							}	
+						}else if(jcxm=="大理石面层和花岗石面层"){
+							if(jcnr=="大理石面层和花岗石面层-大理石面层和花岗石面层"){
+								x++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n1++;
+									}else if(zt[j]==0){
+										m1++;
+									}
+								}
+							}else if(jcnr=="大理石面层和花岗石面层-缝格平直"){
+								y++;
+								for(var j=0; j<10; j++){
+									if(zt[j]==1){
+										n2++;
+									}else if(zt[j]==0){
+										m2++;
+									}
+								}
+							}
+						}
+					}
+					tongji(jcxm,x,y,z,zz,n1,m1,n2,m2,n3,m3,n4,m4);
+				},
+				error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+			});
+			
+			});
+		</script>	
+	</body>
+</html>

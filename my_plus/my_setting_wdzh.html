@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link href="../css/mui.min.css" rel="stylesheet"/>    
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<style>
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="revise" class="mui-icon mui-icon-bars mui-pull-right"></a>
+			<h1 class="mui-title">账户信息</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form id="formAjax" class="mui-input-group">
+					<div class="mui-input-row">
+						<label>账号：</label>
+						<input id="zhao" type="text" class="" placeholder="账号" readonly="readonly" >
+					</div>
+					<div class="mui-input-row">
+						<label>密码：</label>
+						<input id="mima" type="password" class="" placeholder="密码" readonly="readonly">
+					</div>					
+					<div class="mui-input-row">
+						<label>邮箱：</label>
+						<input id="youx" type="text" class="" placeholder="邮箱" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>手机：</label>
+						<input id="sji" type="text" class="" placeholder="手机" readonly="readonly">
+					</div>
+				</form>
+				<form id="formRevise" class="mui-input-group my_none" style="margin-top: 5px;">
+					<!--<div class="mui-input-row">
+						<label>积分：</label>
+						<input id="jfen" type="text" class="" placeholder="积分" readonly="readonly" value="100">
+					</div>-->
+					<div class="mui-input-row">
+						<label>账号：</label>
+						<input id="zhaoRevise" type="text" class="" placeholder="账号" >
+					</div>
+					<div class="mui-input-row">
+						<label>密码：</label>
+						<input id="mimaReviseRevise" type="text" class="" placeholder="密码">
+					</div>					
+					<div class="mui-input-row">
+						<label>邮箱：</label>
+						<input id="youxRevise" type="text" class="" placeholder="邮箱">
+					</div>
+					<!--<div class="mui-input-row">
+						<label>手机：</label>
+						<input id="sjiRevise" type="text" class="" placeholder="手机" readonly="readonly">
+					</div>-->
+				</form>
+				<div id="sureButton" class="mui-content-padded my_none">
+					<button id='sureRevise' class="mui-btn mui-btn-block mui-btn-primary">确定</button>
+				</div>
+				
+				<div class="title">					
+					<!--<p id="jfbzsm">积分备注说明：</p>-->					
+				</div>			
+	        </div>
+			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script>
+			mui.init();
+			mui.plusReady(function() {				
+				//接收上个界面中openwindow的extras传递过来的参数
+				var self = plus.webview.currentWebview();			
+				mobile = self.mobile;
+				//alert(mobile);
+				
+				//获取各个input框id
+				var formAjax=document.getElementById("formAjax");
+				var zhao=document.getElementById("zhao");
+				var mima=document.getElementById("mima");
+				var youx=document.getElementById("youx");
+				var sji=document.getElementById("sji");				
+				var jfen=document.getElementById("jfen");
+				var jfbzsm=document.getElementById("jfbzsm");
+				var revise=document.getElementById('revise');
+				var formRevise=document.getElementById('formRevise');
+				var zhaoRevise=document.getElementById('zhaoRevise');
+				var mimaReviseRevise=document.getElementById('mimaReviseRevise');
+				var youxRevise=document.getElementById('youxRevise');
+				//var sjiRevise=document.getElementById('sjiRevise');
+				var sureButton=document.getElementById('sureButton');
+				var sureRevise=document.getElementById('sureRevise');
+				
+				//异步传值进行判断
+				//获取账户信息
+				mui.ajax(url+'yhxx_app.php',{
+					data:{
+						mobile:mobile,
+						flag:"huoqu"
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;
+						var row=length-1;
+						for (var i=0;i<row;i++) {
+							zhao.value=data[i].账号;
+							mima.value=data[i].密码;
+							youx.value=data[i].邮箱;
+							sji.value=data[i].手机;
+							//修改部分
+							zhaoRevise.value=data[i].账号;
+							mimaReviseRevise.value=data[i].密码;
+							youxRevise.value=data[i].邮箱;
+							//sjiRevise.value=data[i].手机;
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+				
+				//右上角监听
+				revise.addEventListener('tap', function() {
+					var btnArray = [
+					{title:"账户信息修改"}
+					];
+					plus.nativeUI.actionSheet( {
+						title:"操作",
+						cancel:"取消",
+						buttons:btnArray
+					}, function(e){
+						var index = e.index;	
+						var nextpage='';
+						switch (index){
+							case 0:	//取消	
+								break;
+							case 1:	//任务新增								
+								//nextpage='';
+								formAjax.setAttribute("class","mui-input-group my_none");
+								formRevise.setAttribute("class","mui-input-group");
+								sureButton.setAttribute("class","mui-content-padded");
+								plus.nativeUI.toast('可修改必要信息！');
+								break;
+						}
+					} );
+				});
+				
+				//确定
+				sureRevise.addEventListener('tap', function() {
+					//alert("确定");
+					var mydata = {
+						account: zhaoRevise.value,
+						passWord: mimaReviseRevise.value,
+						email: youxRevise.value,
+						//mobile: sjiRevise.value,
+						mobile: mobile
+					};
+					ajaxUploadData(mydata, function(err) {
+						if (err) {
+							plus.nativeUI.toast(err);
+							return;
+						}
+						plus.nativeUI.toast('修改成功！');
+						var wobj = plus.webview.currentWebview();					
+						wobj.reload(true);
+					});
+				});
+			});
+			
+			//异步上传数据
+			var ajaxUploadData = function(mydata, callback) {
+				callback = callback || $.noop;
+				mydata = mydata || {};
+				mydata.account = mydata.account || '';
+				mydata.passWord = mydata.passWord || '';
+				mydata.email = mydata.email || '';
+				mydata.mobile = mydata.mobile || '';
+				if (mydata.account.length < 1) {
+					return callback('账号不能为空！');
+				}
+				if (mydata.passWord.length < 1) {
+					return callback('密码不能为空！');
+				}
+				if (mydata.email.length < 1) {
+					return callback('邮箱不能为空！');
+				}
+				if (mydata.mobile.length < 1) {
+					return callback('手机不能为空！');
+				}
+				mui.ajax(url+'yhxx_app.php',{
+					data:{
+						account: mydata.account,
+						passWord: mydata.passWord,
+						email: mydata.email,
+						mobile: mydata.mobile,
+						sjj:mobile,
+						flag:"xiugai"
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data.result);
+						if (data.result=='success') {
+							return callback();
+						} else{
+							return callback('服务器返回error');	
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						//alert('ajax错误'+type);
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+			};
+		</script>
+	</body>
+
+</html>

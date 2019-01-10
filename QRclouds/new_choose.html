@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			.mui-control-content {
+				bottom: 0px;
+			}
+			/*媒体查询，横屏效果*/
+			
+			@media only screen and (orientation:landscape) {
+				.mui-control-content {
+					bottom: 0px;
+				}
+			}
+			
+			html,
+			body,
+			.mui-content {
+				height: 0px;
+				margin: 0px;
+				background-color: #efeff4;
+			}
+			
+			.mui-control-content {
+				bottom: 0px;
+			}
+			
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			
+			.mui-btn {
+				font-size: 14px;
+				padding: 8px;
+				margin: 3px;
+			}
+			
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			
+			* {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+			
+			.btn_size {
+				background: #0000FF;
+				color: white;
+			}
+			
+			.box {
+				width: 48%;
+				height: 220px;
+				margin-top: 180px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新项目整改记录</h1>
+		</header>
+		<div class="mui-content">
+			<ul id="my_list" class="mui-table-view mui-grid-view mui-grid-9 my_list">				
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a id="news" href="#">
+						<span class="mui-icon mui-icon-compose"></span>
+						<div class="mui-media-body">新增</div>
+					</a>
+				</li>
+
+			</ul>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script type="text/javascript">
+			mui.plusReady(function() {
+				var see = document.getElementById("see");
+				var news = document.getElementById("news");
+				
+				//获取传值
+				var self = plus.webview.currentWebview();
+				var strs = self.strs;
+				var mobile = self.mobile;
+				var bumen = self.bumen;
+				var gcid = strs[1] //工程id
+				var wxyid = strs[2] //危险源id
+//							alert(gcid);				
+			//新增危险源整改通知记录
+			news.onclick = function() {
+				mui.openWindow({
+					url: "../QRclouds/scan.html",
+					extras: {
+//						hazSjc:hazSjc,//危险源时间戳（二维码生成）
+						gcid: gcid,
+						wxyid: wxyid,
+						mobile: mobile
+					},
+					show: {
+//						autoShow: true, //页面loaded事件发生后自动显示
+//						aniShow: 'slide-in-right', //页面显示动画
+//						duration: '100' //页面动画持续时间
+					},
+					waiting: {
+//						autoShow: true, //自动显示等待框
+//						title: '加载中...'
+					},
+				});
+			}
+			});
+		</script>
+	</body>
+
+</html>

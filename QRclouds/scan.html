@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			.mui-control-content {
+				bottom: 0px;	
+			}		
+			.my_table{
+				float: left;
+				text-align: center;
+			}
+			.my_th_weight{
+				font-weight: bold;
+			}	
+			.my_td_width30{
+				/*检查日期*/
+				width: 25%;
+			}
+			.my_td_width40{
+				/*通知单编号*/
+				width: 27%;
+			}
+			.my_td_width10{
+				/*整改、回复、批复*/
+				width: 16%;
+			}
+			
+			
+			/*媒体查询，横屏效果*/
+			@media only screen and (orientation:landscape ) {
+				.mui-control-content {
+					bottom: 0px;	
+					}					
+			}
+			.mui-popover {
+				height: 260px;
+			}
+			#middlePopover{
+				min-width: 282px;				
+				top:15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			#cdbzPopover{
+				min-width: 282px;				
+				top:15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			.mui-popover .mui-popover-arrow{
+				display: none !important;
+			}
+			#mydiv{
+				width: 100%;
+				height: 310px;
+				border: 1px #C6C6C6 solid;				
+				background-size: 100% 100%;/*背景图片充满div*/				
+			}
+			.bzcd{
+				margin: 10px;	
+				padding-bottom: 10px;			
+				height: auto;
+				min-height: 80px;
+				border: 1px #C6C6C6 solid;
+				
+			}
+			p{
+				font-size: 1em;
+				color: #000000;
+			}
+			span{
+				margin-left: 15px;
+			}
+			.myposition{
+				position: absolute;
+			}
+			.out{				
+				margin: 10px;
+				padding-bottom: 10px;
+				height: auto;
+				min-height: 60px;				
+				border: 1px #C6C6C6 solid;				
+			}
+			#zuxz{
+				width: 100px;
+				
+			}	
+			#qtcy{
+				width: 100px;
+				font-size: 1.08em;
+				margin-top: -1px;
+			}
+			.a_color{
+				/*改变连接颜色*/
+				color: #000000;
+			}		
+			.borderColor{
+				border: 3px solid green;
+			}
+			
+			/*** 申请延期日期选择样式 ***/
+			#zuyPopover{
+				min-width: 300px;				
+				top:15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -150px;
+			}
+			/*根据颜色来判断*/
+			.anquan{
+				background-color: #007AFF;
+			}
+			.zhiliang{
+				background-color: #0CAF2D;
+			}
+			.zhonghe{
+				background-color: #8A6DE9;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="my_popover" class="mui-icon mui-icon-bars mui-pull-right"></a>			
+			<h1 class="mui-title">巡查整改清单</h1>
+		</header>		
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<div class="mui-slider">
+		       			<div id="xuanxiangka" class="mui-slider-group mui-slider-loop ">
+		        		   
+		        		   	<div class="mui-slider-item">
+		         		       <a id="a4" class="mui-control-item  mui-active"  href="#item1">
+									草稿(0)
+								</a>
+								<a class=" mui-icon mui-icon-arrowright mui-pull-right" style="bottom: 18px;"></a>
+								<!--<a class=" mui-icon mui-icon-arrowleft mui-pull-left" style="bottom: 18px;"></a>-->
+		         		   </div>
+		      		  	</div>
+		   			</div>
+				</div>  
+			</div>
+			
+			<!-- 草稿B  -->
+			<div id="item1" class="mui-control-content  mui-active">	
+				<!--区域滚动  -->
+				<div id="scroll" class="mui-scroll-wrapper">
+					<div id="caogao" class="mui-scroll rwdiv">
+						
+						
+					</div>						
+				</div>
+	        </div>	
+	        <!-- 草稿E -->
+	       
+	        <!-- 整改中B -->	        
+	        <div id="item2" class="mui-control-content">
+	        	<!--区域滚动  -->
+				<div id="scroll" class="mui-scroll-wrapper" >
+					<div id="zhenggaizhong" class="mui-scroll rwdiv" >
+						
+					</div>						
+				</div>
+				
+				<!-- 申请延期日期选择界面 -->.
+			</div>
+	        <!-- 整改中E -->
+	        
+	        <!-- 延期B -->
+	        <div id="item3" class="mui-control-content">
+	        	<!--区域滚动  -->
+				<div id="scroll" class="mui-scroll-wrapper">
+					<div id="yanqi" class="mui-scroll rwdiv">
+						
+					</div>						
+				</div>
+	        	<!--区域滚动  -->
+	        </div>
+	        <!-- 延期E -->
+
+			<!-- 逾期B -->	        
+	        <div id="item4" class="mui-control-content">
+	        	<!--区域滚动  -->
+				<div id="scroll" class="mui-scroll-wrapper">
+					<div id="yuqi" class="mui-scroll rwdiv">
+						
+					</div>						
+				</div>
+	        	<!--区域滚动  -->
+	        </div>	
+	        <!-- 逾期E -->
+
+			<!-- 未完成B -->	        
+	        <div id="item5" class="mui-control-content">
+	        	<!--区域滚动  -->
+				<div id="scroll" class="mui-scroll-wrapper">
+					<div id="weiwancheng" class="mui-scroll rwdiv">
+						
+					</div>						
+				</div>
+	        	<!--区域滚动  -->
+	        </div>	
+	        <!-- 未完成E -->
+
+			<!-- 已完成B -->	        
+	        <div id="item6" class="mui-control-content">
+	        	<!--区域滚动  -->
+				<div id="scroll" class="mui-scroll-wrapper">
+					<div id="yiwancheng" class="mui-scroll rwdiv">
+						
+					</div>						
+				</div>
+	        	<!--区域滚动  -->
+	        </div>	
+	        <!-- 已完成E -->
+		</div>			
+		<div id="output">
+			<!--Camera管理摄像头设备，可用于拍摄照片、录制视频文件。      -->
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js"></script>
+		<!--<script src="../js/my_change_list_changan.js"></script>-->
+		<script>
+//			alert("1");
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});		
+			})(mui);
+		
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false	
+				}
+			});
+			mui.init({
+					swipeBack:true //启用右滑关闭功能
+			});	
+			
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});					
+			})(mui);		
+		
+			mui.plusReady(function(){
+//				alert("红色边框表示分公司,总公司暂不作批复")
+				//传值
+				var self = plus.webview.currentWebview();
+				var gcid = self.gcid;
+				var wxyid = self.wxyid;
+				var gcmc = self.gcmc;
+				var userid = self.userid;
+				var sheng = self.sheng;
+				var shi = self.shi;
+				var mobile = self.mobile;
+//				alert(sheng);			
+								
+				//异步获取检查内容的信息
+				mui.ajax(url+'QRclouds/scan_jcdx.php',{
+					data:{
+						gcid:gcid
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						var length=data.length;
+						for (var i=0;i<length-1;i++) {
+							localStorage.setItem('jcdxMingCheng',data[i].工程名称)
+//							var jcnr=data[i].工程名称;
+//							creatJcnr(jcnr);
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+				
+				//定位
+				var content=document.getElementsByClassName('mui-control-content');
+				var jzrqYq=document.getElementById("jzrqYq");
+				var a1=document.getElementById('a1');
+				var a2=document.getElementById('a2');
+				var a3=document.getElementById('a3');
+				var a4=document.getElementById('a4');
+				var a5=document.getElementById('a5');
+				var a6=document.getElementById('a6');
+				var my_popover=document.getElementById('my_popover'); //右上角菜单选项
+			
+				//右上角按钮监听
+				my_popover.addEventListener('tap', function() {
+					var btnArray = [
+						{title:"新增整改"},
+						{title:"新增项目"}
+					];
+					plus.nativeUI.actionSheet( {
+						title:"操作",
+						cancel:"取消",
+						buttons:btnArray
+					}, function(e){
+						var index = e.index;	
+						var nextpage='';
+						switch (index){
+							case 0:	//取消	
+								break;
+							case 1:	//新增								
+								nextpage='scan_new.html';
+								break;
+							case 2://新增项目
+								nextpage_1='../QRclouds/new_barcode.html';
+								break;
+						}
+						if(e.index==1){
+						mui.openWindow({
+							url: nextpage,
+							id: nextpage,
+							styles: {
+								hardwareAccelerated:false
+							},
+							extras:{
+								//传递参数
+								name:'wushaohang_lidegejing',
+								gcid:gcid,
+								wxyid:wxyid,
+//								gcmc:gcmc,
+								userid:userid,
+								sheng:sheng,
+								shi:shi,
+								mobile:mobile
+							},
+							show:{
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						});
+						}else if(e.index==2){
+						mui.openWindow({
+							url: nextpage_1,
+							id: nextpage_1,
+							styles: {
+								hardwareAccelerated:false
+							},
+							extras:{
+								gcid:gcid,
+								wxyid:wxyid,
+								gcmc:gcmc,
+								mobile:mobile
+							},
+							show:{
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						});
+						}
+					});
+				});
+				
+				//新增草稿后，刷新该页面
+				window.addEventListener('json',function(event){						
+					var wobj = plus.webview.currentWebview();
+					wobj.reload(true);						
+				});
+				//新增整改管理后，刷新该页面
+				window.addEventListener('zggl',function(event){						
+					var wobj = plus.webview.currentWebview();					
+					wobj.reload(true);						
+				});
+			
+				//动态创建
+				var mychange = function(id,jcdw,jcdx,jclx,wzzt,tzdbh,jcrq,tzdzt,sjcCgao,jzrq,jcnr,xclb,jccj){
+					//定义函数
+					var sjc=sjcCgao;
+					var tzdzt=tzdzt;
+					var id = id;
+					var jcdw = jcdw;
+					var jcdx = jcdx;
+					var jclx = jclx;
+					var wzzt = wzzt;
+					var tzdbh =tzdbh;
+					var jcrq =jcrq;
+					var jzrq =jzrq;
+					var jcnr = jcnr;
+					var xclb = xclb;
+					var jccj = jccj;
+					//中文解码，防止乱码
+					var jcdw_c=encodeURI(encodeURI(jcdw));
+					var jcdx_c=encodeURI(encodeURI(jcdx));
+					var jclx_c=encodeURI(encodeURI(jclx));
+					var wzzt_c=encodeURI(encodeURI(wzzt));
+					var tzdbh_c=encodeURI(encodeURI(tzdbh));
+					var jcrq_c=encodeURI(encodeURI(jcrq));
+					//定位到id="caogao"
+					
+					if(tzdzt=="草稿"){
+						//alert(sjcCgao);
+						if(jccj=="项目部自检"){
+							var color="anquan";
+						}else if(jccj=='分公司巡查' || jccj=='分公司月度检查' || jccj=='分公司专项检查'){
+							var color="zhiliang";
+						}else{
+							var color="zhonghe";
+						}
+						var caogao=document.getElementById("caogao");
+						var ul = document.createElement("ul");
+						ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+						ul.id=id+'|'+gcid+'|'+sjcCgao+'|'+mobile;
+//						alert(sjc);
+						ul.innerHTML = '<li class="mui-table-view-cell '+color+'"><a class="a_color" href="../my_plus/my_change_ckcg.html?id='+id+'&gcid='+gcid+'&sjcCgao='+sjcCgao+'&jcdw='+jcdw_c+'&jcdx='+jcdx_c+'&jclx='+jclx_c+'&wzzt='+wzzt_c+'&tzdbh='+tzdbh_c+'&jcrq='+jcrq_c+'&flag=xczg&mobile='+mobile+'"><span class="mui-icon mui-icon-info mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2">'+tzdbh+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+jcrq+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查单位：'+jcdw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查对象：'+jcdx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查类型：'+jclx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查内容：'+jcnr+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">截止日期：'+jzrq+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">整改状态：'+tzdzt+'</p></li><li class="mui-table-view-cell my_none"><p class="mui-ellipsis my_style1">时间戳:'+sjc+'</p></li>';
+						caogao.appendChild(ul);
+					}else if(tzdzt=="延期"){
+						if(jccj=="项目部自检"){
+							var color="anquan";
+						}else if(jccj=='分公司巡查' || jccj=='分公司月度检查' || jccj=='分公司专项检查'){
+							var color="zhiliang";
+						}else{
+							var color="zhonghe";
+						}
+						var yanqi=document.getElementById("yanqi");
+						var ul = document.createElement("ul");
+						ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+						ul.id=id;
+						ul.innerHTML = '<li class="mui-table-view-cell '+color+'"><a class="a_color" href="my_change_manager.html?id='+id+'&gcid='+gcid+'&sjcCgao='+sjcCgao+'&jcdw='+jcdw_c+'&jcdx='+jcdx_c+'&jclx='+jclx_c+'&wzzt='+wzzt_c+'&tzdbh='+tzdbh_c+'&jcrq='+jcrq_c+'&userid='+userid+'&mobile='+mobile+'"><span class="mui-icon mui-icon-info mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2">'+tzdbh+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+jcrq+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查单位：'+jcdw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查对象：'+jcdx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查类型：'+jclx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查内容：'+jcnr+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">截止日期：'+jzrq+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">整改状态：'+tzdzt+'</p></li>';
+						yanqi.appendChild(ul);
+					}else if(tzdzt=="未完成"){
+						if(jccj=="项目部自检"){
+							var color="anquan";
+						}else if(jccj=='分公司巡查' || jccj=='分公司月度检查' || jccj=='分公司专项检查'){
+							var color="zhiliang";
+						}else{
+							var color="zhonghe";
+						}
+						var weiwancheng=document.getElementById("weiwancheng");
+						var ul = document.createElement("ul");
+						ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+						ul.id=id;
+						ul.innerHTML = '<li class="mui-table-view-cell '+color+'"><a class="a_color" href="my_change_manager.html?id='+id+'&gcid='+gcid+'&sjcCgao='+sjcCgao+'&jcdw='+jcdw_c+'&jcdx='+jcdx_c+'&jclx='+jclx_c+'&wzzt='+wzzt_c+'&tzdbh='+tzdbh_c+'&jcrq='+jcrq_c+'&userid='+userid+'&mobile='+mobile+'"><span class="mui-icon mui-icon-info mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2">'+tzdbh+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+jcrq+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查单位：'+jcdw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查对象：'+jcdx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查类型：'+jclx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查内容：'+jcnr+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">截止日期：'+jzrq+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">整改状态：'+tzdzt+'</p></li>';
+						weiwancheng.appendChild(ul);
+					}else if(tzdzt=="已完成"){
+						if(jccj=="项目部自检"){
+							var color="anquan";
+						}else if(jccj=='分公司巡查' || jccj=='分公司月度检查' || jccj=='分公司专项检查'){
+							var color="zhiliang";
+						}else{
+							var color="zhonghe";
+						}
+						var yiwancheng=document.getElementById("yiwancheng");
+						var ul = document.createElement("ul");
+						ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+						ul.id=id;
+						ul.innerHTML = '<li class="mui-table-view-cell '+color+'"><a class="a_color" href="my_change_manager.html?id='+id+'&gcid='+gcid+'&sjcCgao='+sjcCgao+'&jcdw='+jcdw_c+'&jcdx='+jcdx_c+'&jclx='+jclx_c+'&wzzt='+wzzt_c+'&tzdbh='+tzdbh_c+'&jcrq='+jcrq_c+'&userid='+userid+'&mobile='+mobile+'"><span class="mui-icon mui-icon-info mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2">'+tzdbh+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+jcrq+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查单位：'+jcdw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查对象：'+jcdx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查类型：'+jclx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查内容：'+jcnr+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">截止日期：'+jzrq+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">整改状态：'+tzdzt+'</p></li>';
+						yiwancheng.appendChild(ul);
+					}else{
+						
+					}
+				}
+//				alert(gcid)
+				//动态创建草稿异步获取
+				mui.ajax(url+'QRclouds/scan_list.php',{
+					data:{ 
+						gcid:gcid,
+						wxyid:wxyid,
+						qdlx:'caogao'
+					},
+					dataType:'json',
+					type:'POST', 
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						var length=data.length;
+						if (length>1) {
+							a4.innerHTML="草稿("+data[length-1].count+")";
+							for (var i=0;i<length-1;i++) {
+								var id = data[i].id;
+								var jcdw = data[i].检查单位;
+								var jcdx = data[i].检查对象;
+								/*
+								 * HTML5 web 存储
+								 * */
+								//save工程名称
+//								localStorage.setItem('jcdxMingCheng',data[i].检查对象)
+								//get
+//								localStorage.getItem('jcdxMingCheng')
+								var jccj = data[i].检查层级;
+								var jclx = data[i].检查类型;
+								var jcnr = data[i].检查内容;
+								var xclb = data[i].巡查类别;
+								var wzzt = data[i].违章状态;
+								var tzdbh =data[i].通知单编号;
+								var jcrq=data[i].检查日期;
+								var tzdzt=data[i].通知单状态;
+								var sjcCgao=data[i].时间戳;
+								var jzrq=data[i].截止日期;
+								mychange(id,jcdw,jcdx,jclx,wzzt,tzdbh,jcrq,tzdzt,sjcCgao,jzrq,jcnr,xclb,jccj);
+							}	
+						}else{
+							mychange('','-----','-----','-----','-----','-----','-----','-----','-----','-----','-----');
+						}
+					}, 
+					error:function(xhr,type,errorThrown){
+						//alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+				
+				
+				
+			
+
+				//打开原生日期
+//				jzrqYq.addEventListener('tap', function() {
+//					var dDate = new Date();
+//					plus.nativeUI.pickDate(function(e) {
+//						var d = e.date;
+//						jzrqYq.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+//					}, function(e) {
+//						//alert(e);
+//					}, {
+//						title: "请选择日期",
+//					});	
+//				});
+			});
+		</script>
+	</body>
+</html>

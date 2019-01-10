@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			.my_disabled{
+				color:#BBBBBB;				
+			}			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav my_backgroundcolor_blue2">			
+			<h1 class="mui-title my_color_white">人员清单</h1>
+		</header>		
+		<div class="mui-content">
+			<div class="mui-card">
+				<form id="ryqd" class="mui-input-group">
+					<!-- 动态创建的内容 -->
+				</form>
+			</div>
+			<div class="mui-button-row" style="margin-top: 10px;">
+				<button id="no" type="button" class="mui-btn mui-btn-primary">关闭</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="ok" type="button" class="mui-btn mui-btn-primary">确定</button>
+			</div>			
+		</div>			
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script>
+		mui.init({
+				swipeBack:true //启用右滑关闭功能
+		});
+		mui.plusReady(function(){	
+			//接收上一个页面传递的值
+			var self = plus.webview.currentWebview();
+			var tzdsjc = self.tzdsjc;
+			var gcid = self.gcid;
+				//alert(tzdsjc);
+			var no=document.getElementById('no');
+			var ok=document.getElementById('ok');
+			
+			//人员异步数据分割
+			var fgShuzu=function(zhuhe){
+				var zhuheShuzu=zhuhe.split("||");
+				for(var i=0;i<zhuheShuzu.length-1;i++){
+					//alert(zhuheShuzu[i]);
+					ryqdlb(zhuheShuzu[i]);
+				}
+			};
+			//人员清单列表创建
+			var ryqdlb = function(hfrName){
+				var nameShouji=hfrName.split(",");
+				for(var i=1;i<nameShouji.length;i++){
+					//alert(nameShouji[i-1]+"    "+nameShouji[i]);
+					chaungjian(nameShouji[i-1],nameShouji[i]);
+				}
+   			}
+			var chaungjian = function(name,mobile){
+				var hfrName = name;
+				var ryqd = document.getElementById("ryqd");
+				var div = document.createElement("div");
+				div.className = "mui-input-row mui-checkbox";
+				div.innerHTML = '<label>'+hfrName+'</label><input name="checkbox1" value='+mobile+' type="checkbox">';
+				ryqd.appendChild(div);
+			};
+			
+			//动态创建人员名单异步获取
+			mui.ajax(url+'my_plus/huifuren_du.php',{
+				data:{
+					gcid:gcid
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data);
+					var length=data.length;
+					for (var i=0;i<length-1;i++) {
+						var xmjl=data[i].项目经理;
+						var aqzg=data[i].安全主管;	
+						var aqy=data[i].安全员;
+						var jxgly=data[i].机械管理员;	
+						var zrr=data[i].责任人;
+						
+						var xmjlmobile=data[i].项目经理手机;
+						var aqzgmobile=data[i].安全主管手机;	
+						var aqymobile=data[i].安全员手机;
+						var jxglymobile=data[i].机械管理员手机;	
+						var zrrmobile=data[i].联系方式;
+						
+						var zhuhe=xmjl+","+xmjlmobile+"||"+aqzg+","+aqzgmobile+"||"+aqy+","+aqymobile+"||"+jxgly+","+jxglymobile+"||"+zrr+","+zrrmobile+"||";
+						fgShuzu(zhuhe);
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//alert('ajax错误'+type);
+					//return callback('ajax错误'+type+errorThrown);
+				}
+			});
+			
+			//确定按钮点击事件
+			ok.addEventListener('tap', function() {
+   				chk();
+			});
+			//获取复选框中的值函数
+			var chk = function(){
+				//alert("测试");
+				var checkbox1 = document.getElementsByName("checkbox1");//定位至name="checkbox1"
+				//alert(checkbox1.length);
+   				var s = "";
+   				var xixi = ' ';//初始化部位
+   				var hehe = '';
+				for(var i=0;i<checkbox1.length;i++){
+   					if(checkbox1[i].checked){
+   						s+=checkbox1[i].value+'||'; //如果未选中，将value添加到变量s中
+   						hehe+=xixi+'||';
+   					}else{
+   								
+   					}
+   				}
+   				if(s==''){
+   					alert("请选择违章条目");
+   				}else{
+       				//alert(s);
+       				mui.ajax(url+'my_plus/my_plus_jiekou.php',{
+						data:{
+							cangshu1:s, //参数1
+							cangshu2:'', //截止日期
+							cangshu3:tzdsjc, //工程id
+							biaozhi:'',
+							sjc:'',
+							flag:'renyuanqingdan' //标志
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							//alert(data);
+							if (data.result=='success') {
+								fanhui();
+							} else{
+								return callback('服务器返回error');	
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+   				}
+			};
+			
+			var fanhui=function(){
+				var target = plus.webview.currentWebview().opener();
+				mui.fire(target,'json_bj',{
+					flag:'ok'
+				});
+				mui.back();
+			};
+			
+			//关闭按钮点击事件
+			no.addEventListener('tap', function() {
+				var target = plus.webview.currentWebview().opener();
+				mui.fire(target,'json_bj',{
+					flag:'no'
+				});
+				mui.back();
+			});
+			
+			//处理手机自身返回键或者home键
+			plus.key.addEventListener("backbutton",function(){
+				var target = plus.webview.currentWebview().opener();
+				mui.fire(target,'json_bj',{
+					flag:'backbutton'
+				});
+				mui.back();
+			});
+			
+		});		
+		</script>
+	</body>
+</html>

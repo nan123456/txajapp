@@ -1,0 +1,380 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/my_css.css">
+	</head>
+
+	<body>
+		<style>
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+				width: 45%;
+				
+				vertical-align: middle;
+				
+			}
+			.mui-btn1 {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+				width: 50%;
+				vertical-align: middle;
+				
+			}
+		</style>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <!--<a id="my_popover" class="mui-icon mui-icon-bars mui-pull-right"></a>-->
+		    <h1 class="mui-title">设备管理清单</h1>
+		</header>
+		
+		<div class="mui-content">
+			<div style="padding: 10px 10px;" id="all_select">
+					<select id="select1"  class="mui-btn mui-btn-block"  style="display: inline;"  onchange="sbztxz(this.value)">
+						<option value="" selected="selected">选择设备状态：</option>
+						<option>登记中</option>
+						<option>安装中</option>
+						<option>使用中</option>
+				    </select>
+					<select id="select2"  class="mui-btn1 mui-btn-block" style="display: inline;" onchange="sblxxz(this.value)">
+						<option>选择设备类型：</option>
+						<option>塔吊</option>
+						<option>施工升降机</option>
+						<option>物料提升机</option>
+						<option>桥(门)式起重机</option>
+						<option>架桥机</option>
+						<option>起重吊装</option>
+						<option>施工机具</option>
+						<option>吊篮</option>
+					</select>
+					
+			</div>
+			<!--搜索-->
+			<!--设备管理清单-->
+		    <div  class="mui-control-content mui-active" style="margin-top:10px;">
+		    	<div id="scroll" class="mui-scroll-wrapper">
+					<div id="equipment" class="mui-scroll equipmentdiv">
+													
+					</div>
+				</div>
+			</div>
+			<!--设备管理清单-->
+		</div>
+		<script src="../js/service.js" ></script>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({ gestureConfig:{
+			   longtap: true, //默认为false
+			 }});
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});					
+			})(mui);
+			//获取url参数值
+			function geturl(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]);
+				return null;
+			}
+			//获取参数值
+			var gcid=geturl("gcid");
+            var gcmc=geturl("gcmc");
+        	//解码
+            gcmc=decodeURI(gcmc);
+//          alert(gcmc);
+			//设备状态选择函数
+			function sbztxz(sel) { 
+        		var sel=sel;
+        		if(sel=="登记中"){ 
+					sbzt(sel);
+     			} else if(sel=="安装中"){
+     				sbzt(sel);
+   				} else if(sel=="使用中"){
+	  		    	sbzt(sel);
+				}else{
+	  				
+	  			}
+			}
+			//设备类型选择函数
+			function sblxxz(lx) {
+        		var lx=lx;
+//      		alert(sbzt);
+        		if(lx=="塔吊"){ 
+					sblx(lx);
+     			} else if(lx=="施工升降机"){
+     				sblx(lx);
+   				} else if(lx=="物料提升机"){
+	  		    	sblx(lx);
+				}else if(lx=="桥(门)式起重机"){
+	  		    	sblx(lx);
+	  		    } else if(lx=="架桥机"){
+	  		    	sblx(lx);
+	  		    } else if(lx=="起重吊装"){
+	  		    	sblx(lx);
+	  		    } else if(lx=="施工机具"){
+	  		    	sblx(lx);
+	  		    } else if(lx=="吊篮"){
+	  		    	sblx(lx);
+	  			}else{}
+			}
+			//设备类型
+			var sblx=function(lx) {
+        		var lx=lx;
+				var select1=document.getElementById("select1").value;
+      			var equipment=document.getElementById("equipment");
+				equipment.innerHTML="";
+        		mui.ajax(url+'my_plus/my_equipment_lx.php',{
+					data:{
+						 sblx:lx,
+						 sbzt:select1,
+						 gcmc:gcmc,
+						 gcid:gcid
+						 
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						var length=data.length;	
+//						alert(length);
+						for (var i=0;i<length-1;i++) {
+							var gcid=data[i].工程id;
+							var sblx=data[i].设备类型;
+							var ggxh=data[i].规格型号;
+							//var   fj=data[i].附件;
+							var jxmc=data[i].起重机械名称;
+							var azbw=data[i].安装部位;
+							var syzt=data[i].设备状态;
+							var sblb=data[i].设备类别;
+							var sjc=data[i].时间戳;
+							var zbh=data[i].自编号;
+							createrwlistA(sblx,azbw,syzt,sblb,gcid,sjc,ggxh,jxmc,zbh);
+						}						
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						//alert('ajax错误'+type);
+					}
+				});
+			};
+			//设备状态函数
+			var sbzt=function(zt) {
+        		var zt=zt;
+				var select1=document.getElementById("select1").value;
+      			var equipment=document.getElementById("equipment");
+				equipment.innerHTML="";
+				mui.ajax(url+'my_plus/my_equipment.php',{
+					data:{
+						 sbzt:zt,
+						 sblx:'',
+						 gcmc:gcmc,
+						 gcid:gcid
+						 
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						var length=data.length;	
+//						alert(length);
+						for (var i=0;i<length-1;i++) {
+							var gcid=data[i].工程id;
+							var sblx=data[i].设备类型;
+							var ggxh=data[i].规格型号;
+							//var fj=data[i].附件;
+							var jxmc=data[i].起重机械名称;
+							var azbw=data[i].安装部位;
+							var syzt=data[i].设备状态;
+							var sblb=data[i].设备类别;
+							var sjc=data[i].时间戳;
+							var zbh=data[i].自编号;
+							createrwlist(sblx,azbw,syzt,sblb,gcid,sjc,ggxh,jxmc,zbh);
+						}						
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						//alert('ajax错误'+type);
+					}
+				});
+        	
+        	}
+			//创建设备列表函数
+			var createrwlist=function(sblx,azbw,syzt,sblb,gcid,sjc,ggxh,jxmc,zbh) {
+					var equipment=document.getElementById("equipment");
+	    			var sblbC=encodeURI(encodeURI(sblb));                //汉字转码
+					var sblb = sblb;
+					var sbztA=syzt;
+					var sbztB=encodeURI(encodeURI(syzt));
+					var gcid = gcid;
+					var sblx = "设备类型："+sblx;
+					var jxmc = "设备名称："+jxmc;
+					var xh   = "设备型号："+ggxh;
+					var azbw = "安装位置："+azbw;
+					var syzt = "使用状态："+syzt;
+					var gdzbh ="自编号："+zbh;
+					var ul = document.createElement("ul");
+					ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+					ul.id="sb_ul";
+					var color="my_backgroundcolor_blue";
+					if (sbztA=='登记中') {
+						color="my_backgroundcolor_blue";
+					}else if (sbztA=='安装中') {
+						color="my_backgroundcolor_orange";
+					}else if (sbztA=='使用中') {
+						color="my_backgroundcolor_red";
+					}
+					if(sbztA=='拆卸中'){
+						
+					}else{
+						ul.innerHTML = '<li class="mui-table-view-cell '+color+' "><a open-type="common" href="../my_plus/my_equipment_detail.html?sbzt='+sbztB+'&gcid='+gcid+'&sjc='+sjc+'"><span class="mui-icon mui-icon-gear mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2 ">'+sblx+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+jxmc+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+xh+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+azbw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+syzt+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+gdzbh+'</p></li>';
+					equipment.appendChild(ul);
+					}
+					
+				};
+				//创建设备列表函数
+			var createrwlistA=function(sblx,azbw,syzt,sblb,gcid,sjc,ggxh,jxmc,zbh) {
+					var equipment=document.getElementById("equipment");
+	    			var sblbC=encodeURI(encodeURI(sblb));                //汉字转码
+					var sblb = sblb;
+					var sbztA=syzt;
+					var sbztB=encodeURI(encodeURI(syzt));
+					var gcid = gcid;
+					var sblx = "设备类型："+sblx;
+					var jxmc = "设备名称："+jxmc;
+					var xh   = "设备型号："+ggxh;
+					var azbw = "安装位置："+azbw;
+					var syzt = "使用状态："+syzt;
+					var gdzbh ="自编号："+zbh;
+					var ul = document.createElement("ul");
+					ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+					ul.id="sb_ul";
+					var color="my_backgroundcolor_blue";
+					if (sbztA=='登记中') {
+						color="my_backgroundcolor_blue";
+					}else if (sbztA=='安装中') {
+						color="my_backgroundcolor_orange";
+					}else if (sbztA=='使用中') {
+						color="my_backgroundcolor_red";
+					}
+					if(sbztA=='拆卸中'){
+						
+					}else{
+						ul.innerHTML = '<li class="mui-table-view-cell '+color+' "><a open-type="common" href="../my_plus/my_equipment_detail.html?sbzt='+sbztB+'&gcid='+gcid+'&sjc='+sjc+'"><span class="mui-icon mui-icon-gear mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2 ">'+sblx+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+jxmc+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+xh+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+azbw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+syzt+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+gdzbh+'</p></li>';
+					equipment.appendChild(ul);
+					}
+					
+				};
+			
+			mui.plusReady(function(){
+				var doc = document;
+				//传递工程id和工程名称
+				var self = plus.webview.currentWebview();
+                gcid = self.gcid;
+                gcmc = self.gcmc;
+                //时间戳
+                var timestamp = new Date();
+				var mytime = timestamp.getTime();
+				var my_popover = doc.getElementById("my_popover");
+				var equipment = doc.getElementById("equipment");
+				//设备清单
+				var createrwlist1=function(sblx,azbw,syzt,sblb,gcid,sjc,ggxh,jxmc,zbh) {
+					var equipment=document.getElementById("equipment");
+	    			var sblbC=encodeURI(encodeURI(sblb));//汉字转码
+					var sblb = sblb;
+					var sbztA=syzt;
+					var sbztB=encodeURI(encodeURI(syzt));
+					var gcid = gcid;
+					var sblx = "设备类型："+sblx;
+					var jxmc = "设备名称："+jxmc;
+					var xh   = "设备型号："+ggxh;
+					var azbw = "安装位置："+azbw;
+					var syzt = "使用状态："+syzt;
+					var gdzbh ="自编号："+zbh;
+					var ul = document.createElement("ul");
+					ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+					ul.id="wxy_ul";
+					var color="my_backgroundcolor_blue";
+					if (sbztA=='登记中') {
+						color="my_backgroundcolor_blue";
+					}else if (sbztA=='安装中') {
+						color="my_backgroundcolor_orange";
+					}else if (sbztA=='使用中') {
+						color="my_backgroundcolor_red";
+					}
+//					alert(sbztA);
+
+					if(sbztA=='拆卸中'){
+						
+					}else{
+						ul.innerHTML = '<li class="mui-table-view-cell '+color+' "><a open-type="common" href="../my_plus/my_equipment_detail.html?sbzt='+sbztB+'&gcid='+gcid+'&sjc='+sjc+'"><span class="mui-icon mui-icon-gear mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2 ">'+sblx+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+jxmc+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+xh+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+azbw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+syzt+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+gdzbh+'</p></li>';
+					equipment.appendChild(ul);
+					}
+					
+					
+					
+				};
+				//设备信息读取
+                mui.ajax(url+'my_plus/my_equipment.php',{
+					data:{
+						  sbzt:'quanbu',
+						  gcmc:gcmc,
+						  gcid:gcid
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						var length=data.length;	
+						for (var i=0;i<length-1;i++) {
+//							alert(ggxh);
+							var gcid=data[i].工程id;
+							var sblx=data[i].设备类型;
+							var ggxh=data[i].规格型号;
+							//var   fj=data[i].附件;
+							var azbw=data[i].安装部位;
+							var jxmc=data[i].起重机械名称;
+							var syzt=data[i].设备状态;
+							var sblb=data[i].设备类别;
+							var sjc=data[i].时间戳;
+							var zbh=data[i].自编号;
+							createrwlist1(sblx,azbw,syzt,sblb,gcid,sjc,ggxh,jxmc,zbh);
+						}						
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						//alert('ajax错误'+type);
+					}
+				});
+				//删除设备操作
+//				equipment.addEventListener('longtap',function(){
+//					var btnArray = [
+//					{title:"删除该设备"}
+//					];
+//					plus.nativeUI.actionSheet( {
+//						title:"操作",
+//						cancel:"取消",
+//						buttons:btnArray
+//					});
+//				});				
+//				window.onload = createrwlist();
+			});
+			
+		</script>
+	</body>
+
+</html>

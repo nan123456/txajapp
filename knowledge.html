@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣项目巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/iconfont.css">		
+		<style>
+			html,body {
+				background-color: #efeff4;
+			}
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.mui-control-content {
+				top: 0px;				
+				bottom: 51px;	
+				height:460px;	
+			}			
+		</style>
+	</head>
+	<body>
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1">
+						送检知识
+					</a>
+					<a class="mui-control-item" href="#item2">
+						资料知识
+					</a>
+					
+				</div>
+			</div>
+			<div>				
+				<div id="item1" class="mui-control-content mui-active">
+					<div class="mui-content">
+		        		<ul class="mui-table-view mui-grid-view mui-grid-9">
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/jcjg.png" height="50px">
+		                    		<div class="mui-media-body">地基基础</div>
+		            			</a>
+		            		</li>
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/jcjg.png" height="50px">
+		                    		<div class="mui-media-body">主体结构</div>
+		            			</a>
+		            		</li>
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/jcjg.png" height="50px">
+		                    		<div class="mui-media-body">装饰装修</div>
+		            			</a>
+		            		</li>
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/jcjg.png" height="50px">
+		                    		<div class="mui-media-body">层面工程</div>
+		            			</a>
+		            		</li>
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/jcjg.png" height="50px">
+		                    		<div class="mui-media-body">建筑节能</div>
+		            			</a>
+		            		</li>
+		        		</ul> 
+					</div>
+				</div>				
+				<div id="item2" class="mui-control-content">					
+					<div class="mui-content">
+		        		<ul class="mui-table-view mui-grid-view mui-grid-9">
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/fdir.png" height="50px">
+		                    		<div class="mui-media-body">知识库一</div>
+		            			</a>
+		            		</li>
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/fdir.png" height="50px">
+		                    		<div class="mui-media-body">知识库二</div>
+		            			</a>
+		            		</li>
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/fdir.png" height="50px">
+		                    		<div class="mui-media-body">知识库三</div>
+		            			</a>
+		            		</li>
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/fdir.png" height="50px">
+		                    		<div class="mui-media-body">知识库四</div>
+		            			</a>
+		            		</li>
+		            		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+		            			<a href="#">
+		                    		<img class=" " src="images/fdir.png" height="50px">
+		                    		<div class="mui-media-body">知识库五</div>
+		            			</a>
+		            		</li>
+		        		</ul> 
+					</div>				
+				</div>
+			</div>			
+			
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/service.js" ></script>	
+	<script>
+		mui.init();
+		//区域滚动,需手动初始化scroll控件
+		mui('.mui-scroll-wrapper').scroll({
+			deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+		});		
+		mui.plusReady(function() {
+			/*这里写脚本*/
+		});
+	</script>
+	<script src="js/setPullToRefresh.js" ></script>
+</html>

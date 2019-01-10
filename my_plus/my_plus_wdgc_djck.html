@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<style type="text/css">
+			.mui-control-content {				
+				bottom: 0px;	
+			}			
+			/*媒体查询，横屏效果*/
+			@media only screen and (orientation:landscape ) {
+				.mui-control-content {
+					bottom: 0px;
+					}			
+			}
+			html,body {
+				background-color: #efeff4;
+			}			
+			 .oa-contact-cell.mui-table .mui-table-cell {
+				padding: 11px 0;
+				vertical-align: middle;
+			}
+			
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+	
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			.oa-contact-avatar img {
+				border-radius: 50%;
+			}
+			.oa-contact-content {
+				width: 100%;
+			}
+			.oa-contact-name {
+				margin-right: 20px;
+			}
+			.oa-contact-name, oa-contact-position {
+				float: left;
+			}
+			
+			.mui-popover {
+				height: 290px;
+			}
+			#zuyPopover{
+				min-width: 282px;				
+				top:15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			#zybjPopover{
+				min-width: 282px;				
+				top:15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}			
+			.mui-popover .mui-popover-arrow{
+				display: none !important;
+			}
+			.borderColor{
+				border: 3px solid green;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">加载中...</h1>
+		</header>
+		<div class="mui-content">
+			<!--<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control" style="text-align: center;">
+					<ul  id="1" class="mui-table-view my_list">
+						<li class="mui-table-view-cell my_backgroundcolor_red">
+							<span class="mui-pull-left my_fontweight my_color_white"></span>	
+							<p id="jl" class='mui-ellipsis my_style2'>有 0 份通知单即将到期</p>
+						</li>
+					</ul>
+				</div>
+			</div>-->
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a id="jl" class="mui-control-item mui-active" href="">
+						有 0 份通知单即将到期
+					</a>					
+				</div>
+			</div>
+			<div>
+				<!-- 即将到期 -->
+				<div id="item1" class="mui-control-content  mui-active">	
+					<!--区域滚动  -->
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div id="jjdq" class="mui-scroll rwdiv">
+							
+						</div>						
+					</div>
+					<!-- 申请延期日期选择界面 -->
+					<div id="zuyPopover" class="mui-popover">
+		        		<div class="mui-popover-arrow"></div>	        		
+		        		<h4 id="title" style="text-align: center;margin-top: 20px;">申请延期</h4>
+		        		<form class="mui-input-group" style="margin-top: 40px;">
+		        			<div class="mui-input-row">
+		        				<label style="font-size: 14px;">截止日期：</label>
+		        				<input id="jzrqYq" type="text" class="" placeholder="截止日期" readonly="readonly">
+		        			</div> 
+		        			<div class="mui-input-row my_none">
+		        				<label>时间戳：</label>
+		        				<input id="tzdsjc" type="text" class="mui-input-clear" placeholder="时间戳">
+		        			</div>
+		        		</form>
+						<div class="mui-button-row my_margintop60px">
+							<button id="yqgbi" type="button" class="mui-btn mui-btn-primary">关闭</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<button id="yqqding" type="button" class="mui-btn mui-btn-primary">确定</button>
+						</div>
+					</div>
+					<!-- 申请延期日期选择界面 -->
+		        </div>
+			</div>
+		</div>		
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/common.js"></script>
+		<script type="text/javascript" src="../js/immersed.js" ></script>
+		<script src="../js/service.js"></script>
+		
+		<script>		
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					
+					}
+			});	
+			
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});					
+			})(mui);
+			mui.plusReady(function(){
+				//接收上个页面的传值
+				var self = plus.webview.currentWebview();
+				var gcid = self.gcid;
+				var gcmc = self.gcmc;
+				
+				var jzrqYq=document.getElementById("jzrqYq");
+				var jzrqYq=document.getElementById("jzrqYq");
+				var yqqding=document.getElementById("yqqding");
+				var h1=document.getElementsByTagName('h1');
+				h1[0].firstChild.nodeValue=gcmc;
+				
+				//动态创建函数
+				//整改中
+				var zgchange = function(id,jcdw,jcdx,jclx,wzzt,tzdbh,jcrq,tzdzt,sjcCgao,sfyq,jzrq){
+					//定义函数
+					var sjc=sjcCgao;
+					var tzdzt=tzdzt;
+					var id = id;
+					var jcdw = jcdw;
+					var jcdx = jcdx;
+					var jclx = jclx;
+					var wzzt = wzzt;
+					var tzdbh =tzdbh;
+					var jcrq =jcrq;
+					var jzrq =jzrq;
+					//中文解码，防止乱码
+					var jcdw_c=encodeURI(encodeURI(jcdw));
+					var jcdx_c=encodeURI(encodeURI(jcdx));
+					var jclx_c=encodeURI(encodeURI(jclx));
+					var wzzt_c=encodeURI(encodeURI(wzzt));
+					var tzdbh_c=encodeURI(encodeURI(tzdbh));
+					var jcrq_c=encodeURI(encodeURI(jcrq));
+					var jjdq=document.getElementById("jjdq");
+					var ul = document.createElement("ul");
+					//判断是否延期
+					if(sfyq=="是"){
+						//alert(sfyq);
+						var sfyqNum=1;
+						var classStyle="mui-table-view mui-card my_list my_marginbottom10px borderColor";
+					}else{
+						var sfyqNum=0;
+						var classStyle="mui-table-view mui-card my_list my_marginbottom10px";
+					}
+					ul.className=classStyle;
+					ul.id=sjcCgao;
+					ul.innerHTML = '<li class="mui-table-view-cell my_backgroundcolor_blue2"><a class="a_color" href="my_change_manager.html?id='+id+'&sjcCgao='+sjcCgao+'&jcdw='+jcdw_c+'&jcdx='+jcdx_c+'&jclx='+jclx_c+'&wzzt='+wzzt_c+'&tzdbh='+tzdbh_c+'&jcrq='+jcrq_c+'"><span class="mui-icon mui-icon-info mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2">'+tzdbh+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+jcrq+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查单位：'+jcdw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查对象：'+jcdx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查类型：'+jclx+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">截止日期：'+jzrq+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">整改状态：'+wzzt+'</p></li><li class="mui-table-view-cell my_none"><p class="mui-ellipsis my_style1">是否延期:'+sfyqNum+'</p></li>';
+					jjdq.appendChild(ul);
+				}
+				
+				//异步接收后台传值
+				//异步获取整改中的数据
+				mui.ajax(url+'my_plus/my_change_list.php',{
+					data:{ 
+						gcid:gcid,
+						qdlx:'zgz'
+					},
+					dataType:'json',
+					type:'POST',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;
+						var yx=0;
+						var yq=0;
+						var jl=document.getElementById("jl");
+						if (length>1) {
+							for (var i=0;i<length-1;i++) {
+								var id = data[i].id;
+								var jcdw = data[i].检查单位;
+								var jcdx = data[i].检查对象;
+								var jclx = data[i].检查类型;
+								var wzzt = data[i].违章状态;
+								var tzdbh =data[i].通知单编号;
+								var jcrq=data[i].检查日期;
+								var tzdzt=data[i].通知单状态;
+								var sjcCgao=data[i].时间戳;
+								var sfyq=data[i].是否延期;
+								var jzrq=data[i].截止日期;
+								
+								//获取截止日期的日，与当前系统时间的日比较，判断差值是否小于2日
+								//获取当天日期，与截止日期比较，划分运行中和延期
+								var xjzrq = new Date(Date.parse(jzrq.replace(/-/g, "/")));
+								var xjzrq = xjzrq.getTime();
+								var today = new Date();
+								if (xjzrq>today) {
+									zgchange(id,jcdw,jcdx,jclx,wzzt,tzdbh,jcrq,tzdzt,sjcCgao,sfyq,jzrq); //即将到期
+									yx++;
+								}	
+							}
+							jl.innerHTML="有 "+yx+" 份通知单即将到期";
+						}else{
+							jl.innerHTML="有 0  份通知单即将到期";
+						}
+					}, 
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+				
+				//延期申请函数
+				var yqsq=function(biaozhi,ulID,zt,jzrq){
+					var biaozhi=biaozhi;
+					var ulID=ulID;
+					var zt=zt;
+					var jzrq=jzrq;
+					if(zt=="回复"){
+						var flag="yqhf";
+					}else if(zt=="申请"){
+						var flag="yqsq";
+					}else if(zt=="不同意"){
+						var flag="bty";
+					}else{
+						
+					}
+					mui.ajax(url+'my_plus/my_plus_jiekou.php',{
+						data:{
+							cangshu1:"",
+							cangshu2:jzrq,
+							cangshu3:"",
+							biaozhi:biaozhi,
+							sjc:ulID,
+							flag:flag
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							//alert(data);
+							if(zt=="回复"){
+								//刷新界面
+								plus.nativeUI.toast("通知单号为："+ulID+"  通过延期申请！",{duration:"long"});					
+								var wobj = plus.webview.currentWebview();					
+								wobj.reload(true);
+							}else if(zt=="不同意"){
+								plus.nativeUI.toast("通知单号为："+ulID+"  未通过延期申请！",{duration:"long"});					
+								var wobj = plus.webview.currentWebview();					
+								wobj.reload(true);
+							}else{
+								
+							}
+							
+						},
+						error:function(xhr,type,errorThrown){
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+				};
+				
+				//长按选项卡操作
+				mui('#jjdq').on('longtap', 'ul', function() {
+					var ulId=this.id;
+					//alert(ulId);
+					//alert("测试");
+					var btnArray = [
+						{title:"申请延期"},
+						{title:"延期回复"},
+						{title:"分享"}
+					];
+					plus.nativeUI.actionSheet( {
+						title:"操作",
+						cancel:"取消",
+						buttons:btnArray
+					}, function(e){
+						var index = e.index;	
+						var nextpage='';
+						switch (index){
+							case 0:	//取消	
+								//alert("ceshi");
+								break;
+							case 1:	//申请延期	
+								var ulliText=document.getElementById(ulId).getElementsByTagName("li")[6].innerText;
+								tzdsjc.value=ulId;
+								jzrqYq.value="";
+								mui("#zuyPopover").popover("toggle");
+								break;
+							case 2:	//延期回复
+								var btnArray = ['不同意', '同意'];
+								mui.confirm('申请延期，确认？', '延期回复', btnArray, function(e) {
+									if (e.index == 1) {
+										yqsq("是",ulId,"回复","");
+									} else {
+										yqsq("否",ulId,"不同意","");
+									}
+								})								
+								break;
+							case 3:	//分享								
+								nextpage='';								
+								break;
+							}
+						mui.openWindow({
+							url: nextpage,
+							id: nextpage,
+							styles: {
+								hardwareAccelerated:false
+							},
+							extras:{
+								//传递参数
+								name:'wushaohang_lidegejing'
+							},
+							show:{
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						});
+					});
+				});
+				//打开原生日期
+				jzrqYq.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						jzrqYq.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});	
+				});
+				//申请延期关闭事件监听
+				yqgbi.addEventListener('tap', function() {
+					mui("#zuyPopover").popover("toggle");
+				});
+				//申请延期确定事件监听
+				yqqding.addEventListener('tap', function() {
+					//alert("测试");
+					var ulId=tzdsjc.value;
+					var ulliText=document.getElementById(ulId).getElementsByTagName("li")[6].innerText;
+					var arr=ulliText.split(":");
+					var str=arr[1];
+					//alert(str);
+					if(str==1){
+						alert("此通知单已提交申请，申请有待批准！");
+						//plus.nativeUI.toast("此通知单已提交申请，申请有待批准！",{duration:"long"});
+					}else{
+						yqsq("是",ulId,"申请",jzrqYq.value);			
+						var ulIdgColor = document.getElementById(ulId);
+						ulIdgColor.setAttribute("style","border: 3px solid green;");
+					}
+					mui("#zuyPopover").popover("toggle");
+				});
+			});
+		</script>
+	</body>
+</html>

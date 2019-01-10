@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>总公司</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />
+		<style type="text/css">
+			
+			
+			.mui-control-content {
+				bottom: 0px;
+			}
+			
+			.my_table {
+				float: left;
+				text-align: center;
+			}
+			
+			.my_th_weight {
+				font-weight: bolder;
+			}
+			
+			.my_td_width30 {
+				width: 30%;
+			}
+			
+			.my_td_width40 {
+				width: 35%;
+			}
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.color{
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="baocun" class="mui-pull-right" style="line-height: 40px;">保存</a>	
+			<h1 class="mui-title">质量实测</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab" id="xxk" >
+			<a class="mui-tab-item mui-active" href="#tabbar1">
+				<span class="mui-tab-label">现浇混凝土结构观感质量及尺寸偏差</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar2">
+				<span class="mui-tab-label">填充墙砌体工程</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar3">
+				<span class="mui-tab-label">一般抹灰工程</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar4">
+				<span class="mui-tab-label">饰面砖粘贴</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar5">
+				<span class="mui-tab-label">大理石面层和花岗石面层</span>
+			</a>
+		</nav>
+		<div class="mui-content">
+			<div id="tabbar1" class="mui-control-content mui-active">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell my_th_weight mui-disabled">
+						<div class="my_table my_td_width30">编号</div>
+						<div class="my_table my_td_width40">测点类型</div>
+						<div class="my_table my_td_width30">实测值</div>
+					</li>
+				</ul></br></br></br>
+			</div>
+			<div id="tabbar2" class="mui-control-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell my_th_weight mui-disabled">
+						<div class="my_table my_td_width30">编号</div>
+						<div class="my_table my_td_width40">测点类型</div>
+						<div class="my_table my_td_width30">实测值</div>
+					</li>
+				</ul></br></br></br>
+			</div>
+			<div id="tabbar3" class="mui-control-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell my_th_weight mui-disabled">
+						<div class="my_table my_td_width30">编号</div>
+						<div class="my_table my_td_width40">测点类型</div>
+						<div class="my_table my_td_width30">实测值</div>
+					</li>
+				</ul></br></br></br>
+			</div>
+			<div id="tabbar4" class="mui-control-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell my_th_weight mui-disabled">
+						<div class="my_table my_td_width30">编号</div>
+						<div class="my_table my_td_width40">测点类型</div>
+						<div class="my_table my_td_width30">实测值</div>
+					</li>
+				</ul></br></br></br>
+			</div>
+			<div id="tabbar5" class="mui-control-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell my_th_weight mui-disabled">
+						<div class="my_table my_td_width30">编号</div>
+						<div class="my_table my_td_width40">测点类型</div>
+						<div class="my_table my_td_width30">实测值</div>
+					</li>
+				</ul></br></br></br>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/service.js"></script>
+	<script>
+		mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});
+			})(mui);
+			
+//			接收实测值并填入
+			window.addEventListener('json',function(event){
+				var id=event.detail.id;
+				var scz=event.detail.scz;
+				var flag=event.detail.flag1;
+				document.getElementById(id).innerHTML=scz;
+				if(flag==1){
+					document.getElementById(id).style.color='black';
+				}else{
+					document.getElementById(id).style.color='red';
+				}
+			});
+			
+		mui.plusReady(function(){
+			function geturl(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]);
+					return null;
+				}
+		    var scid=geturl("id");
+		    var gcid=geturl("gcid");
+		    var sjc =geturl("sjc");
+//		    对传来的参数解码
+			scid=decodeURI(scid);
+			gcid=decodeURI(gcid);
+			sjc =decodeURI(sjc);
+//			alert(scid+gcid+sjc);
+ 			
+// 			动态创建底部选项卡和测点
+            document.getElementById("xxk").innerHTML = "";
+            var dbxxk = function(scid,jlblx,sjc,k){
+            	var xxk = document.getElementById("xxk");
+            	var a = document.createElement("a");
+            	a.className = "mui-tab-item mui-active";
+            	a.href = "#tabbar"+k+"";
+            	xxk.appendChild(a);
+            	var span = document.createElement("span");
+            	span.className = "mui-tab-label";
+            	span.innerHTML = jlblx;
+            	a.appendChild(span);
+            	var qb = "tabbar"+k+"";
+            	mui.ajax(url+'my_plus/my_scsl_cd.php',{
+            		data:{
+            			sjc:sjc,
+            			jlblx:jlblx
+            		},
+            		dataType:'json',
+            		type:'post',
+            		timeout:10000,
+            		async:false,		//强制同步
+            		success:function(data){
+//          			alert(data);
+            			var len = data.length;
+            			if(len>1){
+            				var d = Array();
+            				var zt = Array();
+            				for(var i=0;i<len-1;i++){
+            					var id = data[i].id;
+            					var jcnr = data[i].测点类型;
+            					 d[1] = data[i].D1;
+            					 d[2] = data[i].D2;
+            					 d[3] = data[i].D3;
+            					 d[4] = data[i].D4;
+            					 d[5] = data[i].D5;
+            					 d[6] = data[i].D6;
+            					 d[7] = data[i].D7;
+            					 d[8] = data[i].D8;
+            					 d[9] = data[i].D9;
+            					 d[10] = data[i].D10;
+            					 zt[1] = data[i].状态1;
+            					 zt[2] = data[i].状态2;
+            					 zt[3] = data[i].状态3;
+            					 zt[4] = data[i].状态4;
+            					 zt[5] = data[i].状态5;
+            					 zt[6] = data[i].状态6;
+            					 zt[7] = data[i].状态7;
+            					 zt[8] = data[i].状态8;
+            					 zt[9] = data[i].状态9;
+            					 zt[10] = data[i].状态10;
+            					cedian(scid,id,jcnr,d,zt,qb,i);
+            				}
+            			}
+            		}
+            	});
+            }
+//          //创建测点
+            var cedian = function(scid,id,jcnr,d,zt,qb,i){
+				plus.nativeUI.showWaiting( "正在拼命加载中..." );
+				setTimeout( function(){
+					plus.nativeUI.closeWaiting();
+				}, 10 );
+//				setTimeout(alertV,1000); 
+//				将对象转换成数组
+				var arr_d = [];
+				mui.each(d, function () {
+                    this.id = this.ID;
+                    this.text = this.TEXT;
+                    arr_d.push(this);
+                });
+                var arr_zt = [];
+                mui.each(zt, function () {
+                    this.id = this.ID;
+                    this.text = this.TEXT;
+                    arr_zt.push(this);
+                });
+//				异步获取测量标准
+				mui.ajax(url+'my_plus/my_scsl_cdxx.php',{
+					data:{
+						jcnr:jcnr
+					},
+					dataType:'json',
+					type:'post',
+					timeout:100,
+					async:false,
+					success:function(data){
+							xm = data[0].项目;
+							cdlx = data[0].测点类型;
+							bzmax = data[0].测量标准max;
+							bzmin = data[0].测量标准min;
+							var div_color = "";
+//							循环创建10个测点
+							for(var j=1;j<=10;j++){
+								if(arr_zt[j-1]==0){
+									div_color = 'color'; 
+								}else{
+									div_color = "";
+								}
+								var lb = document.getElementById(qb).getElementsByTagName("ul");
+								lb[0].innerHTML = lb[0].innerHTML+'<li class="mui-table-view-cell"><div class="my_table my_td_width30">'+xm+(i*10+j)+'</div><div class="my_table my_td_width40">'+cdlx+'</div><div class="my_table my_td_width30 '+div_color+'" id="'+xm+(i*10+j)+'">'+arr_d[j-1]+'</div><div class="my_none">'+id+"|"+j+","+bzmin+"|"+bzmax+'</div></li>';
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+				
+            }
+//          异步获取值
+			mui.ajax(url+'my_plus/my_scsl_cdlx.php', {
+				data:{
+					scid:scid,
+					gcid:gcid,
+					sjc:sjc
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+//				async:false,
+				success:function(data){
+//					alert(data);
+					var length = data.length;
+					if(length>1){
+						for(var i=0;i<length-1;i++){
+							var jlblx = data[i].记录表类型;
+//							alert(jlblx+scid+sjc+(i+1));
+							dbxxk(scid,jlblx,sjc,(i+1));
+						}
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					alert('ajax错误'+type+'---'+errorThrown);
+				}
+			});
+
+					//监听输入框ul
+				mui('.mui-table-view').on('tap','li', function() {
+//					alert(this.childNodes[3].innerHTML);
+					//打开新webview，模仿弹窗
+					var tx=	mui.openWindow({
+								url: 'new_file.html',
+								id: 'my_project_scsl_xzcd',
+								styles: {
+									width: '80%',
+									height: '40%',
+									margin: 'auto'
+								},
+								extras: {
+									name:"zhoushun",
+									bh:this.childNodes[0].innerText,
+									cdlx:this.childNodes[1].innerText,
+									scz:this.childNodes[2].innerText,
+									scid:this.childNodes[2].id,
+									sjid:this.childNodes[3].innerText,
+									sjc:sjc 
+//									scmax:scmax,
+//									scmin:scmin
+								},
+								show: {
+									autoShow: true, //页面loaded事件发生后自动显示
+									aniShow: 'slide-in-right', //页面显示动画
+									duration: '100' //页面动画持续时间
+								},
+								waiting: {
+									autoShow: false, //自动显示等待框
+								}
+						});
+			     });
+			     
+//			     保存操作
+				document.getElementById("baocun").addEventListener('tap',function(){
+					mui.ajax(url+'my_plus/my_change_zlsc_bc.php',{
+						data:{
+							name:'zhoushun',
+							flag:'bc',
+							sjc:sjc
+						},
+//						dataType:'json',
+	       				type:'post',
+	       				timeout:10000,
+		       			success:function(data){
+	//	       					alert(data);
+							mui.ajax(url+'my_plus/my_change_zlsc_bc.php',{
+								data:{
+									name:'zhoushun',
+									sjc:sjc
+								},
+			       				type:'post',
+			       				timeout:10000,
+			       				success:function(data){
+									mui.back();
+		                         	mui.toast('保存成功',{duration:'long',type:'div'});
+		    						var list=plus.webview.currentWebview().opener();
+									 //触发父页面的自定义事件(refresh),从而进行刷新
+									mui.fire(list, 'refresh');
+									  //返回true,继续页面关闭逻辑
+									return true;  
+								}
+		       				});
+						}
+					});
+				});
+            
+		});
+	</script>
+</html>

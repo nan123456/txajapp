@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			.mui-control-content {				
+				bottom: 0px;	
+			}
+			/*媒体查询，横屏效果*/
+			@media only screen and (orientation:landscape ) {
+				.mui-control-content {
+					bottom: 0px;
+					}			
+			}
+			html,
+			body,
+			.mui-content {
+				height: 0px;
+				margin: 0px;
+				background-color: #efeff4;
+			}
+			.mui-control-content {				
+				bottom: 0px;	
+			}
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			* {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+			.btn_size{
+				background:#0000FF;
+				color: white;
+			}
+			/*块级按钮按钮样式*/
+			.mui-content-padded{
+			  	margin: 10px;
+			 }
+			/*按钮小样式*/
+			.mui-btn-block_my{
+				font-size:16px;
+				display:block;
+				width:100%;
+				margin-bottom:10px; 
+				padding:8px 0;
+			}
+		</style>
+	</head> 
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">机械设备统计分析</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content" style="padding-top: 20px;">
+				<form class="mui-input-group">
+        			<div class="mui-input-row" style="font-size: large;height: 60px;padding-top: 8px;">
+        				<label style="font-size:  initial;"><span class=" mui-icon iconfont icon-riqizhengchangzhuangtai mui-pull-left" style="font-size: 25px;margin-top: -3px;margin-left: -6px;"></span>&nbsp;设备类型</label>
+        				<select id="zt" style="padding-top: 5px;">
+        					<option value ="" selected="selected"></option>
+        					<option value ="塔吊">塔吊</option>
+        					<option value ="施工升降机">施工升降机</option>
+        					<option value ="桥（门）式起重机">桥（门）式起重机</option>
+        					<option value ="物料提升机">物料提升机</option>
+        					<option value ="架桥机">架桥机</option>
+        					<option value ="起重吊装">起重吊装</option>
+        					<option value ="施工机具">施工机具</option>
+        					<option value ="吊篮">吊篮</option>
+        				</select>
+        			</div>
+        			<div class="mui-input-row my_none">
+						<label> 工程id：</label>
+						<input id='gcid' type="text" placeholder="工程id" readonly="readonly">						
+					</div>
+				</form>
+				<div class="mui-content-padded" style="margin-top: 20px">
+					<button id="count" type="button" class="mui-btn mui-btn-primary mui-btn-block_my">点击查询</button>
+    			</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js"></script>
+		<script> 
+			mui.plusReady(function(){
+				var self = plus.webview.currentWebview();
+				var mobile = self.mobile;
+				//alert(mobile);
+				var count = document.getElementById("count");
+				var gcid = document.getElementById("gcid");
+				
+				mui.ajax(url+'/my_count/my_count_jiekou.php',{
+					data:{
+						flag:'other',
+						mobile:mobile
+					}, 
+					dataType:'json', 
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;
+						if (length>0) {
+							var a=b=c=d=e=f=0;
+							var gcidZh="";
+							for (var i=0;i<length-1;i++) {
+								var gcidD=data[i].id;
+								gcidZh+=gcidD+",";
+							}
+							gcid.value=gcidZh;
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						//alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+				
+				count.addEventListener('tap',function(){
+					mui.openWindow({
+						url: 'my_engine_count.html', 
+						id: 'my_engine_count',
+						styles: {
+							hardwareAccelerated:false
+						},
+						extras:{
+							zt:zt.value,
+							mobile:mobile,
+							gcid:gcid.value
+						},
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示
+							aniShow:'slide-in-right',//页面显示动画
+							duration:'100'//页面动画持续时间
+						},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					}); 
+				});
+			});
+		</script>
+	</body>
+</html>

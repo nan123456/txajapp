@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>华西安检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../../css/mui.min.css">	
+		<link rel="stylesheet" href="../../css/my_css.css">
+		<link rel="stylesheet" href="../../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			.my_part{
+				background-color: white;
+			}
+			.bt1{
+				width: 70px;
+				height: 40px;
+				font-size: 20px;
+				/*font-family: LiSu ;*/
+				position: absolute;
+				left: 10px;
+				top: 472px;
+			}
+			.bt2{
+				width: 70px;
+				height: 40px;
+				font-size: 20px;
+				position: absolute;
+				left: 280px;
+				top: 472px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a id="my_popover" class="mui-icon mui-icon-bars mui-pull-right"></a>-->			
+			<h1 class="mui-title">印章</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-input-row my_part">
+					<label>单位：</label>
+					<input id='name' type="text" class="my_company" value="安全监管部" disabled="disabled">
+			</div>
+<br />
+			<canvas id="myCanvas" width="360" height="360" style="border:1px solid #c3c3c3;">
+					Your browser does not support the canvas element.
+			</canvas>
+			<button id="bt1" class="bt1" >确认</button>
+			<!--<button class="bt2" id="change" onclick="change()">修改</button>-->
+			<div id="seal">
+					<img id="tu" src="">
+					<img id="tu2" src="" >
+			</div>
+			<img src="../../images/shuiyin.gif" style="position: absolute;top: 280px;left: 160px;"/>
+  </div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/service.js" ></script>
+	<script src="../../js/signature/jquery-1.11.0.min.js"></script>
+	<script src="../../js/signature/jq-signature.min.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		//区域滚动,需手动初始化scroll控件
+		mui('.mui-scroll-wrapper').scroll({
+			deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+		});		
+		
+		mui.plusReady(function() {
+			//获取传值
+			var self = plus.webview.currentWebview();			
+			var tzdId = self.tzdId;
+			
+			var company="同欣科技企业有限公司";
+			var name = "安全监管部";
+				createSeal('canvas',company,name);
+					
+			var bt1 = document.getElementById("bt1");
+			bt1.addEventListener('tap',function(){
+//						alert(tzdId);
+						var canvas = document.getElementById("myCanvas");  
+						var dataurl = canvas.toDataURL();
+//								console.log(dataurl);
+						mui.ajax(url+'my_plus/my_signature.php',{
+						data:{
+							flag:"save_seal_A",
+							img:"yes",
+							tzdId:tzdId
+						},
+						type:'post',
+						timeout:10000,
+						success:function(data){
+//							alert(data); 
+							//保存成功
+							if(data==1){
+								alert('保存成功');
+								mui.back();
+							}
+							else if(data == 2){
+								alert('保存成功');
+								mui.back();
+							}
+							//保存不成功
+							else{
+								alert('保存失败');
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							alert('ajax错误'+type+'---'+errorThrown);
+						}
+				});
+						
+			});
+			});
+					
+				
+				function createSeal(id,company,name){
+				    
+				    var canvas = document.getElementById("myCanvas");  
+				    var context = canvas.getContext('2d');
+				        
+				     var imgData=context.createImageData(137,137);
+						context.putImageData(imgData,113.5,113.5);
+				    // 绘制印章边框   
+				    var width=canvas.width/2;
+				    var height=canvas.height/2;
+//				    alert(width+"||"+height);
+				    context.lineWidth=5;
+				    context.strokeStyle="#f00";
+				    context.beginPath();
+				    context.arc(width,height,72,0,Math.PI*2);
+				    context.stroke();
+				
+				    //画五角星
+//				    create5star(context,width,height,30,"#f00",0);
+				
+				    // 绘制印章名称
+				    if(name.length<=5){
+				    	context.font = '12px bolder SimSun';
+				    }else{
+				    	context.font = '8px bolder FangSong ';
+				    }
+				    context.textBaseline = 'middle';//设置文本的垂直对齐方式
+				    context.textAlign = 'center'; //设置文本的水平对对齐方式
+				    context.lineWidth=5;
+				    context.fillStyle = '#f00';
+				    context.fillText(name,width,height+40);
+				
+				    // 绘制印章单位   
+				    context.translate(width,height);// 平移到此位置,
+				    context.font = '20px bolder FZYaoti    '; 
+				    //context.font-weight = 600;
+				    var count = company.length;// 字数   
+				    var angle = 4*Math.PI/(3*(count - 1));// 字间角度   
+				    var chars = company.split("");   
+				    var c;
+				    for (var i = 0; i < count; i++){
+				        c = chars[i];// 需要绘制的字符   
+				        if(i==0){
+				        	context.rotate(5*Math.PI/6);
+				        }
+				        else{
+				        	context.rotate(angle);
+				        }
+				          
+				        context.save(); 
+				        context.translate(58, 0);// 平移到此位置,此时字和x轴垂直   
+				        context.rotate(Math.PI/2);// 旋转90度,让字平行于x轴   
+				        context.fillText(c,0, 5);// 此点为字的中心点   
+				        context.restore();             
+				    }
+				    
+				     // 绘制底部编号   
+				    var num = '2753380403044';
+				    var chars_L = num.split("");
+				    context.font = '8px bolder STSong';
+				    var count_L = chars_L.length;// 字数   
+				    var angle_L = 5*Math.PI/(12*(count_L - 1));// 字间角度   
+				    var d;
+				    for (var i = 0; i < count_L; i++){
+				        d = chars_L[i];// 需要绘制的字符
+				    var  Angle = Math.PI/8+i*angle_L;
+						context.save();
+				        context.rotate(Angle);
+				        context.translate(60, 0);// 平移到此位置,此时字和x轴垂直   
+				        context.rotate(-Math.PI/2);// 旋转90度,让字平行于x轴   
+				        context.fillText(d,0, 0);// 此点为字的中心点   
+				        context.restore();             
+				    }
+				
+				    //绘制五角星  
+				    /** 
+				     * 创建一个五角星形状. 该五角星的中心坐标为(sx,sy),中心到顶点的距离为radius,rotate=0时一个顶点在对称轴上 
+				     * rotate:绕对称轴旋转rotate弧度 
+				     */  
+//				    function create5star(context,sx,sy,radius,color,rotato){
+//				        context.save();  
+//				        context.fillStyle=color;  
+//				        context.translate(sx,sy);//移动坐标原点  
+//				        context.rotate(Math.PI+rotato);//旋转  
+//				        context.beginPath();//创建路径  
+//				        var x = Math.sin(0);  
+//				        var y= Math.cos(0);  
+//				        var dig = Math.PI/5 *4;  
+//				        for(var i = 0;i< 5;i++){//画五角星的五条边  
+//				         var x = Math.sin(i*dig);  
+//				         var y = Math.cos(i*dig);  
+//				         context.lineTo(x*radius,y*radius);  
+//				        }   
+//				        context.closePath();  
+//				        context.stroke();  
+//				        context.fill();  
+//				        context.restore();  
+//				    }
+				}
+		function change(){
+		 var canvas = document.getElementById("myCanvas");  
+         var context = canvas.getContext('2d');
+         canvas.height=canvas.height;
+	           name=document.getElementById('name').value;
+		       createSeal('canvas','同欣科技企业有限公司',name);
+	}
+		
+	</script>
+</html>

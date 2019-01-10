@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣项目巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			.mui-control-content {				
+				bottom: 0px;	
+			}
+			/*媒体查询，横屏效果*/
+			@media only screen and (orientation:landscape ) {
+				.mui-control-content {
+					bottom: 0px;
+					}			
+			}
+			html,
+			body,
+			.mui-content {
+				height: 0px;
+				margin: 0px;
+				background-color: #efeff4;
+			}
+			.mui-control-content {				
+				bottom: 0px;	
+			}
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			* {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+			.btn_size{
+				background:#0000FF;
+				color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">巡查整改统计分析</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<form class="mui-input-group">
+				    <div class="mui-input-row">
+				        <label>起始日期：</label>
+				        <input id="star_time" type="text"  class="mui-input-clear" placeholder="请选择开始日期">
+				    </div>
+				    <div class="mui-input-row">
+				        <label>截止日期：</label>
+				        <input id="end_time" type="text" class="mui-input-clear" placeholder="请选择结束日期">
+				    </div>
+				    <div class="mui-input-row">
+						<label>部门:</label>
+						<select id="section">
+			
+						</select>
+					</div>
+				    <div class="mui-input-row my_none">
+						<label> 工程id：</label>
+						<input id='gcid' type="text" placeholder="工程id" readonly="readonly">						
+					</div>
+					<div class="mui-input-row my_none">
+						<label> 手机：</label>
+						<input id='mobileSj' type="text" placeholder="手机" readonly="readonly">						
+					</div>
+				</form>
+				<button id="sure" type="button" class="mui-btn mui-btn-success mui-btn-block btn_size" disabled="disabled">确定</button>
+			</div>
+		</div>		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.picker.min.js"></script>	
+		<script src="../js/service.js"></script>
+		<script>
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				var mobile = self.mobile;
+				
+				mui.init();
+				var result = mui('#result')[0];
+				var btns = mui('.btn');
+				
+				//定位
+				var sureButton = document.getElementById('sure');
+				var star_time = document.getElementById("star_time");
+				var end_time = document.getElementById("end_time");
+				var gcid = document.getElementById("gcid");
+				var mobileSj = document.getElementById("mobileSj");
+				var section = document.getElementById("section");
+				
+				mobileSj.value=mobile;
+				//异步获取部门情况
+				mui.ajax(url+'/my_count/my_count_belong.php',{
+					data:{
+						mobile:mobile
+					}, 
+					dataType:'json', 
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						var result = data[0].value;
+//						alert(data[0]);
+						var length=data.length;
+//						alert(data.length);
+						if (length>0) {
+								if(data[0]=='总公司'){
+									for(var i = 1; i < length; i++) {
+									var sectionOption = data[i];
+											innerSection(sectionOption);
+										}
+								}else{
+									section.innerHTML = "<option>"+data[0]+"</option>"
+								}
+							}
+							
+//							for (var i=0;i<length-1;i++) {
+//								var gcidD=data[i].id;
+//								gcidZh+=gcidD+",";
+//							}
+//							gcid.value=gcidZh;
+						
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+				
+				
+				//部门筛选
+				function innerSection(sectionOption){
+					var myoption=document.createElement("option");
+					myoption.value = sectionOption;
+					myoption.innerHTML = sectionOption;
+					section.appendChild(myoption);
+//					alert('1');
+				}
+				//确定按钮的监听事件
+				sureButton.addEventListener('tap', function(event) {
+					//跳转函数
+					transfer();
+				});
+				//跳转函数
+				var transfer = function() {
+					mui.openWindow({
+						url: 'my_count_count.html', 
+						id: 'my_count_count',
+						styles: {
+							hardwareAccelerated:false
+						},
+						extras:{
+							star:star_time.value,
+							end:end_time.value,
+							mobile:mobile,
+							section:section.value
+						},
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示
+							aniShow:'slide-in-right',//页面显示动画
+							duration:'100'//页面动画持续时间
+						},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					});
+				}
+				
+				//原生开始日期与结束日期
+//				star_time.addEventListener('tap',function(){
+//					plus.nativeUI.pickDate( function(e){
+//					var d=e.date;
+//                  star_time.value = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+//				  });
+//				});
+//				end_time.addEventListener('tap',function(){
+//					plus.nativeUI.pickDate( function(e){
+//					var d=e.date;
+//                  end_time.value = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+//				  });
+//				})
+				//李德戈景-判断起始日期不能大于截止日期
+				star_time.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						star_time.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						if (star_time.value&&end_time.value) {
+							var gksrq=star_time.value;
+							var gjsrq=end_time.value;
+							var xgksrq = new Date(Date.parse(gksrq.replace(/-/g, "/")));
+							var xgksrq = xgksrq.getTime();
+							var xgjsrq = new Date(Date.parse(gjsrq.replace(/-/g, "/")));
+							var xgjsrq = xgjsrq.getTime();
+							if (xgjsrq>=xgksrq) {
+								sureButton.disabled=false;
+							}else{
+								alert('起始日期不能大于结束日期！');
+								sureButton.disabled=true;
+							}
+						}
+						
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});
+				});
+				end_time.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						end_time.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						if (star_time.value&&end_time.value) {
+							var gksrq=star_time.value;
+							var gjsrq=end_time.value;
+							var xgksrq = new Date(Date.parse(gksrq.replace(/-/g, "/")));
+							var xgksrq = xgksrq.getTime();
+							var xgjsrq = new Date(Date.parse(gjsrq.replace(/-/g, "/")));
+							var xgjsrq = xgjsrq.getTime();
+							if (xgjsrq>=xgksrq) {
+								sureButton.disabled=false;
+							}else{
+								alert('起始日期不能大于结束日期！');
+								sureButton.disabled=true;
+							}
+						}
+						
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});
+				});
+				
+			});
+			
+		</script>
+		<!--<script src="../js/setPullToRefresh.js" ></script>-->
+	</body>
+</html>

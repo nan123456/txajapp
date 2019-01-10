@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>工程质量安全移动检查管理系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--自定义mui.css-->
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新增批复</h1>
+		</header>		
+		<div id="pifu" class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>违章条目:</label>
+					    <input type="text" id="tiaomu" placeholder="违章条目" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>违章部位:</label>
+					    <input type="text" id="buwei" placeholder="违章部位" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>违章附件:</label>
+					    <input type="text" id="fujian" placeholder="违章附件" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>违章状态:</label>
+					    <input type="text" id="zhuangtai" placeholder="违章状态" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>整改期限:</label>
+					    <input type="text" id="qixian" placeholder="整改期限" readonly="readonly">
+					</div>
+				</form>
+			</div>
+		
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>回复人:</label>
+					    <input type="text" id="huifuren" placeholder="回复人" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>回复日期:</label>
+					    <input type="text" id="huifuriqi" placeholder="回复日期" readonly="readonly">
+					</div>
+				</form>
+			</div>
+		
+			<div class="mui-content">
+			    <div class="mui-input-row" style="margin: 10px 5px; ">
+					<textarea id="textarea" rows="2" placeholder="整改回复"></textarea>
+					<form class="mui-input-group">
+						<div class="mui-input-row">
+							<label>整改附件:</label>
+						    <input type="text" id="zhenggaifujian" placeholder="整改附件" readonly="readonly">
+						</div>
+						<div class="mui-input-row">
+							<label>延期申请:</label>
+						    <input type="text" id="yanqishenqing" placeholder="延期申请" readonly="readonly">
+						</div>
+					</form>
+				</div>
+			</div>
+		
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="" style="margin: 5px;padding: 7px 10px;">
+						<label>分公司批复意见：</label>
+						<textarea id="hfms1" class="mui-input-clear" rows="2" placeholder="无"></textarea>
+					</div>
+					<div class="mui-input-row">
+						<label>分公司批复人:</label>
+					    <input type="text" id="fgspifuren" placeholder="分公司批复人" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>批复日期:</label>
+					    <input type="text" id="fgspifuriqi" placeholder="分公司批复日期" readonly="readonly">
+					</div>
+				</form>
+			</div>
+		
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="" style="margin: 5px;padding: 7px 10px;">
+						<label>总公司批复意见：</label>
+						<textarea id="hfms2" class="mui-input-clear" rows="2" placeholder="无"></textarea>
+					</div>
+					<div class="mui-input-row">
+						<label>总公司批复人:</label>
+					    <input type="text" id="zgspifuren" placeholder="总公司批复人" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>批复日期:</label>
+					    <input type="text" id="zgspifuriqi" placeholder="总公司批复日期" readonly="readonly">
+					</div>
+				</form>
+			</div>
+			<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary mui-action-back">保存</button>
+					<button id="rwfjck" type="button" class="mui-btn mui-btn-primary">上传</button>	
+			</div>
+			<div class="mui-button-row">
+			
+			</div>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script>
+			mui.plusReady(function(){
+				var pifu = document.getElementById("pifu");
+				pifu.addEventListener('longtap',function(){
+					var tioamu = document.getElementById("tiaomu");
+					var buwei = document.getElementById("buwei");
+					var fujian = document.getElementById("fujian");
+					var zhuangtai = document.getElementById("zhuangtai");
+					var qixian = document.getElementById("qixian");
+					var huifuren = document.getElementById("huifuren");
+					var huifuriqi = document.getElementById("huifuriqi");
+					var zhenggaifujian = document.getElementById("zhenggaifujian");
+					var yanqishenqing = document.getElementById("yanqishenqing");
+					var hfms1 = document.getElementById("hfms1");
+					var hfms2 = document.getElementById("hfms2");
+					var fgspifuren = document.getElementById("fgspifuren");
+					var fgspifuriqi = document.getElementById("fgspifuriqi");
+					var zgspifuren = document.getElementById("zgspifuren");
+					var zgspifuriqi = document.getElementById("zgspifuriqi")
+					
+					tiaomu.readOnly=false;
+					buwei.readOnly=false;
+					fujian.readOnly=false;
+					zhuangtai.readOnly=false;
+					qixian.readOnly=false;
+					huifuren.readOnly=false;
+					huifuriqi.readOnly=false;
+					zhenggaifujian.readOnly=false;
+					yanqishenqing.readOnly=false;
+					hfms1.readOnly=false;
+					hfms2.readOnly=false;
+					fgspifuren.readOnly=false;
+					fgspifuriqi.readOnly=false;
+					zgspifuren.readOnly=false;
+					zgspifuriqi.readOnly=false;
+				});
+			});
+		</script>
+	</body>
+</html>

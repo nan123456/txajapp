@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>总公司</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			.title{
+				margin: 20px 15px 7px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.color{
+				background-color: #007AFF;
+			}
+			.sizecolor{
+				color: #FFFFFF;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav color">
+			<h1 class="mui-title sizecolor">实测值输入</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>编号：</label>
+					<input type="text" id="bh" class="mui-input-clear" placeholder="" readonly="readonly">
+				</div>
+				<div class="mui-input-row">
+					<label>类型：</label>
+					<input type="text" id="lx" class="mui-input-clear" placeholder="" readonly="readonly">
+				</div>
+				<div class="mui-input-row">
+					<label>实测值：</label>
+					<input type="text" id="scz" class="mui-input-clear" placeholder="">
+				</div>
+			</from>
+		</div></br>
+			<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary mui-action-back">关闭</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<button id="queding" type="button" class="mui-btn mui-btn-primary">确定</button>
+				</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/service.js"></script>
+	<script>
+		mui.plusReady(function(){
+//				获取上一个页面的数据
+			var self = plus.webview.currentWebview();
+			var name = self.name;
+			var bh = self.bh;
+			var cdlx = self.cdlx;
+			var scz = self.scz;
+			var sjid = self.sjid;
+			var scid = self.scid;
+			var sjc = self.sjc;
+//			alert(sjid);
+				
+			document.getElementById("bh").value=bh;
+			document.getElementById("lx").value = cdlx;
+			document.getElementById("scz").value = scz;
+	//		      监控确定按钮
+			var flag = "";
+       		document.getElementById("queding").addEventListener('tap',function(){
+       			var zhi = document.getElementById("scz").value;
+       			var idd = new Array();
+       			var dd = new Array();
+       			idd = sjid.split(",");
+       			dd = idd[1].split("|");
+       			if(zhi==""){
+       				alert("请输入实测值");
+       			}else{
+	   				if(zhi>=parseInt(dd[0])&&zhi<=parseInt(dd[1])){
+	   					flag = '1';
+	   				}else{
+	   					flag = '0';
+	   				}
+	// 				alert(flag);
+	//     			异步保存数据
+	       			mui.ajax(url+'my_plus/my_scsl_scz.php',{
+	       				data:{
+	       					id:idd[0],
+	       					sjc:sjc,
+	       					zhi:zhi,
+	       					zt:flag
+	       				},
+	     				dataType:'json',
+	       				type:'post',
+	       				timeout:10000,
+	       				success:function(data){
+//	       					alert(data);
+							var target=plus.webview.currentWebview().opener();;
+							mui.fire(target,'json',{
+								scz:document.getElementById("scz").value,
+								flag1:flag,
+								id:bh
+							});
+							mui.back();
+	       				}
+	       			});
+       			}
+       		});
+		});
+	</script>
+</html>

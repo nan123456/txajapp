@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			#hfms{
+				min-height: 80px;
+				height: auto;
+				
+			}
+			#hfjl{
+				padding: 10px;
+				min-height: 80px;
+				height: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">起重机</h1>
+		</header>
+		<div class="mui-content">
+			<div id="myform" class="">
+				<div class="mui-content-padded" style="margin: 5px;">
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">						
+							<label>项目名称：</label>
+							<input id="xmmc" type="text" value="CG2016" class="" placeholder="项目名称" readonly="readonly">						
+						</div>
+					</form>
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+							<label>所属公司：</label>
+							<input id="ssgs" type="text" class="" placeholder="所属公司" readonly="readonly">
+						</div>
+						<div class="mui-input-row">
+							<label>使用状态</label>
+							<input id="syzt" type="text" class="" placeholder="使用状态" readonly="readonly">
+						</div>
+						<div class="mui-input-row">
+							<label>区域：</label>
+							<input id="qy" type="text" class="" placeholder="区域" readonly="readonly">
+						</div>
+					</form>
+	        	</div>
+			</div>
+		</div>
+	
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/immersed.js" ></script>
+		<script>
+			mui.plusReady(function(){
+				
+			});
+		</script>
+	</body>
+</html>

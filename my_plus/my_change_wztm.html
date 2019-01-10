@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			#hfms{
+				min-height: 80px;
+				height: auto;
+			}
+			#hfjl{
+				padding: 10px;
+				min-height: 80px;
+				height: auto;
+			}
+			/*块级按钮按钮样式*/
+			.mui-content-padded{
+			  	margin: 10px;
+			 }
+			/*按钮小样式*/
+			.mui-btn-block_my{
+				font-size:16px;
+				display:block;
+				width:100%;
+				margin-bottom:10px;
+				padding:8px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id='wchen' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue ">提交</a>
+			<a id="my_popover" class="mui-btn mui-btn-link mui-pull-right mui-btn-blue">查找&nbsp;&nbsp;</a>
+			<h1 class="mui-title">违章条目</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-card">
+				<!--<form id="wztm" class="mui-input-group">-->
+					<ul id="wztm_cz" class="mui-table-view mui-checkbox ">
+							
+					</ul>
+					<ul class="mui-table-view-cell mui-collapse "><a class="mui-navigate-right" href="#"><h4>标准条目</h4></a>
+						<ul id="wztm" class="mui-table-view mui-checkbox ">
+							<!--<li class="mui-table-view-cell">Item 7<input name="checkbox" type="checkbox">
+							</li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#">Android</a>
+							</li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#">HTML5</a>
+							</li>-->
+						</ul>
+					</ul>
+					<!--<div class="mui-input-row mui-checkbox" style="height: 63px;">
+						<label>1、项目负责人对建设行政主管部门或安监站发出的整改通知书未落实整改的</label>
+						<input name="checkbox1" value="1、项目负责人对建设行政主管部门或安监站发出的整改通知书未落实整改的" type="checkbox" >
+					</div>-->
+				<!--</form>-->
+				<ul class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#"><h4>自定义条目</h4></a>
+						<ul id="wztm_free" class="mui-table-view mui-checkbox">
+							<!--<li class="mui-table-view-cell">Item 7<input name="checkbox" type="checkbox">
+							</li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#">Android</a>
+							</li>
+							<li class="mui-table-view-cell"><a class="mui-navigate-right" href="#">HTML5</a>
+							</li>-->
+						</ul>
+					</ul>
+			</div>
+			<div class="mui-content-padded my_margintop10px">
+				<!--<button id="confirm" type="button" class="mui-btn mui-btn-primary mui-btn-block_my mui-action-back" style="width: 45%;float: right;">提交</button>-->
+			</div>
+			<div id="info">
+
+			</div>
+		</div>
+	
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/common.js"></script>
+		<script type="text/javascript" src="../js/immersed.js" ></script>
+		<script src="../js/my_wztm_list_search.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					
+					}
+			});
+			
+			mui('.mui-input-group').on('change', 'input', function() {
+				
+			});
+			
+			mui.plusReady(function(){
+				//接收上一个页面传递的值
+				var self = plus.webview.currentWebview();
+				var tianjia = self.tianjia;
+				var cg = self.cg;
+				var loc = location.href;
+				var n1 = loc.length;//地址的总长度
+				var n2 = loc.indexOf("=");//取得=号的位置
+				var alltm = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+//				alert(alltm)
+				gcid=self.gcid;
+				gcmc=self.gcmc;
+				tzdbh=self.tzdbh;
+				jcxm_jc=self.jcxm_jc; //获取草稿页面的检查项目
+//				alert(jcxm_jc);
+				/*------单机完成按钮操作-----*/
+				var wchen = document.getElementById("wchen");
+				wchen.addEventListener('tap',function(){
+					chk();
+				});
+					/*-----正则表达式-----*/
+					function geturl(argument){
+					var reg = new RegExp("(^|&)"+ argument +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]);
+					return null;
+					}
+					/*-------获取已选条目--------*/
+					//（点击确定后返回的数值）
+					function chk(){
+						var a = document.getElementsByName("checkbox1");//定位至name="checkbox1"
+ 						var s = "";
+ 						var xixi = ' ';//初始化部位
+ 						var hehe = '';
+						for(var i=0;i<a.length;i++){
+   							if(a[i].checked){
+   								s+=a[i].value+'||'; //如果未选中，将value添加到变量s中
+   								hehe+=xixi+'||';
+   							} 
+   							else{
+   								
+   							}
+   						}
+   						if(s==''){
+   							alert("请选择违章条目");
+   						}else{
+   							
+   						}
+ 						
+ 						if(cg=='ckcg'){
+ 							var target=plus.webview.currentWebview().opener();
+								mui.fire(target,'json',{
+								flag3:s,
+								flag4:hehe
+							});
+ 						}else{
+ 							var target=plus.webview.getWebviewById('my_change_cgxz.html');
+							mui.fire(target,'json',{
+								flag:s,
+								flag2:hehe
+							});
+ 						}
+						mui.openWindow('my_change_cgxz.html');
+ 						
+ 					};
+ 					/*------异步获取违章条目的值------*/
+   					var mywztm = function(neirong){
+   						var neirong = neirong;
+   						
+						var wztm = document.getElementById("wztm");
+						var li = document.createElement("li");
+						li.className = "mui-table-view-cell ";
+						li.innerHTML = '<label>'+neirong+'</label><input name="checkbox1" value='+neirong+' type="checkbox">';
+						wztm.appendChild(li);
+   					}
+   					var mywztm_1 = function(neirong){
+   						var neirong = neirong;
+   						
+						var wztm_1 = document.getElementById("wztm_free");
+						var li = document.createElement("li");
+						li.className = "mui-table-view-cell ";
+						li.innerHTML = '<label>'+neirong+'</label><input name="checkbox1" value='+neirong+' type="checkbox">';
+						wztm_1.appendChild(li);
+   					}
+   					var mywztm_cz = function(neirong){
+   						var neirong = neirong;
+   						
+						var wztm = document.getElementById("wztm_cz");
+						var div = document.createElement("div");
+						div.className = "mui-input-row mui-checkbox";
+						div.innerHTML = '<label>'+neirong+'</label><input name="checkbox1" value='+neirong+' type="checkbox" checked>';
+						wztm.appendChild(div);
+   					}
+   					
+   					if(alltm==null){
+   					mui.ajax(url+'my_plus/my_cgxz_wztm.php',{
+						data:{
+							flag:0,
+							jcxm:jcxm_jc
+						},
+						dataType:'json',
+						type:'POST', 
+						timeout:10000,
+						success:function(data){
+//							alert(data);
+							var length = data.length;
+							for(var i=0;i<length-1;i++){
+								neirong = data[i].内容;
+								mywztm(neirong);
+							};
+						},
+						error:function(xhr,type,errorThrown){
+							alert('ajax错误'+type+'---'+errorThrown);
+						}
+					});
+					
+					mui.ajax(url+'my_plus/my_cgxz_wztm.php',{
+						data:{
+							flag:"1",
+							jcxm:jcxm_jc
+						},
+						dataType:'json',
+						type:'POST', 
+						timeout:10000,
+						success:function(data){
+//							alert(data);
+							var length = data.length;
+							for(var i=0;i<length-1;i++){
+								neirong = data[i].内容;
+								mywztm_1(neirong);
+							};
+						},
+						error:function(xhr,type,errorThrown){
+							alert('ajax错误'+type+'---'+errorThrown);
+						}
+					});
+						}else if(alltm!=null){
+							var tms = new Array();
+							tms = alltm.split("||");
+//							alert(tms.length-1);
+							for(i=0;i<tms.length-1;i++){
+								mywztm_cz(tms[i]);
+							}
+							mui.ajax(url+'my_plus/my_cgxz_wztm.php',{
+							data:{
+								flag:0,
+								jcxm:jcxm_jc
+							},
+							dataType:'json',
+							type:'POST', 
+							timeout:10000,
+							success:function(data){
+	//							alert(data);
+								var length = data.length;
+								for(var i=0;i<length-1;i++){
+									neirong = data[i].内容;
+									var n = 0;
+									for(var j=0;j<tms.length-1;j++){
+											if(tms[j]!=neirong){
+												n++;
+											}
+										}
+									if(n==tms.length-1){
+											mywztm(neirong);
+										}
+								};
+							},
+							error:function(xhr,type,errorThrown){
+								alert('ajax错误'+type+'---'+errorThrown);
+							}
+						});
+						mui.ajax(url+'my_plus/my_cgxz_wztm.php',{
+							data:{
+								flag:"1",
+								jcxm:jcxm_jc
+							},
+							dataType:'json',
+							type:'POST', 
+							timeout:10000,
+							success:function(data){
+//								alert(data);
+								var length = data.length;
+								for(var i=0;i<length-1;i++){
+									neirong = data[i].内容;
+									var n = 0;
+									for(var j=0;j<tms.length-1;j++){
+											if(tms[j]!=neirong){
+												n++;
+											}
+										}
+									if(n==tms.length-1){
+											mywztm_1(neirong);
+										}
+								};
+							},
+							error:function(xhr,type,errorThrown){
+								alert('ajax错误'+type+'---'+errorThrown);
+							}
+						});
+						}
+ 					/*------异步将勾选的数组传递至后台------*/
+ 					var tjiao = function(s){
+						mui.ajax(url+'my_plus/my_change_wztm.php',{
+							data:{
+								s:s,
+								gcid:gcid,
+								gcmc:gcmc,
+								tzdbh:tzdbh,
+								sjc:sjc
+							},
+							dataType:'json',
+							type:'POST', 
+							timeout:10000,
+							success:function(data){
+									alert("提交成功");
+							}, 
+							error:function(xhr,type,errorThrown){
+								alert('ajax错误'+type+'---'+errorThrown);
+							}
+						});
+					};
+				});	
+			
+		</script>
+	</body>
+</html>

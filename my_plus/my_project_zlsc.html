@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>总公司</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			.mui-control-content {				
+				bottom: 0px;	
+			}		
+			.my_table{
+				float: left;
+				text-align: center;				
+			}
+			.my_th_weight{
+				font-weight: bold;
+			}	
+			.my_td_width30{
+				/*检查日期*/
+				width: 25%;
+			}
+			.my_td_width40{
+				/*通知单编号*/
+				width: 27%;
+			}
+			.my_td_width10{
+				/*整改、回复、批复*/
+				width: 16%;
+			}
+			
+			
+			/*媒体查询，横屏效果*/
+			@media only screen and (orientation:landscape ) {
+				.mui-control-content {
+					bottom: 0px;	
+					}					
+			}
+			.mui-popover {
+				height: 260px;
+			}
+			#middlePopover{
+				min-width: 282px;				
+				top:15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			#cdbzPopover{
+				min-width: 282px;				
+				top:15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			.mui-popover .mui-popover-arrow{
+				display: none !important;
+			}
+			#mydiv{
+				width: 100%;
+				height: 310px;
+				border: 1px #C6C6C6 solid;				
+				background-size: 100% 100%;/*背景图片充满div*/				
+			}
+			.bzcd{
+				margin: 10px;	
+				padding-bottom: 10px;			
+				height: auto;
+				min-height: 80px;
+				border: 1px #C6C6C6 solid;
+				
+			}
+			p{
+				font-size: 1em;
+				color: #000000;
+			}
+			span{
+				margin-left: 15px;
+			}
+			.myposition{
+				position: absolute;
+			}
+			.out{				
+				margin: 10px;
+				padding-bottom: 10px;
+				height: auto;
+				min-height: 60px;				
+				border: 1px #C6C6C6 solid;				
+			}
+			#zuxz{
+				width: 100px;
+				
+			}	
+			#qtcy{
+				width: 100px;
+				font-size: 1.08em;
+				margin-top: -1px;
+			}
+			.a_color{
+				/*改变连接颜色*/
+				color: #0000FF;
+			}		
+			.borderColor{
+				border: 3px solid green;
+			}
+			
+			/*** 申请延期日期选择样式 ***/
+			#zuyPopover{
+				min-width: 300px;				
+				top:15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -150px;
+			}
+			/*根据颜色来判断*/
+			.bluk{
+				background-color: #007AFF;
+			}
+			.red{
+				background-color: #CF2D28;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="my_popover" class="mui-pull-right" style="line-height: 40px;">新建</a>			
+			<h1 class="mui-title">质量实测</h1>
+		</header>	</br>
+		<div class="mui-content">
+				<div id="zlsc" class="mui-scroll rwdiv">
+					<div id="scroll"  class="mui-scroll-wrapper">
+						<!--<ul class="mui-table-view mui-card my_marginbottom10px">
+							<li class="mui-table-view-cell bluk">
+								<a class="a_color" href="#">
+									<span class="mui-icon mui-icon-info mui-pull-left my_fontweight my_color_white"></span>
+									<p class="mui-ellipsis my_style2">名称：-----</p>
+								</a>
+							</li>
+						    <li class="mui-table-view-cell">
+						    	<p class="mui-ellipsis my_style1">检查部位：-----</p>
+						    </li>
+						    <li class="mui-table-view-cell">
+						    	<p class="mui-ellipsis my_style1">检查日期：-----</p>
+						    </li>
+						    <li class="mui-table-view-cell">
+						    	<p class="mui-ellipsis my_style1">检查人员：-----</p>
+						    </li>
+						</ul></br>
+					-->
+					<p>加载中，请稍后.....</p>
+					 
+		        </div>
+		   </div>
+	    </div> 	
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //初始化双击
+					longtap: true, //初始化长按	
+				}
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});
+			})(mui);
+			
+			mui.plusReady(function(){
+//				获取上一个页面的数据
+				var self = plus.webview.currentWebview();
+				var gcid = self.gcid;
+				var gcmc = self.gcmc;
+//				var userid = self.userid;
+				var sheng = self.sheng;
+				var shi = self.shi;
+				var mobile = self.mobile;
+//				alert(mobile);
+
+				document.getElementById("my_popover").addEventListener('tap',function(){
+					mui.openWindow({
+						url:'my_project_new.html',
+						id:'my_project_new.html',
+						styles: {
+								hardwareAccelerated:false
+							},
+						extras:{
+							name:'zhoushun',
+							gcid:gcid,
+							gcmc:gcmc,
+//							userid:userid,   查无此参数
+							sheng:sheng,
+							shi:shi,
+							mobile:mobile
+						},
+						show:{
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					});
+				});
+				//新建项目后自动刷新该页面
+				window.addEventListener('refresh', function(e){
+				  location.reload(); 
+				  });   
+				document.getElementById("zlsc").innerHTML="";
+				var myzlsc = function(id, gcmc, jcbw, jcrq, zt, sjc, jcry){
+//					alert(id+gcmc+jcbw+jcrq+zt+jcry);
+					
+					if(zt=='1'){
+						var color = "bluk";
+					}else{
+						var color = "red";
+					}
+					var zlsc = document.getElementById("zlsc");
+					var ul = document.createElement("ul");
+					ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+					ul.id = id;
+					ul.innerHTML = '<li class="mui-table-view-cell '+color+'"><a class="a_color" href="my_project_scsl.html?id='+id+'&gcid='+gcid+'&sjc='+sjc+'"><span class="mui-icon mui-icon-info mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2">名称：'+jcbw+" "+jcrq+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查部位：'+jcbw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查日期：'+jcrq+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">检查人员：'+jcry+'</p></li>';
+					zlsc.appendChild(ul);
+				}
+				
+				//动态创建卡片
+				mui.ajax(url+'my_plus/my_change_list_scsl.php',{
+					data:{
+						gcid:gcid
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+                        var lenght = data.length;
+                        if(lenght>1){
+                        	for(var i=0;i<lenght-1;i++){
+                        		var id = data[i].id;
+                        		var gcmc = data[i].工程名称;
+                        		var jcbw = data[i].部位;
+                        		var jcrq = data[i].日期;
+                        		var zt = data[i].状态;
+                        		var sjc = data[i].时间戳;
+                        		var jcry = data[i].检查人员;
+//                      		alert(id+gcmc+jcbw+jcrq+zt+sjc+jcry);
+                        		myzlsc(id, gcmc, jcbw, jcrq, zt, sjc, jcry);
+                        	}
+                        }
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+//				长按修改删除
+				mui("#zlsc").on('longtap', 'ul', function() {
+					var ulId=this.id;
+					//alert(ulId);
+					var btnArray = [
+						{title:"修改"},
+						{title:"删除"}
+					];
+					plus.nativeUI.actionSheet( {
+						title:"操作",
+						cancel:"取消",
+						buttons:btnArray
+					}, function(e){
+						var index = e.index;	
+						var nextpage='';
+						switch (index){
+							case 0:	//取消	
+								break;
+							case 1:	//修改								
+								zlxg(ulId,gcid,gcmc);
+								break;
+							case 2:	//删除
+								nextpage='';
+								var bts=["是","否"];
+								plus.nativeUI.confirm("删除将不能恢复，您确认删除吗？",function(e){
+									var i=e.index;
+									if(i==0){
+										//是
+										zlsc(ulId,gcid,gcmc);
+									}else{
+										//否
+									}
+								},"同欣巡检系统",bts);
+								break;
+						}
+					});
+				});
+//				修改
+				var zlxg = function(ulId,gcid,gcmc){
+					mui.openWindow({
+						url:'my_project_scsl_xg.html',
+						id:'my_project_scsl_xg',
+						styles: {
+								hardwareAccelerated:false
+							},
+							extras:{
+								//传递参数
+								name:'zhoushun',
+								gcid:gcid,
+								gcmc:gcmc,
+								ulId:ulId,
+								mobile:mobile
+							},
+							show:{
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+					});
+				}
+//				删除
+				var zlsc = function(ulId,gcid,gcmc){
+					mui.ajax(url+'my_plus/my_scsl_xcxg.php',{
+						data:{
+							flag:'sc',
+							id:ulId,
+							gcid:gcid
+						},
+//						dataTtpe:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							alert("删除成功");
+							var wobj = plus.webview.currentWebview();					
+							wobj.reload(true);	
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+</html>

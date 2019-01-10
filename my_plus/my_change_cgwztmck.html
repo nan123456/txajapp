@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			#hfms{
+				min-height: 80px;
+				height: auto;
+			}
+			#hfjl{
+				padding: 10px;
+				min-height: 80px;
+				height: auto;
+			}
+			/*块级按钮按钮样式*/
+			.mui-content-padded{
+			  	margin: 10px;
+			 }
+			/*按钮小样式*/
+			.mui-btn-block_my{
+				font-size:16px;
+				display:block;
+				width:100%;
+				margin-bottom:10px;
+				padding:8px 0;
+			}
+			/*li{
+				 border-bottom:1px blue dashed;
+			}*/
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="fanhui" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a id='wchen' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue my_none">完成</a>-->
+			<a id='xiugai' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue">修改</a>
+			<a id='zhenghe' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue my_none">整合</a>
+			<h1 class="mui-title">违章条目</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-input-row my_none">
+				<label>通知单时间戳：</label>
+				<input id='sjc' type="text" style="padding-left:15px;" placeholder="通知单时间戳">						
+			</div>
+			<div id="wztmck" class="mui-card" style="margin-top: 5px;">
+				<!-- 动态创建的内容 -->
+			</div>
+			<!-- 新增的违章条目 -->
+			<div id="xzwztmck" class="mui-card " style="margin-top: 5px;">
+				<input id="Lee" class="my_none" />
+				<ul id="xztmul" class="mui-table-view"></ul>
+				<!-- 动态创建的内容 -->
+			</div>
+			<div id="anniu" class="mui-content-padded my_margintop10px my_none">
+				<button id="tianjia" type="button" class="mui-btn mui-btn-primary mui-btn-block_my" style="width: 33%;float: left;">添加</button>
+				<button id="confirm" type="button" class="mui-btn mui-btn-primary mui-btn-block_my" style="width: 33%;float: right;" onclick="upload(this.id,'clean_rwfj');">确定</button>
+				<button id="confirmOne" type="button" class="mui-btn mui-btn-primary mui-btn-block_my my_none" style="width: 33%;float: right;" onclick="upload(this.id,'clean_rwfj');">确定</button>
+			</div>
+		</div>
+	
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/immersed.js" ></script>
+		<script src="../js/service.js" ></script>
+		<script src="../js/my_js_cgwztmck.js"></script>
+		<script>
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{	
+					doubletap: true, //默认为false
+					longtap: true, //默认为false 
+				}
+			});
+			mui.plusReady(function(){
+				//传值
+				var self = plus.webview.currentWebview();
+				sjc = self.sjc;
+				flag = self.flag;
+				mobile = self.mobile;
+				//alert(mobile);
+				var sjc=document.getElementById("sjc");
+				var xiugai=document.getElementById("xiugai");
+				if(flag=="tjfx"){
+					xiugai.setAttribute("class","mui-btn mui-btn-link mui-pull-right mui-btn-blue my_none");
+				}else{
+					
+				}
+				
+				plus.nativeUI.toast("您好！请先选择违章条目后在对应上传照片！无照片的违章条目请最后选择！",{duration:"long"});
+				
+				//完成按钮监听
+//				var wchen=document.getElementById("wchen");
+//				wchen.addEventListener('tap',function(){
+//					//var target=plus.webview.getWebviewById('my_change_ckcg.html');
+//					var target=plus.webview.currentWebview().opener();
+//					mui.fire(target,'weztm',{
+//						flag:sjc.value
+//					});
+//					mui.back();
+//				});
+			});
+		</script>
+	</body>
+</html>

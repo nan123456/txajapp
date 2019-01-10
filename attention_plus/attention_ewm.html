@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<style>
+			html,body {
+				background-color: #efeff4;
+			}
+			.title{
+				margin: 20px 5px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}	
+			.mui-content,input,select,textarea,option,p,label{
+				font-size: 0.9em;
+			}
+			form{
+				margin-top: 5px;
+			}
+			.my_color_blue{
+				color:#0000FF;
+			}	
+			#done.mui-disabled{
+				color: gray;
+			}	
+			#hdnr{
+				padding: 10px;	
+				text-indent:2em;			
+			}		
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">签到</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div style="padding: 10px 10px;">
+						<div id="segmentedControl" class="mui-segmented-control">
+							<a id="ewm" class="mui-control-item mui-active" href="">
+								二维码基本信息
+							</a>					
+						</div>
+					</div>
+					<div class="mui-input-row my_none">
+						<label>工程id：</label>
+						<input id="gcidHtml" type="text" class="mui-input-clear" placeholder="工程id" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>工程名称：</label>
+						<input id="gcmcHtml" type="text" class="mui-input-clear" placeholder="工程名称" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label>工程类别：</label>
+						<input id="gclbHtml" type="text" class="mui-input-clear" placeholder="工程类别" readonly="readonly" >
+					</div>	
+					<div class="mui-input-row">
+						<label>工程位置：</label>
+						<input id="gcwzHtml" type="text" class="mui-input-clear" placeholder="工程位置" readonly="readonly">
+					</div>
+					<div class="mui-input-row my_none">
+						<label>时间戳：</label>
+						<input id="sjcHtml" type="text" class="mui-input-clear" placeholder="时间戳" readonly="readonly">
+					</div>
+				</form>	
+				<form id="selectform" class="mui-input-group">
+					<div style="padding: 10px 10px;">
+						<div id="segmentedControl" class="mui-segmented-control">
+							<a id="yzxx" class="mui-control-item mui-active" href="">
+								身份信息验证
+							</a>					
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label>手机：</label>
+						<input id="shj" type="text" class="mui-input-clear" placeholder="手机" required="required" value="">
+					</div>
+					<div class="mui-input-row my_none">
+						<label>部门：</label>
+						<input id="bumen2" type="text" class="mui-input-clear" placeholder="部门" required="required" value="">
+					</div>
+					<div class="mui-button-row">						
+						<button id="yanz" type="button" class="mui-btn mui-btn-primary">验证</button>
+					</div>					
+				</form>				
+				<form id="updateform" class="mui-input-group my_none">	
+					<input id="bmqdsjc" name="bmqdsjc" type="hidden">
+					<div style="padding: 10px 10px;">
+						<div id="segmentedControl" class="mui-segmented-control">
+							<a id="yzjg" class="mui-control-item mui-active" href="">
+								验证结果
+							</a>					
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label for="xming">姓名：</label>
+						<input id="xming" name="xming" type="text" class="mui-input-clear" placeholder="姓名" readonly="readonly">
+					</div>
+					<div class="mui-input-row">
+						<label for="qdbSj">手机：</label>
+						<input id="qdbSj" name="qdbSj" type="number" class="mui-input-clear" placeholder="手机" value="" readonly="readonly">
+					</div>
+					<div id="qdztXs" class="mui-input-row my_none">
+						<label for="qdzt">签到状态：</label>
+						<input id="qdzt" name="qdzt" type="text" class="mui-input-clear" placeholder="签到状态" value="" readonly="readonly">
+					</div>
+					<div class="mui-input-row my_none">
+						<label>签到时间：</label>
+						<input id="qdTime" type="text" class="mui-input-clear" placeholder="签到时间" readonly="readonly">
+					</div>
+					<div class="mui-button-row">						
+						<button id="qiand" type="button" class="mui-btn mui-btn-primary">签到</button>
+					</div>					
+				</form>
+				<div class="title">
+					<p class="my_color_blue">联系我们</p>
+					<p id="gsmc"></p>
+					<p id="gsdz"></p>
+					<p id="hwzx"></p>	
+					<p id="bzhu"></p>	
+				</div>			
+			</div>
+			
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/charCode.js"></script>
+	<script src="../js/service.js" ></script>
+	<script>
+		mui.init();
+		mui.plusReady(function() {
+			//获取传值
+			var self = plus.webview.currentWebview();
+			var gcid = self.gcid;
+			var gcmc = self.gcmc;
+			var gclb = self.gclb;
+			var gcwz = self.gcwz;
+			mobile = self.mobile;
+			bumen = self.bumen;
+			//alert(bumen);
+			
+			var gcidHtml=document.getElementById("gcidHtml"); //工程id
+			var gcmcHtml=document.getElementById("gcmcHtml"); //工程名称
+			var gclbHtml=document.getElementById("gclbHtml"); //工程类别
+			var gcwzHtml=document.getElementById("gcwzHtml"); //工程位置
+			var sjcHtml=document.getElementById("sjcHtml"); //时间戳
+			var shj=document.getElementById("shj"); //手机
+			var yanz=document.getElementById("yanz"); //验证按钮
+			var xming=document.getElementById("xming"); //姓名
+			var qdbSj=document.getElementById("qdbSj"); //手机
+			var qdzt=document.getElementById("qdzt"); //签到状态
+			var qiand=document.getElementById("qiand"); //签到按钮
+			var selectform=document.getElementById("selectform");
+			var updateform=document.getElementById("updateform");
+			var bumen2=document.getElementById("bumen2");
+			var qdTime=document.getElementById("qdTime");
+			var qdztXs=document.getElementById("qdztXs");
+			
+			//往页面插值
+			gcidHtml.value=gcid;
+			gcmcHtml.value=gcmc;
+			gclbHtml.value=gclb;
+			gcwzHtml.value=gcwz;
+			shj.value=mobile;
+			bumen2.value=bumen;
+			
+			//自动添加当前时间戳,作为这个新建任务的唯一标识存到数据库，附件上传时会用到
+			var myDate=new Date();
+			var mytime=myDate.getTime();
+			sjcHtml.value=mytime;
+			
+			//未签到信息获取函数
+			var wqdxx=function(){
+				mui.ajax(url+'attention_plus/attention_ewm.php',{
+					data:{
+						flag:'wqd',
+						sji:shj.value,
+						gcid:'', //工程id
+						gcmc:'', //工程名称
+						sjc:'', //时间戳
+						xm:'', //姓名
+						bumen:'' //部门
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;
+						if (length>1) {
+							for (var i=0;i<length-1;i++) {
+								xming.value=data[i].姓名;
+								qdbSj.value=data[i].手机;
+							}
+							selectform.classList.add("my_none");
+							updateform.classList.remove("my_none");
+						} else{
+							alert("对不起，您所登录的手机号非法！！");
+						}
+	            	},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+			};
+			
+			//验证按钮点击事件
+			yanz.addEventListener('tap', function() {
+				//获取当前时间
+				var date=new Date();    
+				var year=date.getFullYear(); //获取当前年份
+				var mon=date.getMonth()+1; //获取当前月份    
+				var da=date.getDate(); //获取当前日    
+				var day=date.getDay(); //获取当前星期几    
+				var h=date.getHours(); //获取小时    
+				var m=date.getMinutes(); //获取分钟  
+				
+				var time01=year+"-"+mon+"-"+da;
+				qdTime.value=time01;
+				
+				mui.ajax(url+'attention_plus/attention_ewm.php',{
+					data:{
+						flag:'xxpp',
+						sji:shj.value,
+						gcid:'', //工程id
+						gcmc:'', //工程名称
+						sjc:sjcHtml.value, //时间戳
+						xm:'', //姓名
+						bumen:'' //部门
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;
+						if (length>1) {
+							for (var i=0;i<length-1;i++) {
+								xming.value=data[i].姓名;
+								qdbSj.value=data[i].联系方式;
+								qdzt.value=data[i].签到状态;
+							}
+							if (qdzt.value=="已签到") {
+								qiand.disabled=true;
+								alert("您已签到！");
+							}
+							selectform.classList.add("my_none");
+							updateform.classList.remove("my_none");
+						} else{
+							wqdxx();
+						}
+	            	},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+			});
+			
+			//签到按钮点击事件
+			qiand.addEventListener('tap', function() {
+				//签到前验证当前日期是否签到过
+				mui.ajax(url+'attention_plus/attention_ewm.php',{
+					data:{
+						flag:'select',
+						gcid:gcidHtml.value, //工程id
+						gcmc:"", //工程名称
+						sjc:"", //时间戳
+						sji:shj.value, //手机
+						bumen:"", //部门
+						xm:"", //姓名
+						qdTime:qdTime.value
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						if (data.result=='OK') {
+							alert("您今日已签到过一次,今日内不用再次签到！");
+							//mui.back();
+							qdztXs.classList.remove("my_none");
+							qdzt.value="已签到";
+						} else{
+							qiandao();
+						}
+	            	},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+				
+			});
+			var qiandao=function(){
+				mui.ajax(url+'attention_plus/attention_ewm.php',{
+					data:{
+						flag:'update',
+						gcid:gcidHtml.value, //工程id
+						gcmc:gcmcHtml.value, //工程名称
+						sjc:sjcHtml.value, //时间戳
+						sji:shj.value, //手机
+						bumen:bumen2.value, //部门
+						xm:xming.value, //姓名
+						qdTime:qdTime.value
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						if (data.result=='success') {
+							alert("签到成功，欢迎您的参与！");
+							mui.back();
+						} else{
+							var severresult=data.result;
+							alert(severresult);
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+			};
+		});
+	</script>
+</html>

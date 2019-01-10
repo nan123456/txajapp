@@ -1,0 +1,123 @@
+{
+	"my.html": {
+		"refer": [
+			"my_plus/my_setting.html",
+			"my_plus/my_project_list.html"
+		]
+	},
+	"my_plus/my_project.html": {
+		"refer": [
+			"my_plus/my_project_list.html",
+			"my_plus/my_change_list.html",
+			"my_plus/my_control_cool.html"
+		]
+	},
+	"index.html": {
+		"resources": [
+			"my.html"
+		],
+		"refer": [
+			"my.html",
+			"team.html"
+		]
+	},
+	"login.html": {
+		"refer": [
+			"index.html"
+		]
+	},
+	"my_plus/my_change_list.html": {
+		"refer": [
+			"my_plus/sign/my_signature_1.html",
+			"my_plus/my_change_cgxz.html",
+			"my_plus/my_change_ckcg.html",
+			"my_plus/my_change_ckcgSign.html"
+		]
+	},
+	"my_plus/my_project_list.html": {
+		"refer": [
+			"my_plus/my_project.html"
+		]
+	},
+	"my_plus/my_control_cool.html": {
+		"refer": [
+			"map/mapmax.html",
+			"map/map.html",
+			"my_plus/my_control_see.html"
+		]
+	},
+	"map/mapmax.html": {
+		"refer": [
+			"my_plus/my_control_cool.html"
+		]
+	},
+	"my_plus/my_setting.html": {
+		"refer": [
+			"barcode_scan.html",
+			"QRclouds/choose.html"
+		]
+	},
+	"QRclouds/choose.html": {
+		"refer": [
+			"QRclouds/scan.html",
+			"QRclouds/query.html"
+		]
+	},
+	"QRclouds/scan.html": {
+		"refer": [
+			"QRclouds/scan_new.html",
+			"my_plus/my_change_ckcg.html"
+		]
+	},
+	"QRclouds/scan_new.html": {
+		"refer": [
+			"QRclouds/scan_wztm.html",
+			"my_plus/my_change_tkgl.html"
+		]
+	},
+	"map/map.html": {
+		"refer": [
+			"map/mapmax.html",
+			"my_plus/my_control_cool.html"
+		]
+	},
+	"my_plus/my_control_see.html": {
+		"refer": [
+			"my_plus/my_control_cool.html",
+			"my_plus/query_list.html"
+		]
+	},
+	"my_plus/query_list.html": {
+		"refer": [
+			"my_plus/my_control_see.html",
+			"QRclouds/query.html"
+		]
+	},
+	"my_plus/my_change_ckcg.html": {
+		"refer": [
+			"QRclouds/scan.html",
+			"my_plus/my_change_list.html"
+		]
+	},
+	"QRclouds/scan_wztm.html": {
+		"refer": [
+			"QRclouds/scan_new.html"
+		]
+	},
+	"QRclouds/query.html": {
+		"refer": [
+			"my_plus/query_list.html"
+		]
+	},
+	"my_plus/my_change_cgxz.html": {
+		"refer": [
+			"my_plus/my_change_wztm.html",
+			"my_plus/my_change_tkgl.html"
+		]
+	},
+	"my_plus/my_change_ckcgSign.html": {
+		"refer": [
+			"my_plus/my_change_list.html"
+		]
+	}
+}

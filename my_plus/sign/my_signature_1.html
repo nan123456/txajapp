@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>中国华西安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../../css/mui.min.css">	
+		<link rel="stylesheet" href="../../css/my_css.css">
+		<link rel="stylesheet" href="../../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			html,body {
+				background-color: #efeff4;
+			}
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.mui-preview-image.mui-fullscreen {
+				position: fixed;
+				z-index: 20;
+				background-color: #FFFFFF;
+			}
+			.mui-preview-header,
+			.mui-preview-footer {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				z-index: 10;
+			}
+			.mui-preview-header {
+				height: 44px;
+				top: 0;
+			}
+			.mui-preview-footer {
+				height: 50px;
+				bottom: 0px;
+			}
+			.mui-preview-header .mui-preview-indicator {
+				display: block;
+				line-height: 25px;
+				color: #fff;
+				text-align: center;
+				margin: 15px auto 4;
+				width: 70px;
+				background-color: rgba(0, 0, 0, 0.4);
+				border-radius: 12px;
+				font-size: 16px;
+			}
+			.mui-preview-image {
+				display: none;
+				-webkit-animation-duration: 0.5s;
+				animation-duration: 0.5s;
+				-webkit-animation-fill-mode: both;
+				animation-fill-mode: both;
+			}
+			.mui-preview-image.mui-preview-in {
+				-webkit-animation-name: fadeIn;
+				animation-name: fadeIn;
+			}
+			.mui-preview-image.mui-preview-out {
+				background: none;
+				-webkit-animation-name: fadeOut;
+				animation-name: fadeOut;
+			}
+			.mui-preview-image.mui-preview-out .mui-preview-header,
+			.mui-preview-image.mui-preview-out .mui-preview-footer {
+				display: none;
+			}
+			.mui-zoom-scroller {
+				position: absolute;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				-webkit-box-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				-webkit-backface-visibility: hidden;
+			}
+			.mui-zoom {
+				-webkit-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+			}
+			.mui-slider .mui-slider-group .mui-slider-item img {
+				width: auto;
+				height: auto;
+				max-width: 100%;
+				max-height: 100%;
+			}
+			.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+				width: 100%;
+			}
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+				display: inline-table;
+			}
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			.mui-preview-loading {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+			.mui-preview-loading.mui-active {
+				display: block;
+			}
+			.mui-preview-loading .mui-spinner-white {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -25px;
+				margin-top: -25px;
+				height: 50px;
+				width: 50px;
+			}
+			.mui-preview-image img.mui-transitioning {
+				-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+				transition: transform 0.5s ease, opacity 0.5s ease;
+			}
+			@-webkit-keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@-webkit-keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			@keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			p img {
+				max-width: 100%;
+				height: auto;
+				margin-bottom: 30px;
+				border:1px solid #007AFF;
+			}
+			
+			/*媒体查询，横屏效果*/
+			@media only screen and (orientation:landscape ) {
+				.mui-control-content {
+					bottom: 0px;	
+					}					
+			}
+			p{
+				font-size: 1em;
+				color: #000000;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a id="my_popover" class="mui-icon mui-icon-bars mui-pull-right"></a>-->			
+			<h1 class="mui-title">检察员签名</h1>
+		</header>
+		<div class="mui-content">			
+			<div class="container">
+				<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<div class="mui-slider">
+		       			<div id="xuanxiangka" class="mui-slider-group mui-slider-loop ">
+		        		    <div class="mui-slider-item">
+		       		        	<a id="a1" class="mui-control-item mui-active"  href="#item1">
+									签名人1
+								</a>
+								<a id="a2" class="mui-control-item"  href="#item2">
+									签名人2
+								</a>
+								<a id="a3" class="mui-control-item"  href="#item3">
+									签名人3
+								</a>
+		         	 	   	</div>
+		      		  	</div>
+		   			</div>
+				</div> 
+			</div>
+			
+			<div id="item1" class="mui-control-content  mui-active">
+				<div class="row" hidden="hidden">
+					<div class="col-xs-12">
+						<div class="js-signature"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<br />
+						<div id="t1" class="js-signature" data-width="360" data-height="200" data-border="1px solid black" data-line-color="#000000" data-auto-fit="true"></div> 
+							<p>
+								<button id="clearBtn1" class="btn btn-default" onclick="clearCanvas_1();">清除</button>&nbsp;
+								<button id="CheckPic1" class="btn btn-default">查看</button>&nbsp;
+								<button id="saveBtn1" class="btn btn-default" disabled>确定</button>
+							</p>
+						<div id="signature1">
+							<p>
+								<em>您的签名预览</em>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="item2" class="mui-control-content ">
+				<div class="row" hidden="hidden">
+					<div class="col-xs-12">
+						<div class="js-signature"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<br />
+						<div id="t2" class="js-signature" data-width="360" data-height="200" data-border="1px solid black" data-line-color="#000000" data-auto-fit=""></div>
+							<p>
+								<button id="clearBtn2" class="btn btn-default" onclick="clearCanvas_2();">清除</button>&nbsp;
+								<button id="CheckPic2" class="btn btn-default">查看</button>&nbsp;
+								<button id="saveBtn2" class="btn btn-default" disabled>确定</button>
+							</p>
+						<div id="signature2">
+							<p>
+								<em>您的签名预览</em>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="item3" class="mui-control-content ">
+				<div class="row" hidden="hidden">
+					<div class="col-xs-12">
+						<div class="js-signature"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<br />
+						<div id="t3" class="js-signature" data-width="360" data-height="200" data-border="1px solid black" data-line-color="#000000" data-auto-fit=""></div>
+							<p>
+								<button id="clearBtn3" class="btn btn-default" onclick="clearCanvas_3();">清除</button>&nbsp;
+								<button id="CheckPic3" class="btn btn-default">查看</button>&nbsp;
+								<button id="saveBtn3" class="btn btn-default" disabled>确定</button>
+							</p>
+						<div id="signature3">
+							<p>
+								<em>您的签名预览</em>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>	
+				
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/service.js" ></script>
+	<script src="../../js/signature/jquery-1.11.0.min.js"></script>
+	<script src="../../js/signature/jq-signature.min.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		//区域滚动,需手动初始化scroll控件
+		mui('.mui-scroll-wrapper').scroll({
+			deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+		});		
+		mui.plusReady(function() {
+			//获取传值
+			var self = plus.webview.currentWebview();			
+			var tzdId = self.tzdId;
+			//进入页面时的签名查看
+			mui.ajax(url+'my_plus/my_signature.php',{
+				data:{
+					flag:"ShowSign",
+					tzdId:tzdId
+				},
+				type:'post',  
+				timeout:10000,
+				success:function(data){
+				
+					var qian = data.split("|%|");
+//						alert(qian[2]); 
+					if (data.length>1) {
+						//签名人1
+						$('#signature1').empty();
+						var dataUrl_1 = $('#t1').jqSignature('getDataURL');
+						var img_1 = $('<img>').attr('src', qian[0]);
+						$('#signature1').append($('<p>').text("这是您的签名:"));
+						$('#signature1').append(img_1);
+						//签名人2
+						$('#signature2').empty();
+						var dataUrl_2 = $('#t2').jqSignature('getDataURL');
+						var img_2 = $('<img>').attr('src', qian[1]);
+						$('#signature2').append($('<p>').text("这是您的签名:"));
+						$('#signature2').append(img_2);
+						//签名人3
+						$('#signature3').empty();
+						var dataUrl_3 = $('#t3').jqSignature('getDataURL');
+						var img_3 = $('<img>').attr('src', qian[2]);
+						$('#signature3').append($('<p>').text("这是您的签名:"));
+						$('#signature3').append(img_3);
+					} else{
+						alert("无数据！");
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					alert('ajax错误'+type+'---'+errorThrown);
+				}
+			});
+			
+			//签名查看
+			var CheckPic1 = document.getElementById("CheckPic1");
+			CheckPic1.addEventListener('tap',function(){
+				$('#signature1').empty();
+				var dataUrl = $('.js-signature').eq(1).jqSignature('getDataURL');
+				var img = $('<img>').attr('src', dataUrl);
+				$('#signature1').append($('<p>').text("这是你的签名:"));
+				$('#signature1').append(img);
+			});
+			var CheckPic2 = document.getElementById("CheckPic2");
+			CheckPic2.addEventListener('tap',function(){
+				$('#signature2').empty();
+				var dataUrl = $('.js-signature').eq(3).jqSignature('getDataURL');
+				var img = $('<img>').attr('src', dataUrl);
+				$('#signature2').append($('<p>').text("这是你的签名:"));
+				$('#signature2').append(img);
+			});
+			var CheckPic3 = document.getElementById("CheckPic3");
+			CheckPic3.addEventListener('tap',function(){
+				$('#signature3').empty();
+				var dataUrl = $('.js-signature').eq(5).jqSignature('getDataURL');
+				var img = $('<img>').attr('src', dataUrl);
+				$('#signature3').append($('<p>').text("这是你的签名:"));
+				$('#signature3').append(img);
+			});
+			//签名保存
+			var saveBtn1 = document.getElementById("saveBtn1");
+			saveBtn1.addEventListener('tap',function(){
+				$('#signature1').empty();
+				var dataUrl_1 = $('#t1').jqSignature('getDataURL');
+				var img = $('<img>').attr('src', dataUrl_1);
+				$('#signature1').append($('<p>').text("这是你的签名:"));
+				$('#signature1').append(img);
+//				alert(tzdId);
+				//异步保存
+//				alert(dataUrl_1);
+				mui.ajax(url+'my_plus/my_signature.php',{
+					data:{
+						flag:"save_ASet_1",
+						img_1:dataUrl_1,
+						tzdId:tzdId
+					},
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						//保存成功
+						if(data){
+							alert('保存成功');
+							mui.back();
+						}
+						//保存不成功
+						else{
+							alert('保存失败');
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+			});
+			if ($('.js-signature').length) {
+				$('.js-signature').jqSignature();
+			}
+			
+			$('#t1').on('jq.signature.changed', function() {
+				$('#saveBtn1').attr('disabled', false);
+			});
+			
+			
+				var saveBtn2 = document.getElementById("saveBtn2");
+			saveBtn2.addEventListener('tap',function(){
+				$('#signature2').empty();
+				var dataUrl_2 = $('#t2').jqSignature('getDataURL');
+				var img = $('<img>').attr('src', dataUrl_2);
+				$('#signature2').append($('<p>').text("这是你的签名:"));
+				$('#signature2').append(img);
+//				alert(tzdId);
+				//异步保存
+				mui.ajax(url+'my_plus/my_signature.php',{
+					data:{
+						flag:"save_ASet_2",
+						img_2:dataUrl_2,
+						tzdId:tzdId
+					},
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						//保存成功
+						if(data){
+							alert('保存成功');
+							mui.back();
+						}
+						//保存不成功
+						else{
+							alert('保存失败');
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+			});
+			if ($('.js-signature').length) {
+				$('.js-signature').jqSignature();
+			}
+			$('#t2').on('jq.signature.changed', function() {
+				$('#saveBtn2').attr('disabled', false);
+			});
+			
+			
+				var saveBtn3 = document.getElementById("saveBtn3");
+			saveBtn3.addEventListener('tap',function(){
+				$('#signature3').empty();
+				var dataUrl_3 = $('#t3').jqSignature('getDataURL');
+				var img = $('<img>').attr('src', dataUrl_3);
+				$('#signature3').append($('<p>').text("这是你的签名:"));
+				$('#signature3').append(img);
+//				alert(tzdId);
+				//异步保存
+				mui.ajax(url+'my_plus/my_signature.php',{
+					data:{
+						flag:"save_ASet_3",
+						img_3:dataUrl_3,
+						tzdId:tzdId
+					},
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						//保存成功
+						if(data){
+							alert('保存成功');
+							mui.back();
+						}
+						//保存不成功
+						else{
+							alert('保存失败');
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+			});
+			if ($('.js-signature').length) {
+				$('.js-signature').jqSignature();
+			}
+			$('#t3').on('jq.signature.changed', function() {
+				$('#saveBtn3').attr('disabled', false);
+			});
+		});
+		function clearCanvas_1() {
+			$('#signature1').html('<p><em>你的签名在点击“查看”后显示，点击“确认”后保存</em></p>');
+			$('#t1').jqSignature('clearCanvas');
+			$('#saveBtn1').attr('disabled', true);
+		}
+		function clearCanvas_2() {
+			$('#signature2').html('<p><em>你的签名在点击“查看”后显示，点击“确认”后保存</em></p>');
+			$('#t2').jqSignature('clearCanvas');
+			$('#saveBtn2').attr('disabled', true);
+		}
+		function clearCanvas_3() {
+			$('#signature3').html('<p><em>你的签名在点击“查看”后显示，点击“确认”后保存</em></p>');
+			$('#t3').jqSignature('clearCanvas');
+			$('#saveBtn3').attr('disabled', true);
+		}
+		
+	</script>
+</html>

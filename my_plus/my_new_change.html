@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/common.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link href="../css/imgView.css" rel="stylesheet" />
+	</head>
+	<style>
+		.my_none{
+			display: none !important;
+		}
+		/*卡片视图显示*/
+		.mui-card-header_my{
+			position:relative;
+			display:-webkit-box;
+			display:-webkit-flex;
+			display:flex;
+			min-height:44px;
+			padding:10px 15px;
+			-webkit-box-pack:justify;
+			-webkit-justify-content:space-between;
+			justify-content:space-between;
+			-webkit-box-align:center;
+			-webkit-align-items:center;
+			align-items:center;
+		}
+		.mui-card-media_my{
+			vertical-align:bottom;
+			color:#fff;
+			background-position:center;
+			background-size:cover;
+		}
+		.mui-card-content_my{
+				font-size:14px;
+				position:relative;
+		}
+		/*卡片视图显示*/
+		
+		/*照片路径*/
+		.zp{
+			height:40vw;
+			background-image:url(../images/zpxz.jpg);
+			margin-top: 10px;
+			border-top:1px solid #C6C6C6 ;
+		}
+		h5 {
+			margin: 5px 7px;
+		}
+		/*按钮小样式*/
+		.mui-btn-block_my{
+			font-size:16px;
+			display:block;
+			width:100%;
+			margin-bottom:10px;
+			padding:8px 0;
+		}
+		
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left "></a>
+			<!--<a id="it1" class="mui-btn mui-btn-link mui-pull-right mui-btn-blue ">修改</a>-->
+			<a id="it2" class="mui-btn mui-btn-link mui-pull-right mui-btn-blue my_none">完成</a>
+			<h1 class="mui-title">预览</h1>
+		</header>
+		<div class="mui-content">
+			<div id="myform" class="">
+				<div class="mui-content-padded" style="margin: 1px;">
+					<form id="wzxx" class="mui-input-group" style="margin-top: 1px;">
+						<div id="wzxxtmText" class="" style="margin: 2px 5px;bottom: 5px;">
+							<div class="mui-input-row">
+								<label>违章现象:</label>
+							</div>
+							<textarea id="wztm" class="" rows="5" placeholder="违章现象" readonly=""></textarea>
+						</div>
+					</form>
+					<form class="mui-input-group">
+						<div id="it3">
+							<div class="mui-input-row">
+								<label>违章部位:</label>
+					    		<input type="text" id="wzbw" placeholder="检查部位">
+							</div>
+							<div class="mui-input-row">
+								<label>违章状态:</label>
+					    		<input type="text" id="wzzt" placeholder="违章状态">
+							</div>	
+							<div class="mui-input-row my_none">
+								<label>时间戳:</label>
+					    		<input type="text" id="sjcYl" placeholder="时间戳" readonly="">
+							</div>
+							<div class="mui-input-row my_none">
+								<label>通知单时间戳:</label>
+					    		<input type="text" id="sjcTzd" placeholder="通知单时间戳" readonly="">
+							</div>
+							<div class="mui-input-row my_none">
+								<label>通知单编号:</label>
+					    		<input type="text" id="tzdbhFw" placeholder="通知单编号" readonly="">
+							</div>
+							<div class="mui-input-row my_none">
+								<label>工程名称:</label>
+					    		<input type="text" id="gcmc" placeholder="工程名称" readonly="">
+							</div>
+							<div class="mui-input-row my_none">
+								<label>工程id:</label>
+					    		<input type="text" id="gcid" placeholder="工程id" readonly="">
+							</div>
+							<div class="mui-input-row my_none">
+								<label>Li的ID:</label>
+					    		<input type="text" id="liid" placeholder="Li的ID" readonly="">
+							</div>
+						</div>
+					</form>
+					<form id="zhenggai" class="mui-input-group" style="margin-top: 5px;">
+						<div id="huifuText" class="" style="margin: 10px 5px;bottom: 5px;">
+							<textarea id="textareaBianji" class="" rows="5" placeholder="项目部回复"></textarea>
+						</div>
+					</form>
+					<form id="fgshfForm" class="mui-input-group" style="margin-top: 5px;">
+						<div id="fgsihfDiv" class="" style="margin: 10px 5px;bottom: 30px;">
+							<textarea id="fgshf" class="" rows="5" placeholder="分公司批复"></textarea>
+						</div>
+					</form>
+					<form id="zgshfForm" class="mui-input-group my_none" style="margin-top: 5px;">
+						<div id="zgsihfDiv" class="" style="margin: 10px 5px;bottom: 30px;">
+							<textarea id="zgshf" class="" rows="5" placeholder="总公司批复"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="mui-content-padded" style="margin: 5px;">
+					<div class="mui-card">
+		 				<ul id="zhaopian" class="mui-table-view mui-grid-view">
+		 					<li class="mui-table-view-cell mui-media mui-col-xs-6 my_none">
+		          				<img id="imgMynnone" style="width: 200px;height: 200px;" class="mui-media-object" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg">
+		        			</li>
+		      				<li class="mui-table-view-cell mui-media mui-col-xs-6">
+		          				<a id="pic" href="#" onclick="getImage(this.id);" class="my_none">
+		           	  				<img id="imgYl" class="mui-media-object" src="../images/zpxz.jpg">
+		       					</a>
+		   					</li>
+						</ul>
+ 					</div>
+ 				</div>
+ 				<div id="anniuHf" class="mui-content-padded my_margintop5px my_marginbottom10px my_none">
+					<button id="quxiao" type="button" class="mui-btn mui-btn-primary mui-btn-block_my" style="width: 45%;float: left;">取消</button>
+					<button id="huifu" type="button" class="mui-btn mui-btn-primary mui-btn-block_my" style="width: 45%;float: right;">回复</button>
+				</div>
+ 				<div id="anniuPf" class="mui-content-padded my_margintop5px my_marginbottom10px my_none">
+					<button id="butongguo" type="button" class="mui-btn mui-btn-primary mui-btn-block_my" style="width: 45%;float: left;">不通过</button>
+					<button id="tongguo" type="button" class="mui-btn mui-btn-primary mui-btn-block_my" style="width: 45%;float: right;">通过</button>
+				</div>
+			</div>
+			
+			<div id="uploader" class="my_none"> 
+				
+			</div>
+			<!--<div id="output">-->
+			<!--Camera管理摄像头设备，可用于拍摄照片、录制视频文件。      -->
+			<!--</div>-->
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.zoom.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/mui.previewimage.js"></script>
+		<script src="../js/service.js"></script>
+		<script src="../js/my_js_zggl_yulan.js"></script>
+		<script>
+		mui.previewImage();
+		mui.init({
+		swipeBack:true, //启用右滑关闭功能
+		gestureConfig:{					
+			doubletap: true, //默认为false
+			longtap: true, //默认为false	
+			}
+		});
+		
+		mui.plusReady(function(){	
+			var self = plus.webview.currentWebview();
+			flag = self.flag;
+			zp = self.zp;
+			var jcCj = self.jcCj;
+			var imgId = self.imgId;
+			var imgSrc = self.imgSrc;
+			var div_text = self.div_text;
+			var divTextBw = self.divTextBw;
+			var sjc = self.sjc;
+			var liId = self.liId;
+			var mobile = self.mobile;
+			var mobileCompany = self.mobileCompany;
+			//alert(mobileCompany);
+			var panduan="";
+			//定位
+			//var it1=document.getElementById('it1');
+			var uploader=document.getElementById('uploader');
+			var it2=document.getElementById('it2');
+			var wztm=document.getElementById("wztm");
+			var wzbw=document.getElementById("wzbw");
+			var wzzt=document.getElementById("wzzt");
+			var pic=document.getElementById("pic");
+			var sjcYl=document.getElementById("sjcYl");
+			var liid=document.getElementById("liid");
+			var gcid=document.getElementById("gcid");
+			var gcmc=document.getElementById("gcmc");
+			var tzdbhFw=document.getElementById("tzdbhFw");
+			var sjcTzd=document.getElementById("sjcTzd");
+			var myform=document.getElementById("myform");
+			var anniuHf=document.getElementById("anniuHf");
+			var anniuPf=document.getElementById("anniuPf");
+			var quxiao=document.getElementById("quxiao");
+			var huifu=document.getElementById("huifu");
+			var butongguo=document.getElementById("butongguo");
+			var tongguo=document.getElementById("tongguo");
+			//获取本页面的值
+			var huifuText=document.getElementById("huifuText");
+			var textareaBianji=document.getElementById("textareaBianji");
+			var zgshf=document.getElementById("zgshf");
+			var fgshf=document.getElementById("fgshf");
+			var zhenggaiForm=document.getElementById("zhenggai");
+			var fgshfForm=document.getElementById("fgshfForm");
+			var zgshfForm=document.getElementById("zgshfForm");
+			
+			sjcTzd.value=sjc;
+			wztm.value=div_text;
+			wzbw.value=divTextBw;
+			liid.value=liId;
+			//自动添加当前时间戳,作为这个新建任务的唯一标识存到数据库，附件上传时会用到
+			var myDate=new Date();
+			var mytime=myDate.getTime();
+			sjcYl.value=mytime;
+			
+			//更改第一个li标签的样式,显示上个界面的图片
+			var zhaopian=document.getElementById("zhaopian");
+			var imgMynnone=document.getElementById("imgMynnone");
+			var ulLione=document.getElementsByTagName("li")[0];
+			ulLione.setAttribute("class","mui-table-view-cell mui-media mui-col-xs-6"); 
+			imgMynnone.setAttribute("src",imgSrc);
+			
+			//添加文本值
+			mui.ajax(url+'my_plus/my_chang_manage.php',{
+				data:{
+					flag:flag,
+					sjc:sjc,
+					liid:'',
+					zggllx:'yulan'
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data);
+					var length=data.length;
+					for (var i=0;i<length-1;i++) {
+						wzzt.value=data[i].违章状态;
+						gcid.value=data[i].工程id;
+						gcmc.value=data[i].工程名称;
+						tzdbhFw.value=data[i].通知单编号;
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					return callback('ajax错误'+type+errorThrown);
+				}
+			});
+			
+			//添加文本值
+			mui.ajax(url+'my_plus/my_chang_manage.php',{
+				data:{
+					flag:flag,
+					sjc:sjc,
+					liid:liid.value,
+					zggllx:'xmbhf'
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data);
+					var length=data.length;
+					for (var i=0;i<length-1;i++) {
+						wzbw.value=data[i].违章部位;
+						textareaBianji.value="项目部回复："+data[i].项目部回复;
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					return callback('ajax错误'+type+errorThrown);
+				}
+			});
+			
+			//添加文本值
+			mui.ajax(url+'my_plus/my_chang_manage.php',{
+				data:{
+					flag:flag,
+					sjc:sjc,
+					liid:liid.value,
+					zggllx:'gspf'
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data);
+					var length=data.length;
+					for (var i=0;i<length-1;i++) {
+						wzbw.value=data[i].违章部位;
+						textareaBianji.value="项目部回复："+data[i].项目部回复;
+						fgshf.value="分公司批复："+data[i].分公司批复;
+						zgshf.value="总公司批复："+data[i].总公司批复;
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//return callback('ajax错误'+type+errorThrown);
+				}
+			});
+			
+			//alert(zp);
+			if(zp==1){
+				var zggl='1'; //1代表整改
+				zhenggaiForm.setAttribute("class","mui-input-group my_none");
+				fgshfForm.setAttribute("class","mui-input-group my_none");
+				zgshfForm.setAttribute("class","mui-input-group my_none");
+			}else if(zp==2){ 
+				var zggl='2'; //2代表回复
+				fgshfForm.setAttribute("class","mui-input-group my_none");
+				zgshfForm.setAttribute("class","mui-input-group my_none");
+				anniuHf.setAttribute("class","mui-content-padded my_margintop5px my_marginbottom10px");
+			}else{
+				var zggl='3'; //3代表批复
+				if(mobileCompany=="Yes"){
+					zgshfForm.setAttribute("class","mui-input-group");
+				}else{
+					zgshfForm.setAttribute("class","mui-input-group my_none");
+				}
+				anniuPf.setAttribute("class","mui-content-padded my_margintop5px my_marginbottom10px");
+			}
+			
+			//修改操作
+			var formShuzu=myform.getElementsByTagName("form");
+			var inputShuzu=formShuzu[1].getElementsByTagName("input");
+			var inputSzLength=inputShuzu.length;
+//			it1.addEventListener('tap',function(){
+//				it1.classList.add('my_none');
+//				uploader.classList.remove('my_none');
+//				it2.classList.remove('my_none');
+//				pic.classList.remove('my_none');
+//				anniuPf.setAttribute("class","mui-content-padded my_margintop5px my_marginbottom10px");
+//				for(var i=0;i<inputSzLength;i++){
+//					inputShuzu[i].readOnly=false;
+//				}
+//			});
+
+			
+			
+//			//通过
+//			tongguo.addEventListener('tap',function(){
+//				panduan=1;
+//				tongguo.disabled=true;
+//			});
+//			//不通过
+//			butongguo.addEventListener('tap',function(){
+//				panduan=0;
+//				butongguo.disabled=true;
+//			});
+			
+			it2.addEventListener('tap',function(){
+				//it1.classList.remove('my_none');
+				uploader.classList.add('my_none');
+				it2.classList.add('my_none');
+				pic.classList.add('my_none');
+				for(var i=0;i<inputSzLength;i++){
+					inputShuzu[i].readOnly=true;
+				}	
+				wztm.readOnly=true;
+				
+				//根据zp值的不同存不同值
+				if(zp==1){
+					var textareaBianjiValue="";
+					var zgshfValue=""; //总公司批复
+					var fgshfValue=""; //分公司批复
+					var divValue=liId;
+				}else if(zp==2){
+					var textareaBianjiValue=textareaBianji.value;
+					var zgshfValue=""; //总公司批复
+					var fgshfValue=""; //分公司批复
+					var divValue=liId;
+				}else if(zp==3){
+					var textareaBianjiValue=textareaBianji.value;
+					var zgshfValueWfg=zgshf.value; //总公司批复
+					var fgshfValueWfg=fgshf.value; //分公司批复
+					var strs=new Array();
+					strs=zgshfValueWfg.split("：");
+					var zgshfValue=strs[1];
+					var strs=new Array();
+					strs1=fgshfValueWfg.split("：");
+					var fgshfValue=strs1[1];
+					var divValue=liId;
+					//alert(divValue);
+				}else{
+					
+				}
+				
+				//上传数据库
+				var mydata = {
+					flag:flag,
+					zp:zp,
+					gcid:gcid.value, //工程id
+					gcmc:gcmc.value, //工程名称
+					wztm:wztm.value, //违章现象
+					wzbw:wzbw.value, //违章部位
+					wzzt:wzzt.value, //违章状态
+					sjcYl:sjcYl.value, //时间戳
+					sjcTzd:sjcTzd.value, //通知单时间戳
+					tzdbhFw:tzdbhFw.value, //通知单编号
+					liid:liid.value, //Li的ID
+					textareaBianji:textareaBianjiValue, //项目部回复	
+					zgshf:zgshfValue, //总公司批复
+					fgshf:fgshfValue //分公司批复
+				};
+				ajaxform(mydata, function(err) {
+					if (err) {
+						plus.nativeUI.toast(err);
+						return;
+					}
+					alert("此违章条目已同步云端,请继续完善回复数据！");
+					var target=plus.webview.currentWebview().opener();
+					mui.fire(target,'json',{
+						flag:divValue,
+						panduan:panduan
+					});
+					mui.back();
+				});
+			});
+			
+			//取消按钮
+			quxiao.addEventListener('tap',function(){
+				mui.back();
+			});
+		});
+		
+		//从相册中中选择照片
+		function getImage(id){
+			var a_id=id;
+			var aId=document.getElementById(a_id);
+			var img_id=aId.getElementsByTagName("img")[0].getAttribute("id");
+			plus.gallery.pick(function(p){
+				var pic=document.getElementById(img_id);
+				pic.src=p;
+				pic.realUrl=pic.src;
+				//替换完后改变a标签的href和onclick属性
+				aId.setAttribute("onclick","");
+				//createItem(p,'confirm');
+				//动态创建选择图片上传的函数
+				createimgYl(img_id);
+    		});
+		}
+		//被选择的照片替换添加照片
+		function createimgYl(img_id){
+			var id=img_id;
+			var total=0;
+			var Num="";
+			for (var i=0;i<id.length-5;i++) {
+				//num=Math.random();
+				Num+=Math.floor(Math.random()*10); 
+				total=Num
+			}
+			//alert(total);
+			var zhaopian=document.getElementById("zhaopian");
+			var li2=document.createElement('li');
+			li2.id="zp"+total;
+			li2.className="mui-table-view-cell mui-media mui-col-xs-6";
+			li2.innerHTML='<a id="zg'+total+'" href="#" onclick="getImage(this.id);"><img id="imgli2'+total+'" class="mui-media-object" src="../images/zpxz.jpg"></a>';
+			zhaopian.appendChild(li2);
+		}
+		
+		//异步传值
+			var ajaxform = function(mydata, callback) {
+				callback = callback || $.noop;
+				mydata = mydata || {};
+				mydata.flag = mydata.flag || '';
+				mydata.zp = mydata.zp || '';
+				mydata.gcid = mydata.gcid || '';
+				mydata.gcmc = mydata.gcmc || '';
+				mydata.wztm = mydata.wztm || '';
+				mydata.wzbw = mydata.wzbw || '';
+				mydata.wzzt = mydata.wzzt || '';
+				mydata.sjcYl = mydata.sjcYl || '';
+				mydata.sjcTzd = mydata.sjcTzd || '';
+				mydata.tzdbhFw = mydata.tzdbhFw || '';
+				mydata.liid = mydata.liid || '';				
+				mydata.textareaBianji = mydata.textareaBianji || '';
+				mydata.zgshf = mydata.zgshf || '';
+				mydata.fgshf = mydata.fgshf || '';
+//				console.log(mydata.flag+"    ||"+mydata.gcid+"     ||"+mydata.gcmc+"     ||"+mydata.wztm+"     ||"+mydata.wzbw+"    ||"+mydata.wzzt+"  "+mydata.sjcYl+"    ||"+mydata.sjcTzd+"    ||"+mydata.tzdbhFw+"    ||"+mydata.liid+"    ||"+mydata.textareaBianji+"    ||"+mydata.zgshf+"    ||"+mydata.fgshf);
+				mui.ajax(url+'my_plus/my_change_manage_tpyl.php',{
+					data:{
+						flag: mydata.flag,
+						zp: mydata.zp,
+						gcid: mydata.gcid,
+						gcmc: mydata.gcmc,
+						wztm: mydata.wztm,
+						wzbw: mydata.wzbw,
+						wzzt: mydata.wzzt,
+						sjcYl: mydata.sjcYl,
+						sjcTzd: mydata.sjcTzd,
+						tzdbhFw: mydata.tzdbhFw,
+						liid: mydata.liid,
+						textareaBianji: mydata.textareaBianji,	
+						zgshf: mydata.zgshf,
+						fgshf: mydata.fgshf
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//console.log(data);
+						if (data.result=='success') {
+							return callback();
+						} else{
+							return callback('服务器返回error');	
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+			};
+		</script>
+	</body>
+</html>

@@ -1,0 +1,343 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/my_css.css">
+	</head>
+
+	<body>
+		<style>
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+				width: 45%;
+				
+				vertical-align: middle;
+				
+			}
+			.mui-btn1 {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+				width: 50%;
+				vertical-align: middle;
+				
+			}
+			
+		</style>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <!--<a id="my_popover" class="mui-icon mui-icon-bars mui-pull-right"></a>-->
+		    <h1 class="mui-title">危险源管理</h1>
+		</header>
+		
+		<div class="mui-content">
+			<div style="padding: 10px 10px;" id="all_select">
+					<select id="select1"  class="mui-btn mui-btn-block"  style="display: inline;"  onchange="lxxz(this.value)">
+						<option value="" selected="selected">选择危险源类型</option>
+						<option value="全部">全部</option>
+						<option value="基坑支护及降水工程">基坑支护及降水工程</option>
+						<option value="土方开挖工程">土方开挖工程</option>
+						<option value="模板工程支撑体系">模板工程支撑体系</option>
+						<option value="脚手架工程">脚手架工程</option>
+						<option value="起重吊装及安装拆卸工程">起重吊装及安装拆卸工程</option>
+						<option value="拆除爆破工程">拆除爆破工程</option>
+						<option value="其他危险性较大的工程">其他危险性较大的工程</option>
+				    </select>
+				    <select id="select2"  class="mui-btn1 mui-btn-block" style="display: inline;" onchange="ztxz(this.value)">
+						<option value="点击选择状态">选择危险源状态</option>
+						<option value="使用中">使用中</option>
+						<option value="已关闭">已关闭</option>
+					</select>
+			</div>
+			<div id="div_my">
+				<div id="item1" class="mui-control-content mui-active">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div id="danger" class="mui-scroll rwdiv">
+							
+						</div>						
+					</div>
+				</div>	
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/my_js_nextpage.js"></script>
+		<script src="../js/service.js" ></script>
+		<script type="text/javascript">
+		mui.init({
+			swipeBack:true, //启用右滑关闭功能
+			gestureConfig:{					
+				oubletap: true, //默认为false
+				longtap: true, //默认为false
+			}
+		});	
+		//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});					
+			})(mui);
+		//获取url参数值
+			function geturl(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]);
+				return null;
+			}
+		//获取参数值
+			var wxylx = geturl("wxylx");
+            var gcid=geturl("gcid");
+            var gcmc=geturl("gcmc");
+        //解码
+        	gcmc=decodeURI(gcmc);
+//      	alert(gcmc);
+            //alert(gcid+"  "+gcmc);
+//          console.log(gcmc);
+        //危险源大类选择函数
+        function lxxz(sel) { 
+        	var sel=sel;
+   			if(sel=="全部"){
+				wxylxHs(sel);
+			} else if(sel=="危险源类型"){ 
+				wxylxHs(sel);
+     		} else if(sel=="基坑支护及降水工程"){
+     			wxylxHs(sel);
+   			} else if(sel=="土方开挖工程"){
+	  		    wxylxHs(sel);
+			}else if(sel=="模板工程支撑体系"){
+	  		    wxylxHs(sel);
+	  		}else if(sel=="脚手架工程"){
+	  		    wxylxHs(sel);
+	  		} else if(sel=="起重吊装及安装拆卸工程"){
+	  		    wxylxHs(sel);
+			}else if(sel=="拆除爆破工程"){
+	  		    wxylxHs(sel);
+	  		}else if(sel=="其他危险性较大的工程"){
+	  		    wxylxHs(sel);
+	  		}else{}
+		}
+        //危险源状态选择函数
+        function ztxz(zt) { 
+        	var zt=zt;
+   			if(zt=="全部"){
+   				console.log(zt);
+//				wxyzt(zt);
+			} else if(zt=="使用中"){ 
+				//console.log(zt);
+				wxyzt(zt);
+     		} else if(zt=="已关闭"){
+   				wxyzt(zt);
+   			}else{}
+		}
+        //动态创建危险源大类和状态函数
+        var wxyzt=function(zt) {
+        	var zt=zt;
+			var select1=document.getElementById("select1").value;
+      		var danger=document.getElementById("danger");
+			danger.innerHTML="";
+			mui.ajax(url+'my_plus/my_dangertwo.php',{	
+				data:{
+					wxyzt:zt,
+					wxylx:select1,
+					gcid:gcid,
+					gcmc:gcmc
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					var length=data.length;						
+					if (length>1) {		
+						for (var i=0;i<length-1;i++) {
+							var gcid =data[i].gcid;
+							var wxydl=data[i].危险源大类;
+							var wxylx=data[i].危险源类型;
+							var sgbw=data[i].施工部位;
+							var wxyzt=data[i].危险源状态;
+							var sjc=data[i].时间戳;
+							var dangerProject=data[i].超过一定规模的危险性较大的分部分项工程;
+							createrwlistC(gcid,wxylx,sgbw,wxyzt,sjc,dangerProject);
+//							alert(dangerProject);
+						}
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					//alert('ajax错误'+type);
+				}
+			});
+        };
+        var createrwlistC=function(gcid,wxylx,sgbw,wxyzt,sjc,dangerProject) {
+			var danger=document.getElementById("danger");
+			var dangerProjectA=encodeURI(encodeURI(dangerProject));
+			var wxylxB=encodeURI(encodeURI(wxylx));
+			var wxylx = "危险源类型："+wxylx;
+			var sgbw = "施工部位："+sgbw;
+			var wxyzt = "危险源状态："+wxyzt;
+			var ul = document.createElement("ul");
+			ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+			ul.id="wxy_ul";
+			var color="my_backgroundcolor_blue";
+//			alert(dangerProject);
+			if(dangerProject=='是'){
+				color="my_backgroundcolor_red";
+			}else if(dangerProject=='否'){
+				color="my_backgroundcolor_blue";
+			}
+			ul.innerHTML = '<li class="mui-table-view-cell '+color+' "><a open-type="common" href="../my_plus/my_danger.html?gcid='+gcid+'&sjc='+sjc+'&dangerProject='+dangerProjectA+'&wxylx='+wxylxB+' "><span class="mui-icon mui-icon-gear mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2 ">'+wxylx+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+sgbw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+wxyzt+'</p></li>';
+			danger.appendChild(ul);
+		};
+        //动态创建危险大类函数
+		var wxylxHs=function(flag) {
+			var select2=document.getElementById("select2").value;
+			var danger=document.getElementById("danger");
+			danger.innerHTML="";
+			mui.ajax(url+'my_plus/my_danger.php',{	
+				data:{
+					wxylx:flag,
+					wxyzt:'',
+					gcid:gcid,
+					gcmc:gcmc
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					var length=data.length;						
+					if (length>1) {		
+						for (var i=0;i<length-1;i++) {
+							var gcid =data[i].gcid;
+							var wxylx=data[i].危险源类型;
+							var sgbw=data[i].施工部位;
+							var wxyzt=data[i].危险源状态;
+							var sjc=data[i].时间戳;
+							var dangerProject=data[i].超过一定规模的危险性较大的分部分项工程;
+							createrwlistB(gcid,wxylx,sgbw,wxyzt,sjc,dangerProject);
+						}
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					//alert('ajax错误'+type);
+				}
+			});
+		};
+		//创建危险源选择列表函数
+		var createrwlistB=function(gcid,wxylx,sgbw,wxyzt,sjc,dangerProject) {
+			var danger=document.getElementById("danger");
+			var dangerProjectA=encodeURI(encodeURI(dangerProject));
+			var wxylxB=encodeURI(encodeURI(wxylx));
+			var wxylx = "危险源类型："+wxylx;
+			var sgbw = "施工部位："+sgbw;
+			var wxyzt = "危险源状态："+wxyzt;
+			var ul = document.createElement("ul");
+			ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+			ul.id="wxy_ul";
+			var color="my_backgroundcolor_blue";
+			if(dangerProject=='是'){
+				color="my_backgroundcolor_red";
+			}else if(dangerProject=='否'){
+				color="my_backgroundcolor_blue";
+			}
+			ul.innerHTML = '<li class="mui-table-view-cell '+color+' "><a open-type="common" href="../my_plus/my_danger.html?gcid='+gcid+'&sjc='+sjc+'&dangerProject='+dangerProjectA+'&wxylx='+wxylxB+' "><span class="mui-icon mui-icon-gear mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2 ">'+wxylx+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+sgbw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+wxyzt+'</p></li>';
+			danger.appendChild(ul);
+		};
+        ////////////////////////////////
+        mui.plusReady(function(){
+				var all_select=document.getElementById("all_select");
+				var select1=document.getElementById("select1");
+				var select2=document.getElementById("select2");
+				//创建列表函数
+				var createrwlistA=function(gcid,wxylx,sgbw,wxyzt,sjc,dangerProject) {
+					var danger=document.getElementById("danger");
+					var dangerProjectA=encodeURI(encodeURI(dangerProject));
+					var wxylxB=encodeURI(encodeURI(wxylx));
+					var wxylx = "危险源类型："+wxylx;
+					var sgbw = "施工部位："+sgbw;
+					var wxyzt = "危险源状态："+wxyzt;
+					var ul = document.createElement("ul");
+					ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+					ul.id="wxy_ul";
+					var color="my_backgroundcolor_red";           
+					if(dangerProject=='是'){
+						color="my_backgroundcolor_red";
+					}else if(dangerProject=='否'){
+						color="my_backgroundcolor_blue";
+					}
+					ul.innerHTML = '<li class="mui-table-view-cell '+color+' "><a open-type="common" href="../my_plus/my_danger.html?gcid='+gcid+'&sjc='+sjc+'&dangerProject='+dangerProjectA+'&wxylx='+wxylxB+'"><span class="mui-icon mui-icon-gear mui-pull-left my_fontweight my_color_white"></span><p class="mui-ellipsis my_style2 ">'+wxylx+'</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+sgbw+'</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">'+wxyzt+'</p></li>';
+					danger.appendChild(ul);
+				};
+				
+				//危险源大类的初始界面
+				mui.ajax(url+'my_plus/my_danger.php',{	
+					data:{
+						wxylx:"quanbu",
+						gcid:gcid,
+						gcmc:gcmc
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						var length=data.length;						
+						if (length>1) {		
+							for (var i=0;i<length-1;i++) {
+								var gcid =data[i].gcid;
+								var wxylx=data[i].危险源类型;
+								var sgbw=data[i].施工部位;
+								var wxyzt=data[i].危险源状态;
+								var sjc=data[i].时间戳;
+								var dangerProject=data[i].超过一定规模的危险性较大的分部分项工程;
+								createrwlistA(gcid,wxylx,sgbw,wxyzt,sjc,dangerProject);
+							}
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						//alert('ajax错误'+type);
+					}
+				});
+				//任务列表长按事件监听
+				mui('#danger').on('longtap', 'li', function() {
+						var alltex="同欣安检";
+						var btnArray = [
+							{title:"删除该危险源"}
+						];
+						plus.nativeUI.actionSheet( {
+							title:"操作",
+							cancel:"取消",
+							buttons:btnArray
+						}, function(e){
+							var index = e.index;							
+							switch (index){
+								case 0:	//取消
+									break;
+								case 1: //删除
+									var danger=document.getElementById("danger");
+									var liThisid=document.getElementById(liTextid);
+									danger.removeChild(liThisid);
+									break;
+							}
+						} );
+				});
+				//加载android原生类，初始化
+				var android=function(){
+					main = plus.android.runtimeMainActivity();
+					Intent = plus.android.importClass("android.content.Intent");
+					File = plus.android.importClass("java.io.File");
+					Uri = plus.android.importClass("android.net.Uri");					
+				};
+			});
+		</script>
+		<!--<script src="../js/setPullToRefresh.js" ></script>-->
+	</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">工程基本信息统计分析</h1>
+		</header>
+		<div id="gcxx" class="mui-content">
+			<!--<ul class="mui-table-view">
+				<a href="my_pro_xinx.html" style="color: #000000;">
+					<li class="mui-table-view-cell" style="height: 60px">深圳市鲁班大厦工程项目1</li>
+				</a>
+			</ul>-->
+		</div>		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/chart.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			
+			mui.plusReady(function(){
+				var self = plus.webview.currentWebview();
+				var dqsheng = self.dqsheng;
+				var dqshi = self.dqshi;
+				var lb = self.lbbb;
+				var jd = self.jd;
+				var gcid = self.gcid;
+				
+				var gcxm = function(gcmc,sjc){
+					var gcxx = document.getElementById("gcxx");
+					var ul = document.createElement("ul");
+					ul.className = 'mui-table-view';
+					ul.innerHTML = '<a href="my_pro_xinx.html?sjc='+sjc+'" style="color: #000000;"><li class="mui-table-view-cell" style="height: 60px">'+gcmc+'</li></a>'
+					gcxx.appendChild(ul);
+				}
+				
+				mui.ajax(url+'my_count/my_pro_count.php',{
+					data:{
+						dqsheng:dqsheng,
+						dqshi:dqshi,
+						jd:jd,
+						lb:lb,
+						gcid:gcid
+					},
+					dataType:'json',
+					type:'POST', 
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length; //数据返回的形式是数组，在这里先判断数组的长度
+						if (length>0) {
+							for (var i=0;i<length-1;i++) {
+								var gcmc = data[i].工程名称;
+								var sjc = data[i].时间戳;
+								gcxm(gcmc,sjc);
+							}
+							}else{						
+						}
+					},
+					
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+			});
+		</script>
+		<script src="../js/setPullToRefresh.js" ></script>
+	</body>
+</html>

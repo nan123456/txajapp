@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>同欣项目巡检系统</title>   
+    <link href="css/mui.min.css" rel="stylesheet"/>  
+    <link rel="stylesheet" href="css/my_css.css">	
+    <link rel="stylesheet" href="css/iconfont.css">
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-menu mui-icon mui-icon-bars mui-pull-left my_none"></a>	
+		<a id="info" class="mui-icon mui-icon-info-filled mui-pull-right" style="color: #999;"></a>
+		<a id="team" class="mui-icon mui-icon-plus mui-pull-right my_none" style="color: #999;"></a>
+		<a id="attention" class="mui-icon iconfont icon-erweima mui-pull-right my_none" style="color: #999;"></a>
+		<h1 id="title" class="mui-title">同欣项目巡检系统</h1>
+	</header>
+	<nav class="mui-bar mui-bar-tab">
+		<a id="defaultTab" class="mui-tab-item mui-active" href="my.html">
+			<span class="mui-icon mui-icon-home"></span>
+			<span class="mui-tab-label">我的</span>
+		</a>
+		<a class="mui-tab-item" href="team.html">
+			<span class="mui-icon mui-icon-weixin"></span>
+			<span class="mui-tab-label">小组</span>
+		</a>
+		<!--<a class="mui-tab-item" href="attention.html">
+			<span class="mui-icon mui-icon-weibo"></span>
+			<span class="mui-tab-label">关注</span>
+		</a>
+		<a class="mui-tab-item" href="knowledge.html">
+			<span class="mui-icon mui-icon-compose"></span>
+			<span class="mui-tab-label">知识</span>
+		</a>-->
+	</nav>
+	<script src="js/mui.min.js"></script>
+	<script src="js/service.js" ></script>
+	<script charset="utf-8">
+      	mui.init();      	
+      	mui.plusReady(function() { 
+      		//获取传值
+      		var self = plus.webview.currentWebview();
+      		mobile = self.mobile; 
+      		userid = self.userid;
+      		bumen = self.bumen;
+      	});
+      	//处理右上角关于图标的点击事件；	
+      	var info=document.getElementById('info');
+      	var team=document.getElementById('team');
+      	var attention=document.getElementById('attention');
+      	info.addEventListener('tap', function() {
+      		mui.openWindow({
+      			url: "info.html",
+      			id: this.href,
+      			styles: {
+					hardwareAccelerated:false
+				},
+      			waiting:{
+      				autoShow:false
+      			},   
+      			extras:{
+      				//传值
+      				name:'mui'
+      			}
+      		});
+      		return;
+      	});
+      	attention.addEventListener('tap', function() {
+      		mui.openWindow({
+      			url: "barcode_scan.html",
+      			id: this.href,
+      			waiting:{
+      				autoShow:false
+      			},   
+      			extras:{      				
+      				
+      			}
+      		});
+      		return;
+      	});
+    </script>
+	<script src="js/my_js_index.js"></script>	
+</body>
+</html>

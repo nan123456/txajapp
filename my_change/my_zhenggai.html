@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣项目巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<style type="text/css">
+			.margintop10px{
+				margin-top: 10px;
+			}
+			.paddingleft34px{
+				padding-left: 34px;
+			}
+			.mui-popover {
+				height: 260px;
+			}
+			
+			#cdbzPopover{
+				min-width: 282px;				
+				top:15% !important;
+				margin-top: 0px;
+				left: 50% !important;
+				margin-left: -141px;
+				position: fixed;
+			}
+			.mui-popover .mui-popover-arrow{
+				display: none !important;
+			}
+			.bgcolors{
+				background-color: #0CAF2D;
+			}
+			#zg{
+				background-color: orangered;
+				color: white;
+			}
+			#yq{
+				background-color: orangered;
+				color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">待办整改</h1>
+		</header>
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" id="zgspf" href="#item1">
+						总公司待批复
+					</a>
+					<a class="mui-control-item" id="fgspf" href="#item2">
+						分公司待批复
+					</a>
+					<a class="mui-control-item" id="xmbhf" href="#item3">
+						项目部待回复
+					</a>
+				</div>
+			</div>
+			<input type="hidden" name="bumen" id="bumen" value="" />
+			<!--总公司待批复 -->
+			<div id="item1" class="mui-control-content mui-active">
+				<div id="scroll" class="mui-scroll-wrapper">
+					<ul id="my_list" class="mui-table-view mui-grid-view mui-grid-9 my_list">
+							
+					</ul>
+				</div>
+			</div>
+			<!--总公司待批复 -->
+			
+			<!--分公司待批复 -->
+			<div id="item2" class="mui-control-content">
+				<div id = "fdpf">
+					<form class="mui-input-group">
+					<div class="mui-input-row div2" >
+						<div class="mui-input-row">
+							<label>部门:</label>
+							<select id="section">
+								<option value=" "></option>
+							</select>
+						</div>
+					</div>
+					</form>
+					<div align ="center" class="mui-content-padded" style="margin-top: 20px">
+					<button id="count" type="button" class="mui-btn mui-btn-primary mui-btn-block_my">点击查询整改待办</button>
+					<button id="count1" type="button" class="mui-btn mui-btn-primary mui-btn-block_my">点击查询逾期待办</button>
+					
+					</div>
+				</div>
+			</div>
+			<!--项目部待回复 -->
+			<div id="item3" class="mui-control-content">
+				<div id = "xdhf">
+					
+			</div>
+			<!--项目部待回复 -->
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script type="text/javascript">	
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					
+					}
+			});
+			
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});					
+			})(mui);
+			
+			mui.plusReady(function(){
+				//接收传值
+				var self = plus.webview.currentWebview();
+				var mobile = self.mobile;
+				//alert(mobile);
+				var segmentedControl=document.getElementById("segmentedControl");
+				var section = document.getElementById("section");
+				var sum = new Array(0,0,0,0);
+				//未查询前异步获取数据 --整改
+				mui.ajax(url+'dbzg.php',{
+					data:{
+						mobile:mobile,
+						flag:"zhneggai"
+					},
+					dataType:'json',
+					type:'POST', 
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+							var myLi = document.getElementById("my_list");
+//							var zgspf = document.getElementById("")
+							var fdpf= document.getElementById("fdpf");
+							var xdhf = document.getElementById("xdhf");
+							var zpf = document.getElementById("zgspf");
+							var fpf = document.getElementById("fgspf");
+							var xhf = document.getElementById("xmbhf");
+							var bumen = document.getElementById("bumen");
+//							var show = document.getElementById("scroll");
+							var xuanxiangkaA=segmentedControl.getElementsByTagName("a");
+							var num = data[0].count;
+							var belong = data[0].belong;
+							bumen.value=belong;
+							function post(belong,sum1,sum2,sum3){
+							if(belong==1){
+							myLi.innerHTML = '<li  class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><span class="mui-badge mui-badge-danger">'+sum[1]+'</span><a id="zgs" ><span class="mui-icon mui-icon-navigate"></span><div class="mui-media-body">整改待办</div></a></li>  <li  class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><span class="mui-badge mui-badge-danger">'+sum[0]+'</span><a id="zgsyq" ><span class="mui-icon mui-icon-navigate"></span><div class="mui-media-body">逾期待办</div></a></li>';
+							xdhf.innerHTML = '<div class="mui-scroll-wrapper"><div class="mui-scroll"><ul  class="mui-table-view mui-grid-view mui-grid-9 my_list"><li  class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><span class="mui-badge mui-badge-danger">'+sum[2]+'</span><a id="xmb" ><span class="mui-icon mui-icon-navigate"></span><div class="mui-media-body">项目部</div></a></ul></li></div></div>';
+							}else if(belong==2){
+//								zpf.className = "mui-control-item";
+//								fpf.className = "mui-control-item mui-active";
+								zpf.style.display = 'none';
+								fdpf.innerHTML = '<div class="mui-scroll-wrapper"><div class="mui-scroll"><ul  class="mui-table-view mui-grid-view mui-grid-9 my_list"><li  class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><span class="mui-badge mui-badge-danger">'+sum[1]+'</span><a id="fgs" ><span class="mui-icon mui-icon-navigate"></span><div class="mui-media-body">整改待办</div></a></li> <li  class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><span class="mui-badge mui-badge-danger">'+sum[0]+'</span><a id="fgsyq" ><span class="mui-icon mui-icon-navigate"></span><div class="mui-media-body">逾期待办</div></a></li></ul> </div></div> '
+								xdhf.innerHTML = '<div class="mui-scroll-wrapper"><div class="mui-scroll"><ul  class="mui-table-view mui-grid-view mui-grid-9 my_list"><li  class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><span class="mui-badge mui-badge-danger">'+sum[2]+'</span><a id="xmb" ><span class="mui-icon mui-icon-navigate"></span><div class="mui-media-body">项目部</div></a></ul></li></div></div>'
+
+							}else if(belong==3){
+								zpf.style.display = 'none';
+								fpf.style.display = 'none';
+//								var ul = document.createElement("ul");
+//								ul.className = "mui-table-view mui-grid-view mui-grid-9 my_list";
+								xdhf.innerHTML = '<div class="mui-scroll-wrapper"><div class="mui-scroll"><ul  class="mui-table-view mui-grid-view mui-grid-9 my_list"><li  class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><span class="mui-badge mui-badge-danger">'+sum[2]+'</span><a id="xmb" ><span class="mui-icon mui-icon-navigate"></span><div class="mui-media-body">项目部</div></a></ul></li></div></div>'
+//								show.appendChild(ul);
+							}
+							
+						
+							//按钮监听
+							var zg = document.getElementById("zgs");
+							var yq = document.getElementById("zgsyq");
+							var fg = document.getElementById("fgs");
+							var fgyq = document.getElementById("fgsyq");
+							var xm = document.getElementById("xmb");
+						if(zg!=null){
+							zg.addEventListener('tap',function() {
+//						alert('111');
+						mui.openWindow({
+							url: 'my_dbzg.html', 
+							id: 'my_dbzg',
+							styles: { 
+								hardwareAccelerated:false
+							}, 
+							extras:{
+								mobile:mobile,
+								flag: "总部"
+							}, 
+							show:{ 
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						})
+					});
+					   yq.addEventListener('tap',function() {
+//						alert('111');
+						mui.openWindow({
+							url: 'my_dbzg_yq.html', 
+							id: 'my_dbzg_yq',
+							styles: { 
+								hardwareAccelerated:false
+							}, 
+							extras:{
+								mobile:mobile,
+								flag: "总部"
+							}, 
+							show:{ 
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						})
+					});
+				}
+					if(fg!=null){
+					fg.addEventListener('tap',function() {
+						mui.openWindow({
+							url: 'my_dbzg.html', 
+							id: 'my_dbzg',
+							styles: { 
+								hardwareAccelerated:false
+							}, 
+							extras:{
+								mobile:mobile,
+								flag: "分公司"
+							}, 
+							show:{ 
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						})
+					});
+					fgyq.addEventListener('tap',function() {
+						mui.openWindow({
+							url: 'my_dbzg_yq.html', 
+							id: 'my_dbzg',
+							styles: { 
+								hardwareAccelerated:false
+							}, 
+							extras:{
+								mobile:mobile,
+								flag: "分公司"
+							}, 
+							show:{ 
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						})
+					});
+				}
+					if(xm!=null){
+					xm.addEventListener('tap',function() {
+						mui.openWindow({
+							url: 'my_dbzg.html', 
+							id: 'my_dbzg',
+							styles: { 
+								hardwareAccelerated:false
+							}, 
+							extras:{
+								mobile:mobile,
+								flag: "项目部"
+							}, 
+							show:{ 
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						})
+					});
+					}
+					}
+//							alert(zg);
+//							zg.addEventListener('tap',function() {
+//								alert("ccc");
+//							});
+///////////	获取逾期和整改数量/////////////////////////////////////////////////////////////////////////////////////////////
+					       if(bumen.value==1){
+					       	part="总部"; 
+					       }else if(bumen.value==2){
+					       	part="分公司";
+					       }else if(bumen.value==3){
+					       	part="项目部";
+					       }
+					       	mui.ajax(url+'my_plus/my_yq_dbzg.php',{
+										data:{
+											mobile:mobile,
+											flag:"yuqi", 
+											company: part
+										},
+										dataType:'json',
+										type:'POST', 
+										timeout:10000,
+										success:function(data){
+					                     sum[0]=data.length-1;
+					                    post(belong,sum[0]);
+//											alert(sum[0]); 
+										},
+										error:function(xhr,type,errorThrown){
+											alert('ajax错误'+type+'---'+errorThrown);
+										}
+									});
+									mui.ajax(url+'my_plus/my_dbzg.php',{
+											data:{
+												mobile:mobile,
+												flag:"zhneggai",
+												company: part
+											},
+											dataType:'json',
+											type:'POST', 
+											timeout:10000,
+											success:function(data){
+												 sum[1]=data.length-1;
+												post(belong,sum[1]);
+//												alert(data);
+											},
+											error:function(xhr,type,errorThrown){
+												alert('ajax错误'+type+'---'+errorThrown);
+											}
+				                        });
+				                        mui.ajax(url+'my_plus/my_dbzg.php',{
+											data:{
+												mobile:mobile,
+												flag:"zhneggai",
+												company: "项目部"
+											},
+											dataType:'json',
+											type:'POST', 
+											timeout:10000,
+											success:function(data){
+												 sum[2]=data.length-1;
+												post(belong,sum[2]);
+//												alert(sum[1]);
+											},
+											error:function(xhr,type,errorThrown){
+												alert('ajax错误'+type+'---'+errorThrown);
+											}
+				                        });
+				                        post(belong,sum[0],sum[1],sum[2]);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				
+				});
+				
+				//异步获取部门
+				mui.ajax(url+'/my_count/my_dbzg_belong.php',{
+					data:{
+						mobile:mobile
+					}, 
+					dataType:'json', 
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						var result = data[0].value;
+//						alert(data[0]);
+						var length=data.length;
+//						alert(data.length);
+						if (length>0) {
+								if(data[0]=='总公司'){
+									for(var i = 1; i < length ; i++) {
+										
+											var sectionOption = data[i];
+												innerSection(sectionOption);
+								
+										}
+								}else{
+									section.innerHTML = "<option>"+data[0]+"</option>"
+								}
+							}
+							
+//							for (var i=0;i<length-1;i++) {
+//								var gcidD=data[i].id;
+//								gcidZh+=gcidD+",";
+//							}
+//							gcid.value=gcidZh;
+						
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+				//部门筛选
+				function innerSection(sectionOption){
+					var myoption=document.createElement("option");
+					myoption.value = sectionOption;
+					myoption.innerHTML = sectionOption;
+					section.appendChild(myoption);
+//					alert('1');
+				}	
+				
+				//获取总部账号下分公司逾期整改数
+				section.onchange=function(){
+               if(section.value !=" "){
+				mui.ajax(url+'/my_plus/fgs_db_yq.php',{
+					data:{
+						zt1:"yuqi",
+						zt2:"zhenggai",
+						fgs:section.value
+					},
+					dataType:"json",
+					type:"post",
+					timeout:10000,
+					success:function(data){
+						var yuqi = data[0].逾期;
+						var zhenggai = data[0].整改;
+						count.innerHTML="点击查询整改待办<span class="+'mui-badge mui-badge-danger'+" id="+'zg'+">"+zhenggai+"</span>";
+						count1.innerHTML="点击查询逾期待办<span class="+'mui-badge mui-badge-danger'+" id="+'yq'+">"+yuqi+"</span>";
+					}
+				});
+				}else if(section.value == " "){
+//					alert(section.value);
+					count.innerHTML="<span >点击查询整改待办</span>";
+					count1.innerHTML="<span>点击查询逾期待办</span>";
+				}
+			}	
+				//点击查询按钮监听
+				count.addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'my_dbzg_1.html',
+						id: 'my_dbzg_1',
+						styles: {
+							hardwareAccelerated: false
+						},
+						extras: {
+							
+							mobile:mobile,
+							section:section.value
+						},
+						show: {
+							autoShow: true, //页面loaded事件发生后自动显示
+							aniShow: 'slide-in-right', //页面显示动画
+							duration: '100' //页面动画持续时间
+						},
+						waiting: {
+							autoShow: false, //自动显示等待框
+						},
+					})
+				})
+				count1.addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'my_yq_dbzg_1.html',
+						id: 'my_yq_dbzg_1',
+						styles: {
+							hardwareAccelerated: false
+						},
+						extras: {
+							
+							mobile:mobile,
+							section:section.value
+						},
+						show: {
+							autoShow: true, //页面loaded事件发生后自动显示
+							aniShow: 'slide-in-right', //页面显示动画
+							duration: '100' //页面动画持续时间
+						},
+						waiting: {
+							autoShow: false, //自动显示等待框
+						},
+					})
+				})
+					
+								
+				//动态创建代办整改工程--任务
+				var dbRw=function(i,xmid,gcmc,rwmc,sgdw){
+					var num=i;
+					var xmid = xmid;
+					var gcmc = gcmc;
+					var rwmc = rwmc;
+					var sgdw = sgdw;
+					//整改状态和通知单编号的结合
+					var ztbhZh = rwmc+'-----'+'形象进度：'+sgdw;
+					//汉字编码，为了便于传值
+					var gcmc_c=encodeURI(encodeURI(gcmc));
+					var rwmc_c=encodeURI(encodeURI(rwmc));
+					var sgdw_c=encodeURI(encodeURI(sgdw));
+					//动态生成ul列表
+					var dbzgRenwu=document.getElementById("dbzgRenwu");
+					var div=document.createElement("div");
+					div.className="mui-card";
+					div.id=num+xmid;
+					dbzgRenwu.appendChild(div);
+					var ul=document.createElement("ul");
+					ul.className="mui-table-view";
+					div.appendChild(ul);
+					var li=document.createElement("li");
+					li.className="mui-table-view-cell";
+					ul.appendChild(li);
+					var a=document.createElement("a");
+					a.className="mui-navigate-right";
+					a.id=num+xmid;
+					a.href="my_zhenggai_rwhf.html";//?mobile="+mobile+"&id="+xmid+"&unit="+sgdw_c+"&project="+gcmc_c;
+					li.appendChild(a);
+					var img=document.createElement("img");
+					img.className="mui-media-object mui-pull-left";
+					img.src='../images/xzmc.png';
+					a.appendChild(img);
+					var div2=document.createElement('div');
+					div2.className='mui-media-body';			
+					a.appendChild(div2);
+					var txt=document.createTextNode(gcmc);
+					div2.appendChild(txt);
+					var p=document.createElement('p');
+					p.className='mui-ellipsis';
+					div2.appendChild(p);
+					var txt2=document.createTextNode(ztbhZh);
+					p.appendChild(txt2);
+					//用于传工程名称和工程id
+					var div3=document.createElement('div');
+					div3.className='mui-media-body my_none';			
+					a.appendChild(div3);
+					var txt3=document.createTextNode(gcmc+"|"+xmid+"|"+rwmc);
+					div3.appendChild(txt3);
+				};
+				
+
+				
+				//主列表点击事件--任务
+				mui('#dbzgRenwu').on('tap', 'a', function() {
+					//alert("测试");
+					var aId=this.id;
+					var id = this.getAttribute('href');
+					var a_id=document.getElementById(aId);
+					var muicontent=a_id.getElementsByTagName("div");
+					//alert(muicontent[1].innerText);
+					var strs= new Array();
+					strs=muicontent[1].innerText.split("|");
+					var gcmcUrl=strs[0];
+					var gcidUrl=strs[1];
+					var rwmcUrl=strs[2];
+					
+					var href = this.href;
+					var webview_style = {
+						popGesture: "close",					
+						hardwareAccelerated:false
+					};
+					mui.openWindow({
+						id: id,
+						url: this.href,
+						styles: webview_style,
+						extras:{
+							ProjectId:gcidUrl,
+							xmmc:gcmcUrl,
+							mobile:mobile,
+							rwmc:rwmcUrl
+						},
+						show: {
+							aniShow:"pop-in"
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				});
+				
+				//任务回复后，刷新该页面
+				window.addEventListener('json',function(event){						
+					var wobj = plus.webview.currentWebview();					
+					wobj.reload(true);						
+				});
+			});		
+		</script>
+	</body>
+</html>

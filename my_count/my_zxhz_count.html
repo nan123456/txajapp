@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			  table {
+                border: 1px solid #cad9ea;
+                color: #666;
+            }
+
+            table th {
+                background-repeat: repeat-x;
+                height: 30px;
+            }
+
+            table td,
+            table th {
+                border: 1px solid #cad9ea;
+                padding: 0 1em 0;
+            }
+
+            table tr.alter {
+                background-color: #f5fafe;
+            }
+			.chart {
+				height: 250px;
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			h5 {
+				margin-top: 30px;
+				font-weight: bold;
+			}
+			
+			h5:first-child {
+				margin-top: 15px;
+			}
+			
+			.btn_size {
+				width: 90px;
+				height: 34px;
+				background: #0000FF;
+				color: white;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">专项汇总</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<h5>统计分析：</h5>
+				<div id='tab'>
+					<table id="list">
+					</table>
+				</div>
+				<div class="chart" id="pieChart"></div>
+			</div>
+			
+			<div style="margin-top: 5px;">
+				<div id="zt" class="my_div_wenzijuzhong">
+					<!--<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份草稿通知单</p>
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份整改中通知单</p>
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份延期通知单</p>
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份逾期通知单</p>
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份未完成通知单</p>
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份已完成通知单</p>-->
+				</div>
+				<div class="mui-input-row my_none">
+					<label> 时间戳：</label>
+					<input id='sjc' type="text" placeholder="时间戳" readonly="readonly">
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/chart.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+
+			mui.plusReady(function() {
+				//获取传值
+				var self = plus.webview.currentWebview();
+				var wzdl = self._wzdl; //工程id
+				var star = self.star_time;
+				var end = self.end_time;
+				var mobile = self.mobile;
+				var section = self.section;
+//				alert(wzdl);
+//				alert(section);
+//				alert(star+"  "+end);
+				var zt = document.getElementById("zt");
+				var title = document.getElementById("title");
+
+				//异步获取数据
+				if(wzdl=='wzall'){
+						mui.ajax(url + 'my_count/my_allhz.php', {
+						data: {
+							wzdl: wzdl,
+							star: star,
+							end: end,
+							belong:section,
+							mob:mobile
+						},
+						dataType: 'json',
+						type: 'post',
+						timeout: 20000,
+						success: function(data) {
+	//						alert(data[1]);
+							length=data.length;
+							var list = document.getElementById("list");
+							list.innerHTML="<tr><th>违章大类</th><th>条数</th><th>比例</th></tr>";
+							var qtcount = data[0].allcount;
+							for(i=0;i<length;i++){
+								if(data[i].违章大类=='其他'){
+									
+								}
+								else{
+									zxlist(data[0].allcount,data[i].wzcount,data[i].违章大类);
+									qtcount =  qtcount-data[i].wzcount;
+								}
+//								alert(data[i].wzcount);
+							}
+							var qtdl ='其他';
+							var zjdl ='总计';
+//							alert(data[0].allcount);
+							zxlist(data[0].allcount,qtcount,qtdl);
+							zxlist(data[0].allcount,data[0].allcount,zjdl);
+							if(data[0].allcount==0){
+								alert('该时间段无违章条目！');
+								list.innerHTML="";
+							}
+//							alert(data[0].allcount);
+						},
+						error: function(xhr, type, errorThrown) {
+							alert('ajax错误' + type);
+						}
+					});	
+				}else{
+					mui.ajax(url + 'my_count/my_zxhz.php', {
+					data: {
+						wzdl: wzdl,
+						star: star,
+						end: end,
+						belong:section,
+						mob:mobile
+					},
+					dataType: 'json',
+					type: 'post',
+					timeout: 20000,
+					success: function(data) {
+//						alert(data[1]);
+						length=data.length;
+						var list = document.getElementById("list");
+							list.innerHTML="<tr><th>检查项目</th><th>条数</th><th>比例</th></tr>";
+//							var qtcount = data[0].wzdlcount;
+							for(i=0;i<length;i++){
+								zxlist(data[0].wzdlcount,data[i].wzcount,data[i].检查项目);
+//								qtcount =  qtcount-data[i].jcxmcount;
+//								alert(data[i].wzcount);
+							
+							}
+						
+							var zjdl ='总计';
+//						alert(data[0].allcount);
+//							zxlist(data[0].wzdlcount,qtcount,qtdl);
+							zxlist(data[0].wzdlcount,data[0].wzdlcount,zjdl);
+							if(data[0].wzdlcount==0){
+								alert('该时间段无违章条目！');
+								list.innerHTML="";
+							}
+//							alert(data[0].wzdlcount);
+					},
+					error: function(xhr, type, errorThrown) {
+						alert('ajax错误' + type);
+//						alert('ajax错误' + type);
+					}
+				});	
+				}
+				
+				var zxlist=function(allcount,zxcount,wzdl){
+					var zxbl = [((zxcount/allcount) * 100).toFixed(2) + "%"];
+					var list = document.getElementById("list");
+					var mytr=document.createElement("tr");
+//					mytr.value = sectionOption;
+					mytr.innerHTML = '<td>'+wzdl+'</td><td>'+zxcount+'</td><td>'+zxbl+'</td>';
+					list.appendChild(mytr);
+				}
+				
+				
+				
+				
+				
+				
+				var hzbt = function(count, length) {
+					//计算该违章条目占通知单的比例
+					var bili = [((length / count) * 100).toFixed(2) + "%"];
+
+					//饼图
+					var getOption = function(chartType) {
+						var chartOption = chartType == 'pie' ? {
+							calculable: false,
+							series: [{
+								name: '访问来源',
+								type: 'pie',
+								radius: '55%',
+								center: ['50%', '60%'],
+								data: [{
+									value: length,
+									name: '该类占条目' + bili
+								}, {
+									value: count,
+									name: '条目有' + count + '份'
+								}]
+							}]
+						} : {}
+						return chartOption;
+					};
+
+					var byId = function(id) {
+						return document.getElementById(id);
+					};
+					var pieChart = echarts.init(byId('pieChart'));
+					pieChart.setOption(getOption('pie'));
+					title.innerHTML = wzdl;
+					zt.innerHTML = '<p class="my_duangluo_hangju">' + wzdl + '的违章条目共有' + length + '条</p><p class="my_duangluo_hangju">通知单共有' + count + '条</p>'
+				};
+			});
+		</script>
+		<!--<script src="../js/setPullToRefresh.js" ></script>-->
+	</body>
+
+</html>

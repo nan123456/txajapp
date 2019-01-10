@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />
+		<style type="text/css">
+			.mui-control-content {
+				bottom: 0px;
+			}
+			
+			.my_table {
+				float: left;
+				text-align: center;
+			}
+			
+			.my_th_weight {
+				font-weight: bold;
+			}
+			
+			.my_td_width30 {
+				/*检查日期*/
+				width: 25%;
+			}
+			
+			.my_td_width40 {
+				/*通知单编号*/
+				width: 27%;
+			}
+			
+			.my_td_width10 {
+				/*整改、回复、批复*/
+				width: 16%;
+			}
+			/*媒体查询，横屏效果*/
+			
+			@media only screen and (orientation:landscape) {
+				.mui-control-content {
+					bottom: 0px;
+				}
+			}
+			
+			.mui-popover {
+				height: 100px;
+			}
+			
+			#middlePopover {
+				min-width: 282px;
+				top: 15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			
+			#cdbzPopover {
+				min-width: 282px;
+				top: 15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			
+			.mui-popover .mui-popover-arrow {
+				display: none !important;
+				height: 20px;
+				width: auto;
+			}
+			
+			#mydiv {
+				width: 100%;
+				height: 310px;
+				border: 1px #C6C6C6 solid;
+				background-size: 100% 100%;
+				/*背景图片充满div*/
+			}
+			
+			.bzcd {
+				margin: 10px;
+				padding-bottom: 10px;
+				height: auto;
+				min-height: 80px;
+				border: 1px #C6C6C6 solid;
+			}
+			
+			p {
+				font-size: 1em;
+				color: #000000;
+			}
+			
+			span {
+				margin-left: 15px;
+			}
+			
+			.myposition {
+				position: absolute;
+			}
+			
+			.out {
+				margin: 10px;
+				padding-bottom: 10px;
+				height: auto;
+				min-height: 60px;
+				border: 1px #C6C6C6 solid;
+			}
+			
+			#zuxz {
+				width: 100px;
+			}
+			
+			#qtcy {
+				width: 100px;
+				font-size: 1.08em;
+				margin-top: -1px;
+			}
+			
+			.a_color {
+				/*改变连接颜色*/
+				color: #000000;
+			}
+			
+			.borderColor {
+				border: 3px solid green;
+			}
+			/*** 申请延期日期选择样式 ***/
+			
+			#zuyPopover {
+				min-width: 300px;
+				top: 15% !important;
+				margin-top: -150px;
+				left: 50% !important;
+				margin-left: -150px;
+			}
+			/*根据颜色来判断*/
+			
+			.levelA {
+				background-color: red;
+			}
+			
+			.levelB {
+				background-color: orange;
+			}
+			
+			.levelC {
+				background-color: yellow;
+			}
+			
+			.levelD {
+				background-color: #8A6DE9;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a class="mui-icon mui-icon-right-nav mui-pull-right" href="#search_box" style="font-size:20px">搜索</a>-->
+			<h1 class="mui-title">危险源管控清单</h1>
+		</header>
+
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a id="aCard" class="mui-control-item mui-active" href="#item1">
+						A
+					</a>
+					<a id="bCard" class="mui-control-item" href="#item2">
+						B
+					</a>
+					<a id="cCard" class="mui-control-item" href="#item3">
+						C
+					</a>
+					<a id="dCard" class="mui-control-item" href="#item4">
+						D
+					</a>
+				</div>
+			</div>
+			<div>
+				<!--A级 -->
+				<div id="item1" class="mui-control-content mui-active">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div id="aLevel"class="mui-scroll">
+
+						</div>
+					</div>
+				</div>
+				<!--A级 -->
+				<!--B -->
+				<div id="item2" class="mui-control-content">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div id="bLevel"class="mui-scroll">
+
+						</div>
+					</div>
+				</div>
+				<!--B -->
+				<!--C-->
+				<div id="item3" class="mui-control-content">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div id="cLevel"class="mui-scroll">
+
+						</div>
+					</div>
+				</div>
+				<!--C-->
+				<!--D-->
+				<div id="item4" class="mui-control-content">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div id="dLevel"class="mui-scroll">
+
+						</div>
+					</div>
+				</div>
+				<!--D-->
+			</div>
+		</div>
+		<div id="output">
+			<!--Camera管理摄像头设备，可用于拍摄照片、录制视频文件。      -->
+		</div>
+		<!--弹出一个搜索框-->
+		<div id="search_box" class="mui-popover">
+		  	<div class="mui-input-row" style="margin-top:10px;">
+		        <label>工程名称</label>
+		    	<input id="search_mc" type="text" class="mui-input-clear" placeholder="请输入工程名称">
+		    </div>
+		    <div class="mui-button-row">
+		        <button id="search" type="button" class="mui-action-back mui-btn mui-btn-primary">确认</button>		        
+		    </div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js"></script>
+		<!--<script src="../js/my_change_list_changan.js"></script>-->
+		<!--<script src="../js/common.js"></script>
+		<script src="../js/immersed.js" ></script>	-->
+		<script>
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});
+			})(mui);
+
+			mui.init({
+				swipeBack: true, //启用右滑关闭功能
+				gestureConfig: {
+					doubletap: true, //默认为false
+					longtap: true, //默认为false	
+				}
+			});
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});
+			})(mui);
+
+			mui.plusReady(function() {
+				//alert("红色边框表示分公司,总公司暂不作批复")
+				//传值
+				var self = plus.webview.currentWebview();
+				var gcid = self.gcid; //工程id
+				var gcmc = self.gcmc;
+				var userid = self.userid; //未获取
+				var sheng = self.sheng;
+				var shi = self.shi;
+				var mobile = self.mobile;
+//				alert(gcid);
+
+				//定位
+				var content = document.getElementsByClassName('mui-control-content');
+
+				//右上角按钮监听
+				//				my_popover.addEventListener('tap', function() {});
+
+				//新增草稿后，刷新该页面
+				window.addEventListener('json', function(event) {
+					var wobj = plus.webview.currentWebview();
+					wobj.reload(true);
+				});
+				//新增整改管理后，刷新该页面
+				window.addEventListener('zggl', function(event) {
+					var wobj = plus.webview.currentWebview();
+					wobj.reload(true);
+				});
+				
+				//动态创建A级
+				var foundA = function(wxyid, gcid, wxymc, riskLevel, riskNum, effDate, resMan, conNum) {
+
+					//定义函数
+					var wxyid = wxyid; //危险源id
+					var gcid = gcid; //工程id
+					var wxymc = wxymc; //危险源名称
+					var riskLevel = riskLevel; //风险等级
+					var riskNum = riskNum; //风险项数
+					var effDate = effDate; //有效日期
+					var resMan = resMan; //责任人
+					var conNum = conNum; //联系电话
+
+//					var recState = encodeURI(encodeURI(recState));
+
+					//					alert(riskLevel);
+					if(riskLevel == "A") {
+						var aLevel = document.getElementById("aLevel");
+						var ul = document.createElement("ul");
+						ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+//						ul.id = id + '|' + gcid;
+						//						alert(riskLevel);
+						ul.innerHTML = '<li class="mui-table-view-cell "><a style="text-align: center; background-color: red;" href="my_control_see.html?gcid='+gcid+'&wxyid='+wxyid+'"><p class="mui-ellipsis my_style2">' + wxymc + '</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">有效日期：' + effDate + '</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">责任人：' + resMan + '</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">联系电话：' + conNum + '</p></li><li class="mui-table-view-cell"><a href="../map/map.html?gcid='+gcid+'&wxyid='+wxyid+'"><p class="mui-ellipsis my_style1">地理信息：点击查看</p></li>';
+						aLevel.appendChild(ul);
+					} else {
+
+					}
+					mui.ajax(url + 'wxyzt.php', {
+					data:{
+						gcid:gcid,  
+						id:wxyid
+					},
+					dataType:'json',
+					type:'POST',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						var gzzt = data[0].工作状态;
+						creatgzzt(gzzt);
+					},
+					error:function(xhr, type, errorThrown) {
+	//					alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+					var creatgzzt = function(gzzt){
+						localStorage.setItem("map",gzzt);
+					}
+				}
+
+				//动态创建B级
+				var foundB = function(wxyid, gcid, wxymc, riskLevel, riskNum, effDate, resMan, conNum) {
+
+					//定义函数
+					var wxyid = wxyid; //危险源id
+					var gcid = gcid; //工程id
+					var wxymc = wxymc; //危险源名称
+					var riskLevel = riskLevel; //风险等级
+					var riskNum = riskNum; //风险项数
+					var effDate = effDate; //有效日期
+					var resMan = resMan; //责任人
+					var conNum = conNum; //联系电话
+					
+
+//					var recState = encodeURI(encodeURI(recState));
+
+					//					alert(riskLevel);
+					if(riskLevel == "B") {
+						var bLevel = document.getElementById("bLevel");
+						var ul = document.createElement("ul");
+						ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+//						ul.id = id + '|' + gcid;
+						//						alert(riskLevel);
+						ul.innerHTML = '<li class="mui-table-view-cell "><a style="text-align: center; background-color: #FF8C00;" href="my_control_see.html?gcid='+gcid+'&wxyid='+wxyid+'"><p class="mui-ellipsis my_style2">' + wxymc + '</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">有效日期：' + effDate + '</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">责任人：' + resMan + '</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">联系电话：' + conNum + '</p></li><li class="mui-table-view-cell"><a href="../map/map.html?gcid='+gcid+'&wxyid='+wxyid+'"><p class="mui-ellipsis my_style1">地理信息：点击查看</p></li>';
+						bLevel.appendChild(ul);
+					} else {
+
+					}					
+				}
+
+				//动态创建C级
+				var foundC = function(wxyid, gcid, wxymc, riskLevel, riskNum, effDate, resMan, conNum) {
+
+					//定义函数
+					var wxyid = wxyid; //危险源id
+					var gcid = gcid; //工程id
+					var wxymc = wxymc; //危险源名称
+					var riskLevel = riskLevel; //风险等级
+					var riskNum = riskNum; //风险项数
+					var effDate = effDate; //有效日期
+					var resMan = resMan; //责任人
+					var conNum = conNum; //联系电话
+
+//					var recState = encodeURI(encodeURI(recState));
+
+					//					alert(riskLevel);
+					if(riskLevel == "C") {
+						var cLevel = document.getElementById("cLevel");
+						var ul = document.createElement("ul");
+						ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+//						ul.id = id + '|' + gcid;
+						//						alert(riskLevel);
+						ul.innerHTML = '<li class="mui-table-view-cell "><a style="text-align: center; background-color: #FFD700;" href="my_control_see.html?gcid='+gcid+'&wxyid='+wxyid+'"><p class="mui-ellipsis my_style2">' + wxymc + '</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">有效日期：' + effDate + '</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">责任人：' + resMan + '</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">联系电话：' + conNum + '</p></li><li class="mui-table-view-cell"><a href="../map/map.html?gcid='+gcid+'&wxyid='+wxyid+'"><p class="mui-ellipsis my_style1">地理信息：点击查看</p></li>';
+						cLevel.appendChild(ul);
+					} else {
+
+					}
+				}
+
+				//动态创建D级
+				var foundD = function(wxyid, gcid, wxymc, riskLevel, riskNum, effDate, resMan, conNum) {
+
+					//定义函数
+					var wxyid = wxyid; //危险源id
+					var gcid = gcid; //工程id
+					var wxymc = wxymc; //危险源名称
+					var riskLevel = riskLevel; //风险等级
+					var riskNum = riskNum; //风险项数
+					var effDate = effDate; //有效日期
+					var resMan = resMan; //责任人
+					var conNum = conNum; //联系电话
+
+//					var recState = encodeURI(encodeURI(recState));
+
+					//					alert(riskLevel);
+					if(riskLevel == "D") {
+						var dLevel = document.getElementById("dLevel");
+						var ul = document.createElement("ul");
+						ul.className = "mui-table-view mui-card my_list my_marginbottom10px";
+//						ul.id = id + '|' + gcid;
+						//						alert(riskLevel);
+						ul.innerHTML = '<li class="mui-table-view-cell "><a style="text-align: center; background-color: #1E90FF;" href="my_control_see.html?gcid='+gcid+'&wxyid='+wxyid+'"><p class="mui-ellipsis my_style2">' + wxymc + '</p></a></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">有效日期：' + effDate + '</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">责任人：' + resMan + '</p></li><li class="mui-table-view-cell"><p class="mui-ellipsis my_style1">联系电话：' + conNum + '</p></li><li class="mui-table-view-cell"><a href="../map/map.html?gcid='+gcid+'&wxyid='+wxyid+'"><p class="mui-ellipsis my_style1">地理信息：点击查看</p></li>';
+						dLevel.appendChild(ul);
+					} else {
+
+					}
+				}
+
+				//动态创建A级异步获取
+				mui.ajax(url + 'control/control_cool_list.php', {
+					data: {
+						gcid: gcid,
+						qdlx: 'aLevel'
+					},
+					dataType: 'json',
+					type: 'POST',
+					timeout: 10000,
+					success: function(data) {
+//												alert(data);
+						var length = data.length;
+						if(length > 1) {
+//							aCard.innerHTML = "A级(" + data[length - 1].count + ")";
+							for(var i = 0; i < length - 1; i++) {
+								var wxyid = data[i].wxyid;
+								var gcid = data[i].gcid;
+								var wxymc = data[i].危险源名称;
+								var riskLevel = data[i].风险等级;
+								var riskNum = data[i].风险项数;
+								var effDate = data[i].有效日期;
+								var resMan = data[i].责任人;
+								var conNum = data[i].联系电话;
+								foundA(wxyid, gcid, wxymc, riskLevel, riskNum, effDate, resMan, conNum);
+							}
+						} else {
+							foundA('', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+
+				//动态创建B级异步获取
+				mui.ajax(url + 'control/control_cool_list.php', {
+					data: {
+						gcid: gcid,
+						qdlx: 'bLevel'
+					},
+					dataType: 'json',
+					type: 'POST',
+					timeout: 10000,
+					success: function(data) {
+//							alert(data);
+						var length = data.length;
+						if(length > 1) {
+//							bCard.innerHTML = "B级(" + data[length - 1].count + ")";
+							for(var i = 0; i < length - 1; i++) {
+								var wxyid = data[i].wxyid;
+								var gcid = data[i].gcid;
+								var wxymc = data[i].危险源名称;
+								var riskLevel = data[i].风险等级;
+								var riskNum = data[i].风险项数;
+								var effDate = data[i].有效日期;
+								var resMan = data[i].责任人;
+								var conNum = data[i].联系电话;
+								foundB(wxyid, gcid, wxymc, riskLevel, riskNum, effDate, resMan, conNum);
+							}
+						} else {
+							foundB('', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+
+				//动态创建C级异步获取
+				mui.ajax(url + 'control/control_cool_list.php', {
+					data: {
+						gcid: gcid,
+						qdlx: 'cLevel'
+					},
+					dataType: 'json',
+					type: 'POST',
+					timeout: 10000,
+					success: function(data) {
+						//						alert(data);
+						var length = data.length;
+						if(length > 1) {
+//							cCard.innerHTML = "C级(" + data[length - 1].count + ")";
+							for(var i = 0; i < length - 1; i++) {
+								var wxyid = data[i].wxyid;
+								var gcid = data[i].gcid;
+								var wxymc = data[i].危险源名称;
+								var riskLevel = data[i].风险等级;
+								var riskNum = data[i].风险项数;
+								var effDate = data[i].有效日期;
+								var resMan = data[i].责任人;
+								var conNum = data[i].联系电话;
+								foundC(wxyid, gcid, wxymc, riskLevel, riskNum, effDate, resMan, conNum);
+							}
+						} else {
+							foundC('', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+
+				//动态创建D级异步获取
+				mui.ajax(url + 'control/control_cool_list.php', {
+					data: {
+						gcid: gcid,
+						qdlx: 'dLevel'
+					},
+					dataType: 'json',
+					type: 'POST',
+					timeout: 10000,
+					success: function(data) {
+						//						alert(data);
+						var length = data.length;
+						if(length > 1) {
+//							dCard.innerHTML = "D级(" + data[length - 1].count + ")";
+							for(var i = 0; i < length - 1; i++) {
+								var wxyid = data[i].wxyid;
+								var gcid = data[i].gcid;
+								var wxymc = data[i].危险源名称;
+								var riskLevel = data[i].风险等级;
+								var riskNum = data[i].风险项数;
+								var effDate = data[i].有效日期;
+								var resMan = data[i].责任人;
+								var conNum = data[i].联系电话;
+								foundD(wxyid, gcid, wxymc, riskLevel, riskNum, effDate, resMan, conNum);
+							}
+						} else {
+							foundD('', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----', '-----');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//alert('ajax错误'+type+'---'+errorThrown);
+					} 
+				});
+				//搜索按钮监听
+//				search.addEventListener('tap',function(){
+////					alert("2132");					
+//					var search_mc = document.getElementById("search_mc").value;//获取输入框内的危险源名称
+////					alert(search_mc);
+//					if(search_mc==""){
+//						plus.nativeUI.toast("输入框不能为空，请重新输入！",{duration:"long"});				
+//					}else{
+//						mui.openWindow({
+//							url: 'my_control_search.html',
+//							id: 'my_control_search',
+//							styles: {
+//								hardwareAccelerated:false
+//							},
+//							extras:{
+//								//传递参数
+//								search_mc:search_mc,
+//								gcid:gcid
+//							},
+//							show:{
+//								autoShow:true,//页面loaded事件发生后自动显示
+//								aniShow:'slide-in-right',//页面显示动画
+//								duration:'100'//页面动画持续时间
+//							},
+//							waiting:{
+//								autoShow:false,//自动显示等待框
+//							},
+//						});
+//					}										
+//				});
+			});
+		</script>
+	</body>
+
+</html>

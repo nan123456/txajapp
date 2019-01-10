@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			html,body {
+				background-color: #efeff4;
+			}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.my_color_red{
+				color: red;
+			}
+			.my_backgroundcolor_white{
+				background-color: #FFFFFF;
+			}
+			.mui-grid-view.mui-grid-9{
+				    background-color: #FFFFFF;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content">			
+			<ul class="mui-table-view my_hdlist">
+				<li class="mui-table-view-cell mui-media">
+					<a open-type="common" href="">						
+						<div class="mui-media-body">
+							<p class="mui-pull-left my_color_red">活动</p>
+							<p class="mui-pull-right my_color_red">更多＞＞</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<!--a标签中的id是自定义的，到时是通过传参来做定义id，也就是说此时的id是变量-->
+					<a id="zidingyi" open-type="common" href="">
+						<img class="mui-media-object mui-pull-left" src="images/hd.png"/>
+						<div class="mui-media-body">
+							活动名称:总公司软件培训测试
+							<p class="mui-ellipsis">时间:2016-11-01 02:10</p>
+							<p class="mui-ellipsis">地点:总公司会议室</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<div class="title"> 
+			</div>
+			
+			<ul class="mui-table-view my_hdlist">
+				<li class="mui-table-view-cell mui-media">
+					<a open-type="common" href="">						
+						<div class="mui-media-body">
+							<p class="mui-pull-left my_color_red">通告</p>
+							<p class="mui-pull-right my_color_red">更多＞＞</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<!--a标签中的id是自定义的，到时是通过传参来做定义id，也就是说此时的id是变量-->
+					<a id="zidingyi" open-type="common" href="">
+						<img class="mui-media-object mui-pull-left" src="images/tg.png"/>
+						<div class="mui-media-body">
+							总公司软件培训测试
+							<p class="mui-ellipsis">查询、管理更方便</p>
+							<p class="mui-ellipsis mui-pull-right">2016-9-20/12:2:28</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<!--a标签中的id是自定义的，到时是通过传参来做定义id，也就是说此时的id是变量-->
+					<a id="zidingyi" open-type="common" href="">
+						<img class="mui-media-object mui-pull-left" src="images/tg.png"/>
+						<div class="mui-media-body">
+							周五需求分析例会
+							<p class="mui-ellipsis">请开发人员均要都到场</p>
+							<p class="mui-ellipsis mui-pull-right">2016-9-04/03:30:00</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<div class="title"> 
+				
+			</div>
+			<ul class="mui-table-view my_hdlist">
+				<li class="mui-table-view-cell mui-media">
+					<a open-type="common" href="">						
+						<div class="mui-media-body">
+							<p class="mui-pull-left my_color_red">伙伴</p>
+							<p class="mui-pull-right my_color_red">更多＞＞</p>
+						</div>
+					</a>
+				</li>	
+				<ul class="mui-table-view mui-grid-view mui-grid-9 my_list">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a open-type="common" href="">
+						<img class=" " src="images/jcjg.png" height="50px">
+						<div class="mui-media-body">
+							检测机构
+						</div>
+					</a>
+				</li>
+		        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a open-type="common" href="">
+						<img class=" " src="images/jcjg.png" height="50px">
+						<div class="mui-media-body">
+							监督机构
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a open-type="common" href="">
+						<img class=" " src="images/jcjg.png" height="50px">
+						<div class="mui-media-body">
+							项目工地
+						</div>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-grid-view mui-grid-9 my_hdlist">	        
+				
+		   </ul> 		    
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>	
+	<script>
+		mui.init();
+		mui.plusReady(function() {
+			//获取传值
+			var self = plus.webview.currentWebview();
+			mobile = self.mobile;
+			
+		});
+	</script>
+	
+</html>

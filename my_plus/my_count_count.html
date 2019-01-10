@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			.chart {
+				height: 250px;
+				margin: 0px; 
+				padding: 0px; 
+			}
+			h5 {
+				margin-top: 30px;
+				font-weight: bold;
+			}
+			h5:first-child {
+				margin-top: 15px;
+			}
+			.btn_size{
+				width: 90px; 
+				height: 34px;
+				background:#0000FF;
+				color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">统计分析</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<h5>&nbsp;</h5>
+				<button type="button" class="mui-btn btn_size">地区</button>
+				<button type="button" class="mui-btn btn_size">施工状态</button>
+				<button type="button" class="mui-btn btn_size">形象进度</button>
+			</div>
+			<div class="mui-content-padded">
+				<h5>统计分析：</h5>
+				<div class="chart" id="pieChart"></div>
+			</div>
+			<div style="style="margin-top: 5px;"">
+				<div class="my_div_wenzijuzhong">
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份限期整改通知单</p>
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份停工整改通知单</p>
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份未完成整改通知单</p>
+					<p class="my_duangluo_hangju">已有&nbsp;<b class="my_xiahuaxian">23</b>&nbsp;份已完成整改通知单</p>
+				</div>		
+				<div class="mui-input-row my_none">
+					<label> 时间戳：</label>
+					<input id='sjc' type="text" placeholder="时间戳" readonly="readonly">						
+				</div>
+			</div>
+		</div>		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/chart.js"></script>	
+		<script>
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			var getOption = function(chartType) {
+				var chartOption = chartType == 'pie' ? {
+					calculable: false,
+					series: [{
+						name: '访问来源',
+						type: 'pie',
+						radius: '65%',
+						center: ['50%', '50%'],
+						data:[{
+							value: 335,
+							name: '停工'
+						}, { 
+							value: 310,
+							name: '未开工'
+						}, {
+							value: 234,
+							name: '竣工'
+						}, {
+							value: 135,
+							name: '其他'
+						}, {
+							value: 1548,
+							name: '施工中'
+						}]
+					}]
+				} : {
+				}
+				return chartOption; 
+			};
+			
+			var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var pieChart = echarts.init(byId('pieChart'));
+			pieChart.setOption(getOption('pie'));
+		</script>
+		<script src="../js/setPullToRefresh.js" ></script>
+	</body>
+</html>

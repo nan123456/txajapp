@@ -1,0 +1,466 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" /> 
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">危险源管理</h1>
+		</header>
+		<div class="mui-content">
+			<!--<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a id="wxylb" class="mui-control-item mui-active" >
+						危险源类别
+					</a>
+				</div>
+			</div>-->
+			<div class="mui-content-padded">
+				<!--基坑-->
+				<div id="item1" class="mui-control-content">
+					<div class="mui-content">
+						<form class="mui-input-group">
+						    <div class="mui-input-row">
+						        <label>危险源类型：</label>
+						        <input type="text"  id="wxylx"  placeholder="危险源类型" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>施工部位：</label>
+						        <input type="text" id="sgbw"  placeholder="施工部位" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>基坑面积(㎡)：</label>
+						        <input type="text" id="jkmj"  placeholder="基坑面积" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>设计开挖深度(m)：</label>
+						        <input type="text" id="sjkwsd"  placeholder="设计开挖深度" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+								<label>登记日期：</label>
+								<input type="text" id="jkdjrq" placeholder="登记日期" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+								<label>使用状态：</label>
+								<input type="text" id="jksyzt" placeholder="使用状态" readonly="readonly">
+                            </div>
+							<div class="mui-input-row">
+								<label>管理状态：</label>
+								<input type="text" id="jkglzt" placeholder="管理状态" readonly="readonly"> 
+							</div>
+							<div class="mui-input-row">
+						        <label>危险源状态：</label>
+						        <input type="text" id="wxyzt"  placeholder="危险源状态" readonly="readonly">     
+						    </div>
+						</form>				
+						<form class="mui-input-group" style="margin-top:10px;">
+							<div class=""    style="margin: 5px;padding: 7px 10px;">
+								<label>超过一定规模的危险性较大的分部分项工程：</label>
+								 <input type="text" id="jkdangerproject" placeholder="超过一定规模的危险性较大的分部分项工程" readonly="readonly">
+							</div>
+						</form>
+						<form class="mui-input-group" >
+							<div class="" style="margin: 5px;padding: 7px 10px;">
+								<label>是否通过审核：</label>
+								<input type="text" id="jksftgsh" placeholder="是否通过审核" readonly="readonly"> 
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--基坑-->
+				<!--外架-->
+				<div id="item2" class="mui-control-content">
+					<div class="mui-content">
+						<form class="mui-input-group">
+						    <div class="mui-input-row">
+						        <label>危险源类型：</label>
+						        <input type="text" id="wjwxylx" placeholder="类别" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>施工部位：</label>
+						        <input type="text" id="wjsgbw"  placeholder="施工部位" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>支模面积(㎡)：</label>
+						        <input type="text" id="wjzmmj"  placeholder="支模面积" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>支模高度(m)：</label>
+						        <input type="text" id="wjzmgd"  placeholder="支模高度" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+								<label>使用状态：</label>
+								<input type="text" id="wjsyzt" placeholder="使用状态" readonly="readonly">
+                            </div>
+							<div class="mui-input-row">
+								<label>管理状态：</label>
+								<input type="text" id="wjglzt" placeholder="管理状态" readonly="readonly"> 
+							</div>
+							<div class="mui-input-row">
+								<label>登记日期：</label>
+								<input type="text" id="wjdjrq" placeholder="登记日期" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+						        <label>危险源状态：</label>
+						        <input type="text" id="wjwxyzt"  placeholder="危险源状态" readonly="readonly">	       
+						    </div>
+						</form>
+						<form class="mui-input-group" style="margin-top:10px;">
+							<div class=""    style="margin: 5px;padding: 7px 10px;">
+								<label>超过一定规模的危险性较大的分部分项工程：</label>
+								<input type="text" id="wjdangerproject" placeholder="超过一定规模的危险性较大的分部分项工程" readonly="readonly">
+							</div>
+						</form>
+						<form class="mui-input-group" >
+							<div class="" style="margin: 5px;padding: 7px 10px;">
+								<label>是否专家论证：</label>
+								<input type="text" id="wjsfzjlz" placeholder="是否专家论证" readonly="readonly"> 
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--外架-->
+				<!--模板-->
+				<div id="item3" class="mui-control-content">
+					<div class="mui-content">
+						<form class="mui-input-group">
+							<div class="mui-input-row">
+								<label>危险源类型：</label>
+								<input type="text" id="mbwxylx"  placeholder="危险源类型" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+								<label>施工部位：</label>
+								 <input type="text" id="mbsgbw" placeholder="施工部位" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+								<label>搭设高度(m)：</label>
+								 <input type="text" id="mbtsgd" placeholder="搭设高度" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+								<label>使用状态：</label>
+								<input type="text" id="mbsyzt" placeholder="使用状态" readonly="readonly">
+                            </div>
+							<div class="mui-input-row">
+								<label>管理状态：</label>
+								 <input type="text" id="mbglzt" placeholder="管理状态" readonly="readonly"> 
+							</div>
+						
+						    <div class="mui-input-row">
+								<label>登记日期：</label>
+								<input type="text" id="mbdjrq" placeholder="登记日期" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+						        <label>危险源状态：</label>
+						        <input type="text" id="mbwxyzt"  placeholder="危险源状态" readonly="readonly">	       
+						    </div>
+						</form>
+						<form class="mui-input-group" style="margin-top:10px;">
+							<div class=""    style="margin: 5px;padding: 7px 10px;">
+								<label>超过一定规模的危险性较大的分部分项工程：</label>
+								 <input type="text" id="mbdangerproject" placeholder="超过一定规模的危险性较大的分部分项工程" readonly="readonly">
+							</div>
+						</form>
+						<form class="mui-input-group" >
+							<div class="" style="margin: 5px;padding: 7px 10px;">
+								<label>是否专家论证：</label>
+								<input type="text" id="mbsfzjlz" placeholder="是否专家论证" readonly="readonly"> 
+							</div>
+						</form>
+					</div>
+				</div> 
+				<!--模板-->
+				<!--其他-->
+					<div id="item4" class="mui-control-content">
+					<div class="mui-content">
+						<form class="mui-input-group">
+							<div class="mui-input-row">
+								<label>危险源类型：</label>
+								<input type="text" id="qtwxylx"  placeholder="危险源类型" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+								<label>施工部位：</label>
+								 <input type="text" id="qtsgbw"  placeholder="施工部位" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+								<label>二级类型：</label>
+								 <input type="text" id="qtejlx"  placeholder="二级类型" readonly="readonly">
+							</div>
+
+							<div class="mui-input-row">
+								<label>登记日期：</label>
+								 <input type="text" id="qtdjrq" placeholder="登记日期" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+								<label>使用状态：</label>
+								<input type="text" id="qtsyzt" placeholder="使用状态" readonly="readonly">
+                            </div>
+							<div class="mui-input-row">
+								<label>管理状态：</label>
+								 <input type="text" id="qtglzt" placeholder="管理状态" readonly="readonly"> 
+							</div>
+							<div class="mui-input-row">
+								<label>危险源状态：</label>
+								 <input type="text" id="qtwxyzt" placeholder="危险源状态" readonly="readonly"> 
+							</div>
+						</form>
+						<form class="mui-input-group" style="margin-top:10px;">
+							<div class=""    style="margin: 5px;padding: 7px 10px;">
+								<label>超过一定规模的危险性较大的分部分项工程：</label>
+								 <input type="text" id="qtdangerproject" placeholder="超过一定规模的危险性较大的分部分项工程" readonly="readonly">
+							</div>
+						</form>
+					</div>
+				</div> 
+				<!--其他-->
+				<div id="item5" class="mui-control-content">
+					<div class="mui-content">
+						<form class="mui-input-group">
+						    <div class="mui-input-row">
+						        <label>危险源类型：</label>
+						        <input type="text"  id="wxylxA"  placeholder="危险源类型" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>施工部位：</label>
+						        <input type="text" id="sgbwA"  placeholder="施工部位" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>基坑面积(㎡)：</label>
+						        <input type="text" id="jkmjA"  placeholder="基坑面积" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>设计开挖深度(m)：</label>
+						        <input type="text" id="sjkwsdA"  placeholder="设计开挖深度" readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+								<label>登记日期：</label>
+								<input type="text" id="jkdjrqA" placeholder="登记日期" readonly="readonly">
+							</div>
+							<div class="mui-input-row">
+								<label>使用状态：</label>
+								<input type="text" id="jksyztA" placeholder="使用状态" readonly="readonly">
+                            </div>
+							<div class="mui-input-row">
+								<label>管理状态：</label>
+								<input type="text" id="jkglztA" placeholder="管理状态" readonly="readonly"> 
+							</div>
+							<div class="mui-input-row">
+						        <label>危险源状态：</label>
+						        <input type="text" id="wxyztA"  placeholder="危险源状态" readonly="readonly">     
+						    </div>
+						</form>				
+						<form class="mui-input-group" style="margin-top:10px;">
+							<div class=""    style="margin: 5px;padding: 7px 10px;">
+								<label>超过一定规模的危险性较大的分部分项工程：</label>
+								 <input type="text" id="jkdangerprojectA" placeholder="超过一定规模的危险性较大的分部分项工程" readonly="readonly">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script type="text/javascript">
+		    mui.init({
+				    swipeBack:true //启用右滑关闭功能
+			});
+			//获取url参数值
+			function geturl(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]);
+				return null;
+			}
+			//获取上一级页面的参数
+			var wxylx=geturl("wxylx");
+			var sjc   =geturl("sjc");
+			var gcid  =geturl("gcid");
+			var dangerProject=geturl("dangerProject");
+			//解码
+			dangerProject=decodeURI(dangerProject);
+			wxylx=decodeURI(wxylx);
+//			alert(dangerProject);
+//			alert(wxylx);
+		 	//动态改变不同类型对应的不同的页面
+			function tianjia_a_class(e){ 
+				var i=e;
+				if(i=='1'){
+                	var div_2=document.getElementById("item1");
+                }else if(i=='2'){
+                	var div_2=document.getElementById("item2");
+                }else if(i=='3'){
+                	var div_2=document.getElementById("item3");
+                }else if(i=='4'){
+                	var div_2=document.getElementById("item4");
+                }else if(i=='5'){
+                	var div_2=document.getElementById("item5");
+                }
+                div_2.setAttribute("class","mui-control-content mui-active");
+			}
+			//根据不同类型选择不同函数
+			if(wxylx=='土方开挖工程'){
+				tianjia_a_class(1);
+			}else if(wxylx=='模板工程支撑体系'){
+				tianjia_a_class(2);
+			}else if(wxylx=='脚手架工程' || wxylx=='起重吊装及安装拆卸工程'){
+				tianjia_a_class(3);
+			}else if(wxylx=='拆除爆破工程' || wxylx=='其他危险性较大的工程'){
+				tianjia_a_class(4);
+			}else if(wxylx=='基坑支护及降水工程'){
+				tianjia_a_class(5);
+			}else{
+			
+			}
+			/////////////////////////////////////////////////
+			mui.plusReady(function(){
+				//打开浏览器的内核
+				var self = plus.webview.currentWebview();
+                //获取参数
+				var gcid  =geturl("gcid");
+				//item1
+				var wxylx = document.getElementById("wxylx");
+				var sgbw = document.getElementById("sgbw");
+				var jkmj = document.getElementById("jkmj");
+				var sjkwsd = document.getElementById("sjkwsd");
+				var jkdangerproject = document.getElementById("jkdangerproject");
+				var jksftgsh = document.getElementById("jksftgsh");
+				var jksyzt = document.getElementById("jksyzt");
+				var jkglzt = document.getElementById("jkglzt");
+				var jkdjrq = document.getElementById("jkdjrq");
+				var wxyzt = document.getElementById("wxyzt");
+				
+				
+				//item2
+				var wjwxylx =document.getElementById("wjwxylx");
+				var wjsgbw = document.getElementById("wjsgbw");
+				var wjzmmj = document.getElementById("wjzmmj");
+				var wjzmgd = document.getElementById("wjzmgd");
+				var wjsfzjlz = document.getElementById("wjsfzjlz");
+				var wjdangerproject=document.getElementById("wjdangerproject");
+				var wjglzt = document.getElementById("wjglzt");
+				var wjsyzt = document.getElementById("wjsyzt");
+				var wjdjrq = document.getElementById("wjdjrq");
+				var wjwxyzt = document.getElementById("wjwxyzt");
+				//item3
+				var mbwxylx = document.getElementById("mbwxylx");
+				var mbsgbw = document.getElementById("mbsgbw");
+				var mbdjrq = document.getElementById("mbdjrq");
+				var mbdangerproject = document.getElementById("mbdangerproject");
+				var mbtsgd = document.getElementById("mbtsgd");
+				var mbsfzjlz = document.getElementById("mbsfzjlz");
+				var mbsyzt = document.getElementById("mbsyzt");
+				var mbglzt = document.getElementById("mbglzt");
+				var mbwxyzt = document.getElementById("mbwxyzt");
+				//item4
+				var qtwxylx = document.getElementById("qtwxylx");
+				var qtsgbw = document.getElementById("qtsgbw");
+				var qtdjrq = document.getElementById("qtdjrq");
+				var qtdangerproject = document.getElementById("qtdangerproject");
+				var qtejlx = document.getElementById("qtejlx");
+				var qtsyzt = document.getElementById("qtsyzt");
+				var qtglzt = document.getElementById("qtglzt");
+				var qtwxyzt = document.getElementById("qtwxyzt");
+				//item5
+				var wxylxA = document.getElementById("wxylxA");
+				var sgbwA = document.getElementById("sgbwA");
+				var jkmjA = document.getElementById("jkmjA");
+				var sjkwsdA = document.getElementById("sjkwsdA");
+				var jkdangerprojectA = document.getElementById("jkdangerprojectA");
+				var jksftgtzshA = document.getElementById("jksftgtzshA");
+				var jksyztA = document.getElementById("jksyztA");
+				var jkglztA = document.getElementById("jkglztA");
+				var jkdjrqA = document.getElementById("jkdjrqA");
+				var wxyztA = document.getElementById("wxyztA");
+				//超过一定危险性的分部分项工程
+				if(dangerProject=='是'){
+					qtdangerproject.setAttribute("value","超过一定规模的重大危险源");
+					mbdangerproject.setAttribute("value","超过一定规模的重大危险源");
+					jkdangerproject.setAttribute("value","超过一定规模的重大危险源");
+					jkdangerprojectA.setAttribute("value","超过一定规模的重大危险源");
+					wjdangerproject.setAttribute("value","超过一定规模的重大危险源");
+				}else if(dangerProject=='否'){
+					qtdangerproject.setAttribute("value","未超过一定规模的危险源");
+					mbdangerproject.setAttribute("value","未超过一定规模的危险源");
+					jkdangerproject.setAttribute("value","未超过一定规模的危险源");
+					jkdangerprojectA.setAttribute("value","未超过一定规模的危险源");
+					wjdangerproject.setAttribute("value","未超过一定规模的危险源");
+				}
+				
+				//基坑，外架，模板，其他，读数据
+				mui.ajax(url+'my_plus/my_danger_alldu.php',{
+					
+					data:{
+						sjc:sjc	
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						var length=data.length;
+						for (var i=0;i<length-1;i++) {
+							 wxylx.value=data[i].危险源类型;
+							 sgbw.value=data[i].施工部位;
+							 jkmj.value=data[i].基坑面积;
+							 sjkwsd.value=data[i].设计开挖深度;
+							 jksftgsh.value=data[i].是否通过审核;
+							 jksyzt.value=data[i].使用状态;
+							 jkglzt.value=data[i].管理状态;
+							 jkdjrq.value=data[i].登记日期;
+							 wxyzt.value=data[i].危险源状态;
+							 
+							 wxylxA.value=data[i].危险源类型;
+							 sgbwA.value=data[i].施工部位;
+							 jkmjA.value=data[i].基坑面积;
+							 sjkwsdA.value=data[i].设计开挖深度;
+							 jksyztA.value=data[i].使用状态;
+							 jkglztA.value=data[i].管理状态;
+							 jkdjrqA.value=data[i].登记日期;
+							 wxyztA.value=data[i].危险源状态;
+							 
+							 wjwxylx.value=data[i].危险源类型;
+							 wjsgbw.value=data[i].施工部位;
+							 wjzmmj.value=data[i].支模面积;
+							 wjzmgd.value=data[i].支模高度;
+							 wjdjrq.value=data[i].登记日期;
+							 wjsfzjlz.value=data[i].是否专家论证;
+							 wjsyzt.value=data[i].使用状态;
+							 wjglzt.value=data[i].管理状态;
+							 wjwxyzt.value=data[i].危险源状态;
+							 
+							 mbwxylx.value=data[i].危险源类型;
+							 mbsgbw.value=data[i].施工部位;
+							 mbdjrq.value=data[i].登记日期;
+							 mbtsgd.value=data[i].塔设高度;
+							 mbsyzt.value=data[i].使用状态;
+							 mbglzt.value=data[i].管理状态;
+							 mbsfzjlz.value=data[i].是否专家论证;
+							 mbwxyzt.value=data[i].危险源状态;
+							 
+							 qtwxylx.value=data[i].危险源类型;
+							 qtsgbw.value=data[i].施工部位;
+							 qtdjrq.value=data[i].登记日期;
+//							 qtdangerproject.value=data[i].其他超过一定规模的危险性较大的分部分项工程;
+							 qtejlx.value=data[i].二级类型;
+							 qtwxyzt.value=data[i].危险源状态;
+							 qtsyzt.value=data[i].使用状态;
+							 qtglzt.value=data[i].管理状态;
+						}							
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						//alert('ajax错误'+type);
+ 					}
+				});
+			});
+			
+		</script>
+	</body>
+
+</html>

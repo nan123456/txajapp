@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			.my_disabled{
+				color:#BBBBBB;				
+			}			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav my_backgroundcolor_blue2">			
+			<h1 class="mui-title my_color_white">工程信息搜索</h1>
+		</header>		
+		<div class="mui-content">
+			<form class="mui-input-group" style="margin-top: 5px;">
+				<div id="tiaomu" class="mui-input-row">
+					<label>工程名称：</label>
+					<input id="projectName" type="text" class="" value="" placeholder="选填"/>
+				</div>			
+			</form>	
+			<form class="mui-input-group" style="margin-top: 5px;">
+				<div class="mui-input-row">
+					<label>项目类别：</label>
+					<select id="projectXmlb" style="font-size: 14px;padding-left:15px;">
+						<option value ="" selected="selected"></option>
+						<option value ="建筑工程" >建筑工程</option>
+						<option value ="市政工程">市政工程</option>
+						<option value ="装修工程">装修工程</option>
+						<option value ="维修加固工程">维修加固工程</option>
+					</select>
+				</div>	
+				<div class="mui-input-row">
+					<label>形象进度：</label>
+					<select id="projectXxjd" style="font-size: 14px;padding-left:15px;">
+						<option value ="" selected="selected"></option>
+						<option value ="基础施工">基础施工</option>
+						<option value ="主体施工">主体施工</option>
+						<option value ="装饰装修">装饰装修</option>
+						<option value ="收尾阶段">收尾阶段</option>
+						<option value ="竣工验收">竣工验收</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label>所在省份：</label>
+					<select id="projectSzsf" style="font-size: 14px;padding-left:15px;">
+						<option value ="" selected="selected"></option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label>所在城市：</label>
+					<select id="projectSzcs" style="font-size: 14px;padding-left:15px;">
+						<option value ="" selected="selected"></option>
+					</select>
+				</div>
+			</form>
+			
+			<div class="mui-button-row" style="margin-top: 10px;">
+				<button id="no" type="button" class="mui-btn mui-btn-primary">关闭</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="ok" type="button" class="mui-btn mui-btn-primary">确定</button>
+			</div>			
+		</div>			
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script>
+		mui.init({
+				swipeBack:true //启用右滑关闭功能
+		});
+		
+		mui.plusReady(function(){	
+			var projectName=document.getElementById("projectName");
+			var projectXmlb=document.getElementById("projectXmlb");
+			var projectXxjd=document.getElementById("projectXxjd");
+			var projectSzsf=document.getElementById("projectSzsf");
+			var projectSzcs=document.getElementById("projectSzcs");
+			
+			//所在省份获取
+			mui.ajax(url+'my_plus/message_search.php',{
+				data:{
+					flag:"my_project_message_get_shengFeng"
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data); 
+					var length=data.length;
+					for (var i=0;i<length-1;i++) {
+						var szsf=data[i].所在省份;
+						selectXialaSzsf(szsf);
+						
+					}  
+				},
+				error:function(xhr,type,errorThrown){
+					return callback('ajax错误'+type+errorThrown);
+				}
+			});
+			//所在城市获取
+			mui.ajax(url+'my_plus/message_search.php',{
+				data:{
+					flag:"my_project_message_get_chengShi"
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data); 
+					var length=data.length;
+					for (var i=0;i<length-1;i++) {
+						var szcs=data[i].所在城市;
+						selectXialaSzcs(szcs);
+						
+					}  
+				},
+				error:function(xhr,type,errorThrown){
+					return callback('ajax错误'+type+errorThrown);
+				}
+			});
+			
+			//所在省份函数
+			var selectXialaSzsf=function(szsf){
+				var projectSzsfId=document.getElementById("projectSzsf");
+				var option=document.createElement("option");
+				option.value=szsf;
+				option.innerHTML=szsf;
+				projectSzsfId.appendChild(option);
+			}
+			//所在城市函数
+			var selectXialaSzcs=function(szcs){
+				var projectSzcsId=document.getElementById("projectSzcs");
+				var option=document.createElement("option");
+				option.value=szcs;
+				option.innerHTML=szcs;
+				projectSzcsId.appendChild(option);
+			}
+			
+			//确定按钮点击事件
+			ok.addEventListener('tap', function() {
+//				mui.ajax(url+'my_plus/message_search.php',{
+//					data:{
+//						flag:"my_project_message_search"
+//					},
+//					dataType:'json',
+//					type:'post',
+//					timeout:10000,
+//					success:function(data){
+//						//alert(data); 
+//						var length=data.length;
+//						for (var i=0;i<length-1;i++) {
+//							var szcs=data[i].所在城市;
+//							selectXialaSzcs(szcs);
+//							
+//						}  
+//					},
+//					error:function(xhr,type,errorThrown){
+//						return callback('ajax错误'+type+errorThrown);
+//					}
+//				});
+   				var target = plus.webview.currentWebview().opener();
+				mui.fire(target,'json',{
+					flag3:okwetm.value,
+					flag4:buweiHtml.value
+				});
+				mui.back();
+			});
+			
+			//关闭按钮点击事件
+			no.addEventListener('tap', function() {
+				var target = plus.webview.currentWebview().opener();
+				mui.fire(target,'json_bj',{
+					flag:'no'
+				});
+				mui.back();
+			});
+			
+			//处理手机自身返回键或者home键
+			plus.key.addEventListener("backbutton",function(){
+				var target = plus.webview.currentWebview().opener();
+				mui.fire(target,'json_bj',{
+					flag:'backbutton'
+				});
+				mui.back();
+			});
+			
+		});		
+		</script>
+	</body>
+</html>

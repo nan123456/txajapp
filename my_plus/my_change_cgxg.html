@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			#bccgms{
+				min-height: 80px;
+				height: auto;
+				
+			}
+			#bccgjl{
+				padding: 10px;
+				min-height: 80px;
+				height: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id='wchen' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue my_none">完成</a>
+			<h1 class="mui-title">草稿修改</h1>
+		</header>
+		<div class="mui-content">
+			<div id="myform" class="">
+				<div class="mui-content-padded" style="margin: 5px;">
+					<form class="mui-input-group">
+						<div class="mui-input-row">
+	        				<label>检查层级：</label>
+	        				<select id="jccj">
+	        					<option value ="" selected="selected">项目自检</option>
+	        					<option value ="" selected="selected">分公司巡查</option>
+	        					<option value ="" selected="selected">总公司巡查</option>
+	        				</select>	        				
+	        			</div>
+					</form>
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+							<label>巡查类别：</label>
+							<select id="xclb">
+								<option value ="安全">安全</option>
+								<option value ="质量">质量</option>
+							</select>
+						</div>
+					</form>	
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">						
+							<label>通知单编号：</label>
+							<input id="tzdbh" type="text" value="CG2016" class="" placeholder="通知单编号" style=" padding-left:15px;">						
+						</div>
+					</form>
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+							<label>检查单位：</label>
+							<input id="jcdw" type="text" class="" placeholder="检查单位" style=" padding-left:15px;">
+						</div>
+						<div class="mui-input-row">
+							<label>检查对象：</label>
+							<input id="jcdx" type="text" class="" placeholder="检查对象" style=" padding-left:15px;">
+						</div>
+						<div class="mui-input-row">
+	        				<label>检查类型：</label>
+	        				<select id="jclx">
+	        					<option value ="" selected="selected">日常检查</option>
+	        					<option value ="" selected="selected">专项检查</option>
+	        					<option value ="" selected="selected">综合检查</option>
+	        					<option value ="" selected="selected">检查方式</option>
+	        					
+	        				</select>
+	        			</div>
+	        			<div class="mui-input-row">
+	        				<label>违章大类：</label>
+	        				<select id="wzdl">
+	        					<option value ="" selected="selected">1、安全管理</option>
+	        					<option value ="" selected="selected">2、文明施工</option>
+	        					<option value ="" selected="selected">3、扣件式钢管脚手架</option>
+	        					<option value ="" selected="selected">4、门式钢管脚手架</option>
+	        					<option value ="" selected="selected">5、碗扣式钢管脚手架</option>
+	        					<option value ="" selected="selected">6、承插型盘扣式钢管脚手架</option>
+	        					<option value ="" selected="selected">7、满堂脚手架</option>
+	        					<option value ="" selected="selected">8、悬挑式脚手架</option>
+	        					<option value ="" selected="selected">9、附着式升降脚手架</option>
+	        					<option value ="" selected="selected">10、高处作业吊篮</option>
+	        					<option value ="" selected="selected">11、基坑工程</option>
+	        					<option value ="" selected="selected">12、模版支架</option>
+	        					<option value ="" selected="selected">13、高处作业</option>
+	        					<option value ="" selected="selected">14、施工用电</option>
+	        					<option value ="" selected="selected">15、物料提升机</option>
+	        					<option value ="" selected="selected">16、施工升降机</option>
+	        					<option value ="" selected="selected">17、塔式起重机</option>
+	        					<option value ="" selected="selected">18、起重吊装</option>
+	        					<option value ="" selected="selected">19、施工机具</option>
+	        					<option value ="" selected="selected">20、其他</option>
+	      	        			<option value ="" selected="selected">违章大类</option>
+	        				</select>
+	        			</div>
+	        			
+						<div class="mui-input-row">
+							<label> 检查日期：</label>
+							<input id='jcrq' type="text" placeholder="检查日期" readonly="readonly" style=" padding-left:15px;">						
+						</div>
+						<div class="mui-input-row my_none">
+							<label> 时间戳：</label>
+							<input id='sjc' type="text" placeholder="时间戳">						
+						</div>	
+					</form>	
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div id="tiaomu" class="mui-input-row">
+							<a href="my_change_wztm.html"></a>
+							<label>违章条目：</label>									
+							<input id="" type="text" class="" placeholder="点击查看" style=" padding-left:15px;">
+						</div>
+					</form>
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+							<label>违章部位：</label>
+							<input id="wzbw" type="text" class="" placeholder="违章部位" style=" padding-left:15px;">
+						</div>
+						<div class="mui-input-row">
+							<label>违章状态：</label>
+							<input id="wzzt" type="text" class="" placeholder="违章状态" style=" padding-left:15px;">
+						</div>	
+						<div class="mui-input-row my_none">
+							<label> 时间戳：</label>
+							<input id='sjc' type="text" placeholder="时间戳">						
+						</div>	
+					</form>	
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+							<label>整改期限：</label>
+							<div style="float: left;width: 40%;">
+								<input id="czgqx" type="text" placeholder="整改期限">
+							</div>
+							<div style="float: right;width: 20%;">
+								<label>天</label>
+							</div>
+						</div>
+					</form>
+	        	</div>
+	        	<div class="mui-button-row">
+					<button id="fh" type="button" class="mui-btn mui-btn-primary mui-action-back">返回</button>
+					<button id="tkgl" type="button" class="mui-btn mui-btn-primary">图库管理</button>
+					<button id="bccg" type="button" class="mui-btn mui-btn-primary">完成修改</button>
+				</div>
+			</div>
+			<div id="uploader" class="my_none">
+				<form class="mui-input-group">
+					<div class="mui-input-row" style="margin-top:5px;">
+						<label>任务附件：</label>
+						<input id="upload_camera1" class="upload_camera" type="text" placeholder="点击添加" readonly="readonly">						
+					</div>	
+					<div style="margin-top: -10px;padding-bottom: 1px;">
+						<ul id="history_rwfj" class="dlist" style="text-align:left;">
+							<li id="empty_rwfj" class="ditem-empty">无历史记录</li>							
+						</ul>
+						
+						<div class="mui-button-row">
+							<button id="clean_rwfj" type="button" class="mui-btn mui-btn-primary" onclick="cleanHistory('rwfj');">清空记录</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<button id="rwfj" type="button" class="mui-btn mui-btn-primary" onclick="upload(this.id,'clean_rwfj');">上传附件</button>
+						</div>
+					</div>							
+				</form>			
+			</div>
+		</div>
+		<div id="output">
+			<!--Camera管理摄像头设备，可用于拍摄照片、录制视频文件。      -->
+		</div>
+	
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/immersed.js" ></script>
+		<!--<script src="../js/my_js_upload.js" ></script>-->
+		<script>
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					
+					}
+			});
+			mui.plusReady(function(){
+				//定位效果
+				var doc=document;
+				var czgqx = doc.getElementById("czgqx"); 
+				var jcrq=document.getElementById('jcrq');
+				
+				/*-------巡查类别改变颜色------*/
+				xclb.addEventListener('change', function() {
+					var dj=xclb.value;
+					if (dj=='安全') {
+						xclb.style.backgroundColor="blue";
+					}else{
+						xclb.style.backgroundColor="green";					
+					}
+				});	
+				//打开原生日期
+				jcrq.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						jcrq.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});	
+				});
+				
+				/*------图库管理按钮监听-------*/
+				tkgl.addEventListener('tap',function(){
+					mui.openWindow({
+						url: 'my_change_tkgl.html',
+						id: 'my_change_tkgl',
+						styles: {
+							hardwareAccelerated:false
+						},
+						extras:{
+								
+						},
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示
+							aniShow:'slide-in-right',//页面显示动画
+							duration:'100'//页面动画持续时间
+						},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					});
+				});
+				/*------返回按钮监听-------*/
+				fh.addEventListener('tap',function(){
+					mui.openWindow({
+						url: 'my_change_manager.html',
+						id: 'my_change_manager',
+						styles: {
+							hardwareAccelerated:false
+						},
+						extras:{
+								
+						},
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示
+							aniShow:'slide-in-right',//页面显示动画
+							duration:'100'//页面动画持续时间
+						},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					});
+				});
+				
+				/*------完成修改按钮监听-------*/
+				bccg.addEventListener('tap',function(){
+					mui.openWindow({
+						url: 'my_change_manager.html',
+						id: 'my_change_manager',
+						styles: {
+							hardwareAccelerated:false
+						},
+						extras:{
+								
+						},
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示
+							aniShow:'slide-in-right',//页面显示动画
+							duration:'100'//页面动画持续时间
+						},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					});
+				});
+				
+				/*-------违章条目按钮监听------*/
+				var tiaomu = document.getElementById("tiaomu");
+				tiaomu.addEventListener('tap',function(){
+					mui.openWindow({
+						url: 'my_change_wztm.html',
+						id: 'my_change_wztm',
+						styles: {
+							hardwareAccelerated:false
+						},
+						extras:{
+							//传递参数
+							name:'wushaohang_lidegejing'
+						},
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示
+							aniShow:'slide-in-right',//页面显示动画
+							duration:'100'//页面动画持续时间
+						},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					});
+				});
+			});
+			/*-------拍照功能实现--------*/
+			var i=1,gentry=null,w=null;
+			var hl=null,le=null,de=null,ie=null;
+			var unv=true;
+			// H5 plus事件处理
+			function plusReady(){
+				// 获取摄像头目录对象
+				plus.io.resolveLocalFileSystemURL( "_doc/", function ( entry ) {
+					entry.getDirectory( "camera", {create:true}, function ( dir ) {
+						gentry = dir;
+					}, function ( e ) {
+						outSet( "Get directory \"camera\" failed: "+e.message );
+					} );
+				}, function ( e ) {
+					outSet( "Resolve \"_doc/\" failed: "+e.message );
+				} );
+			}
+			if(window.plus){
+				plusReady();
+			}else{
+				document.addEventListener("plusready",plusReady,false);
+			}
+			// 监听DOMContentLoaded事件
+			document.addEventListener("DOMContentLoaded",function(){
+				// 获取DOM元素对象
+				hl=document.getElementById("history");
+				le=document.getElementById("empty");
+				de=document.getElementById("display");
+				if(ie=document.getElementById("index")){
+					ie.onchange=indexChanged;
+				}
+				// 判断是否支持video标签
+				unv=!document.createElement('video').canPlayType;
+			},false );
+			function changeIndex() {
+				outSet( "选择摄像头：" ); 
+				ie.focus();
+			}
+			function indexChanged() {
+				de.innerText = ie.options[ie.selectedIndex].innerText;
+				i = parseInt( ie.value );
+				outLine( de.innerText );
+			}
+			// 拍照
+			function getImage() {
+				outSet("");
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage( function ( p ) {
+					outLine(p);
+					plus.io.resolveLocalFileSystemURL( p, function ( entry ) {
+						
+					}, function ( e ) {
+						outLine( "" );
+					} );
+				}, function ( e ) {
+					outLine( "");
+				}, {filename:"_doc/camera/",index:1} );
+			}
+		</script>
+		<script src="../js/setPullToRefresh.js" ></script>
+	</body>
+</html>

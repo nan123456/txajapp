@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style>
+			.title{
+				margin: 20px 15px 7px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">质量实测二维码</h1>
+		</header>
+		<div class="mui-content" id="p">
+			<ul class="mui-table-view" id="showtime">
+				 <!--<li class="mui-table-view-cell" style="color: red;">无数据！</li>-->
+		         <!--<li class="mui-table-view-cell">工程名称 部位</li>
+		         <li class="mui-table-view-cell">工程名称+部位</li>-->
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/service.js" ></script>
+	<script>
+		mui.init({
+			swipeBack:true //启用右滑关闭功能
+		});
+		mui.plusReady(function() {
+			//获取上个页面的传值
+			var self = plus.webview.currentWebview();
+			var mobile = self.mobile;//电话
+			var starTime = self.star;//日期
+			var gcmc = self.gcmc;//工程名称
+			var jcxm = self.selected;//检查项目
+//			alert(starTime+gcmc+jcxm) 
+			//异步获取部位信息
+			mui.ajax(url+'QRcode/my_QRcode_filtrate.php',{
+				data:{
+					flag:'bgxx',
+					jcxm:jcxm,
+					gcmc:gcmc,
+					starTime:starTime
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+//					alert(data)
+					document.getElementById("showtime").innerHTML="";
+					plus.nativeUI.showWaiting( "正在拼命加载中..." );
+					setTimeout( function(){
+						plus.nativeUI.closeWaiting();
+					}, 500 );
+					var count = data.length;
+					if(count==1){
+						document.getElementById("showtime").innerHTML="<li class='mui-table-view-cell' style='color: red;'>无数据！</li>";			
+					}else{
+						for(var i=0;i<count-1;i++){
+							var bw = data[i].部位;
+							var sjc = data[i].时间戳;
+							lov(bw,sjc);//创建列表
+						}
+					}
+						
+				}
+			});
+			
+			
+			//创建列表
+			var lov = function(bw,sjc){
+				var ul = document.getElementById("showtime");
+				var li = document.createElement("li");
+				li.className = 'mui-table-view-cell';
+				li.name = bw;
+				li.id = sjc;
+				li.innerHTML = gcmc+" "+bw;
+				ul.appendChild(li);
+			}
+			
+			//点击生成二维码
+			mui("#showtime").on('tap','li',function(){
+				var sjc = this.id;
+				var bw = this.name;
+//				alert(sjc)
+				switch(jcxm)
+				{
+					case "现浇混凝土结构观感质量及尺寸偏差":
+					var xmpy = "xjhnt.php";
+					break;
+					case "填充墙砌体工程":
+					var xmpy = "tcqt.php";
+					break;
+					case "一般抹灰工程":
+					var xmpy = "ybmh.php";
+					break;
+					case "饰面砖粘贴":
+					var xmpy = "smz.php";
+					break;
+					case "大理石面层和花岗石面层":
+					var xmpy = "dls.php";
+					break;
+				}
+//				alert("my_Project/phpWord/"+xmpy+"?sjc="+sjc)
+				mui.openWindow({
+					url:'imgewm.html',
+					id:'imgewm',
+					styles:{
+						hardwareAccelerated:false
+					},
+					extras:{
+						ewmlj:"ProjectPlus/llbb/"+xmpy+"?sjc1="+sjc,
+						gcmc:gcmc,
+						time:starTime,
+						jcxm:jcxm,
+						jcbw:bw
+					},
+					show:{
+						autoShow:true,//页面loaded事件发生后自动显示
+						aniShow:'slide-in-right',//页面显示动画
+						duration:'100'//页面动画持续时间
+					},
+					waiting:{ 
+						autoShow:false,//自动显示等待框
+					},
+				});
+			});
+			
+		});
+	</script>
+</html>

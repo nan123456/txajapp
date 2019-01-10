@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">设备管理</h1>
+		</header>
+		<div class="mui-content">
+		    <div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a id="sbglzt" class="mui-control-item mui-active" >
+						设备管理状态
+					</a>
+				</div>
+			</div>
+			<div id="itemControl"  class="mui-content-padded">
+				<!--登记-->
+				<div id="item1" class="mui-control-content ">
+					<div class="mui-content">
+						<form class="mui-input-group">
+						    <div class="mui-input-row">
+						        <label>起重机械名称:</label>
+						        <input type="text" id="qzjxmc"  readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>建筑起重类别:</label>
+						        <input type="text" id="sblx"  readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>安装部位:</label>
+						        <input type="text" id="azbw"  readonly="readonly"	placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>规格型号:</label>
+						        <input type="text" id="xh"  readonly="readonly"	placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>制造单位:</label>
+						        <input type="text" id="zzdw" readonly="readonly" placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>出厂日期:</label>
+						        <input type="text" id="ccrq" readonly="readonly"	placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>出厂编号:</label>
+						        <input type="text" id="ccbh"  readonly="readonly"	placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>登记日期:</label>
+						        <input type="text" id="djrq" 	readonly="readonly"  placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>工地自编号:</label>
+						        <input type="text" id="gdzbh"  readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>最大起重量:</label>
+						        <input type="text" id="zdqzl" readonly="readonly" placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>最大起重力矩:</label>
+						        <input type="text" id="zdqzlj" readonly="readonly" placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>产权单位名称:</label>
+						        <input type="text" id="cqdwmc"  readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>省网告知流水号:</label>
+						        <input type="text" id="swgzlsh"  readonly="readonly">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>设备产权备案号:</label>
+						        <input type="text" id="sbcqbah"  readonly="readonly">
+						    </div>
+						     <div class="mui-input-row" >
+						        <label >设计最大起升高度:</label>
+						        <input type="text" id="sjzdqsgd" readonly="readonly" placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label >本工程最大使用高度:</label>
+						        <input type="text" id="bgczdsygd" readonly="readonly" placeholder="">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>工程项目安全监督登记号:</label>
+						        <input type="text" id="gcxmaqjddjh"  readonly="readonly">
+						    </div>
+						</form>				
+						<form class="mui-input-group" style="margin-top:5px;">
+						    <div class="mui-input-row">
+						        <label>设备状态:</label>
+						        <input type="text" id="sbzt" readonly="readonly" placeholder="">
+						    </div>
+						</form>
+					</div>
+				</div>
+				<!--登记-->
+				<!--<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary mui-action-back">关闭</button>
+					<button id="rwfjck" type="button" class="mui-btn mui-btn-primary">附件查看</button>		
+					<button id="rwfjgx" type="button" class="mui-btn mui-btn-primary">附件更新</button>
+				</div>-->
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script src="../js/setPullToRefresh.js" ></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function(){
+				var doc = document;
+//				//获取参数
+				function geturl(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]);
+				return null;
+			   }
+				//获取上一级页面的参数
+				var sbzt=geturl("sbzt");
+				var gcid =geturl("gcid");
+				var sjc  =geturl("sjc");
+				//解码
+				sbzt=decodeURI(sbzt);
+//				alert(sbzt);
+				//alert(decodeURI(self.sblb1));
+				//打开浏览器的内核
+				var self = plus.webview.currentWebview();
+				document.getElementById('sbglzt').innerText=sbzt;
+				//动态改变不同类型对应的不同的页面
+				function tianjia_a_class(e){ 
+					var i=e;
+					if(i=='1'){
+                		var div_2=document.getElementById("item1");
+                	}else if(i=='2'){
+                		var div_2=document.getElementById("item1");
+                	}else if(i=='3'){
+                		var div_2=document.getElementById("item1");
+                	}else if(i=='4'){
+                		var div_2=document.getElementById("item1");
+               	 	}
+                	div_2.setAttribute("class","mui-control-content mui-active");
+				}
+				//判断不同类型对应的不同函数
+				if(sbzt=='登记中'){
+					tianjia_a_class(1);
+				}else if(sbzt=='安装中'){
+					tianjia_a_class(2);
+				}else if(sbzt=='使用中'){
+					tianjia_a_class(3);
+				}else if(sbzt=='拆卸中'){
+					tianjia_a_class(4);
+				}else{
+				
+				}
+               
+                //异步获取登记数据集               
+                var sblx = doc.getElementById("sblx");
+                var cqbah = doc.getElementById("qzjxmc");
+                var xh = doc.getElementById("xh");
+                var zzdw = doc.getElementById("zzdw");
+                var ccrq = doc.getElementById("ccrq");
+                var ccbh = doc.getElementById("ccbh");
+                var djrq = doc.getElementById("djrq");
+                var gdzbh = doc.getElementById("gdzbh");
+                var zdqzl = doc.getElementById("zdqzl");
+                var zdqzlj = doc.getElementById("zdqzlj");
+                var cqdwmc = doc.getElementById("cqdwmc");
+                var swgzlsh = doc.getElementById("swgzlsh");
+                var sbcqbah = doc.getElementById("sbcqbah");
+                var sjzdqzgd = doc.getElementById("sjzdqsgd");
+                var bgczdsygd = doc.getElementById("bgczdsygd");
+                var gcxmaqjddjh = doc.getElementById("gcxmaqjddjh");
+                var sbzt = doc.getElementById("sbzt");
+               
+                mui.ajax(url+'my_plus/my_equipment_alldu.php',{
+                	data:{
+                		sjc:sjc
+                	},
+                	dataType:'json',
+                	type:'post',
+                	timeout:10000,
+                	success:function(data){
+                		var length = data.length;
+                		for(i=0;i<length-1;i++){
+                			qzjxmc.value=data[i].起重机械名称;
+                			sblx.value=data[i].设备类型;
+							xh.value=data[i].型号;
+							azbw.value=data[i].安装部位;
+							ccrq.value=data[i].出厂日期;
+							ccbh.value=data[i].出厂编号;
+							djrq.value=data[i].登记日期;
+							zzdw.value=data[i].生产制造单位;
+							gdzbh.value=data[i].工地自编号;
+							zdqzl.value=data[i].最大起重量;
+							zdqzlj.value=data[i].最大起重力矩;
+							cqdwmc.value=data[i].产权单位名称;
+							swgzlsh.value=data[i].省网告知流水号;
+							sbcqbah.value=data[i].设备产权备案号;
+							sjzdqzgd.value=data[i].设计最大起升高度;
+							bgczdsygd.value=data[i].本工理桩高度;
+							gcxmaqjddjh.value=data[i].工程项目安全监督登记号;
+							sbzt.value=data[i].设备状态;
+							
+                		}
+                	},
+                	error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+                });
+                
+			});
+		</script>
+
+	</body>
+
+</html>

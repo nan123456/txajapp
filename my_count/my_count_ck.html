@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣项目巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="xczglx" class="mui-title"></h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron my_list" id="projectlist">
+				<!--<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="../images/xzmc.png">
+						<div class="mui-media-body">
+							空
+							<p class='mui-ellipsis'>xxx施工单位</p>
+						</div>
+					</a>
+				</li>-->
+			</ul>			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/chart.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui.plusReady(function(){
+				
+				
+				
+				
+				function geturl(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]);
+					return null;
+				}
+				function getQueryString(name) {   
+      			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");   
+      			var r = window.location.search.substr(1).match(reg);   
+     			 if (r != null) return decodeURI(r[2]); return null;   
+				}  
+				zt2=geturl("hehe");
+				star=geturl("star"); 
+				end=geturl("end"); 
+				section = getQueryString("section");
+//				alert(section);
+				mobile=geturl("mobile");
+				//console.log(mobile);
+				
+				var xczglx=document.getElementById("xczglx");
+				
+				if(zt2==1){
+					zt1 = "草稿";
+					xczglx.innerText="巡查整改---"+zt1;
+				}else if(zt2==2){
+					zt1 = "整改中";
+					xczglx.innerText="巡查整改---"+zt1;
+				}else if(zt2==3){ 
+					zt1 = "延期";
+					xczglx.innerText="巡查整改---"+zt1;
+				}else if(zt2==4){
+					zt1 = "逾期";
+					xczglx.innerText="巡查整改---"+zt1;
+				}else if(zt2==5){
+					zt1 = "未完成";
+					xczglx.innerText="巡查整改---"+zt1;
+				}else if(zt2==6){
+					zt1 = "已完成";
+					xczglx.innerText="巡查整改---"+zt1;
+				}else{
+					
+				}
+				var xmgc = function(project,tzdbh,sjcCgao,id,gcid,jcrq){
+					if(zt1=="草稿"){
+						var project = "检查对象："+project;
+						var tzdbh = "编号："+tzdbh;
+						var jcrq = "检查日期："+jcrq;
+						var tjfx = "tjfx";
+						
+						var ul = document.getElementsByTagName("ul");
+						var li = document.createElement("li");
+						li.className = "mui-table-view-cell mui-media";
+						li.innerHTML='<a class="mui-navigate-right" href="../my_plus/my_change_ckcg.html?sjcCgao='+sjcCgao+'&id='+id+'&flag=tjfx"><img class="mui-media-object mui-pull-left" src="../images/ffile.png"><div class="mui-media-body">'+project+'<p class="mui-ellipsis">'+tzdbh+'</p><p class="mui-ellipsis">'+jcrq+'</p></div></a>'
+						ul[0].appendChild(li);
+					}else{
+						var project = "检查对象："+project;
+						var tzdbh = "编号："+tzdbh;
+						var jcrq = "检查日期："+jcrq;
+						
+						var ul = document.getElementsByTagName("ul");
+						var li = document.createElement("li");
+						li.className = "mui-table-view-cell mui-media";
+						li.innerHTML='<a class="mui-navigate-right" href="../my_plus/my_change_manager.html?sjcCgao='+sjcCgao+'&id='+id+'&gcid='+gcid+'&mobile='+mobile+'"><img class="mui-media-object mui-pull-left" src="../images/ffile.png"><div class="mui-media-body">'+project+'<p class="mui-ellipsis">'+tzdbh+'</p><p class="mui-ellipsis">'+jcrq+'</p></div></a>'
+						ul[0].appendChild(li);
+					}
+				}
+				mui.ajax(url+'my_count/my_tzd_select.php',{
+					data:{
+						zt1:zt1, 
+						star:star,
+						end:end,
+						section:section,
+						mobile:mobile
+					}, 
+					dataType:'json', 
+					type:'POST', 
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						var length=data.length; //数据返回的形式是数组，在这里先判断数组的长度
+						var ul = document.getElementsByTagName('ul');
+						if (length>0) {
+							ul[0].innerHTML='';
+							for (var i=0;i<length;i++) {
+								var project = data[i][0];
+								var tzdbh = data[i][1];
+								var sjcCgao = data[i][2];
+								var id = data[i][3];
+								var gcid = data[i][4];
+								var jcrq = data[i][5];
+								xmgc(project,tzdbh,sjcCgao,id,gcid,jcrq);
+							}
+						}else{
+							
+						}
+					},
+					
+					error:function(xhr,type,errorThrown){
+	//					alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+			});
+		</script>
+		<script src="../js/setPullToRefresh.js" ></script>
+	</body>
+</html>

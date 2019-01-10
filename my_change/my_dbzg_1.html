@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣项目巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<style type="text/css">
+			.margintop10px{
+				margin-top: 10px;
+			}
+			.paddingleft34px{
+				padding-left: 34px;
+			}
+			.mui-popover {
+				height: 260px;
+			}
+			
+			#cdbzPopover{
+				min-width: 282px;				
+				top:15% !important;
+				margin-top: 0px;
+				left: 50% !important;
+				margin-left: -141px;
+				position: fixed;
+			}
+			.mui-popover .mui-popover-arrow{
+				display: none !important;
+			}
+			.bgcolors{
+				background-color: #0CAF2D;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">总公司待办整改</h1>
+		</header>
+		<div class="mui-content">
+			<div id="item1" class="mui-control-content mui-active">
+				<div id="scroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div id="dbzgGcmc" style="margin: 10px;">
+						</div>			
+					</div>
+				<div class="mui-content">
+	        </div>		
+		</div>
+		<!--整改 -->
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script type="text/javascript">	
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					
+					}
+			});
+			
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});					
+			})(mui);
+			
+			mui.plusReady(function(){
+				//接收传值
+				var self = plus.webview.currentWebview();
+				var mobile = self.mobile;
+				flag = '分公司';
+				var section = self.section;
+				var title = document.getElementsByClassName("mui-title");
+				title[0].innerHTML = flag +"整改待办整改"
+				/*搜索框*/
+				 
+				
+				//动态创建代办整改工程--整改中
+				var dbZg=function(i,id,gcmc,tzdzt,tzdbh,sjcCgao,gcid){
+					var num=i;
+					var id = id;
+					var gcmc = gcmc;
+					var tzdzt = tzdzt;
+					var tzdbh = tzdbh;
+					var sjcCgao = sjcCgao;
+					var gcid = gcid;
+					//整改状态和通知单编号的结合
+					var ztbhZh = tzdzt+'-----'+'通知单编号：'+tzdbh;
+					//汉字编码，为了便于传值
+					var gcmc_c=encodeURI(encodeURI(gcmc));
+					var tzdzt_c=encodeURI(encodeURI(tzdzt));
+					//动态生成ul列表
+					var dbzgGcmc=document.getElementById("dbzgGcmc");
+					var div=document.createElement("div");
+					div.className="mui-card bgcolors";
+					div.id=num+id;
+					dbzgGcmc.appendChild(div);
+					var ul=document.createElement("ul");
+					if(tzdzt=="整改中"){
+						ul.className="mui-table-view ";
+					} else {
+						ul.className="mui-table-view bgcolors";
+					}
+					div.appendChild(ul);
+					var li=document.createElement("li");
+					li.className="mui-table-view-cell";
+					ul.appendChild(li);
+					var a=document.createElement("a");
+					a.className="mui-navigate-right";
+					a.id=num+id;
+					//a.href="../my_plus/my_change_list.html";?mobile="+mobile+"&id="+xmid+"&unit="+sgdw_c+"&project="+gcmc_c;
+					a.href="../my_plus/my_change_manager.html?gcid="+gcid+"&sjcCgao="+sjcCgao+"&id="+id+"&mobile="+mobile;
+					li.appendChild(a);
+					var img=document.createElement("img");
+					img.className="mui-media-object mui-pull-left";
+					img.src='../images/xxgd.png';
+					a.appendChild(img);
+					var div2=document.createElement('div');
+					div2.className='mui-media-body';			
+					a.appendChild(div2);
+					var txt=document.createTextNode(gcmc);
+					div2.appendChild(txt);
+					var p=document.createElement('p');
+					p.className='mui-ellipsis';
+					div2.appendChild(p);
+					var txt2=document.createTextNode(ztbhZh);
+					p.appendChild(txt2);
+					//用于传工程名称和工程id
+					var div3=document.createElement('div');
+					div3.className='mui-media-body my_none';			
+					a.appendChild(div3);
+					var txt3=document.createTextNode(gcmc+"|"+id);
+					div3.appendChild(txt3);
+					
+				};
+				//未查询前异步获取数据 --整改
+				mui.ajax(url+'my_plus/my_dbzg_1.php',{
+//					alert(flag);
+					data:{
+						mobile:mobile,
+						flag:"zhneggai",
+						section:section,
+						company: flag
+					},
+					dataType:'json',
+					type:'POST', 
+					timeout:10000,
+					success:function(data){
+						var length=data.length;
+						var yx=0;
+						var yq=0;
+//						alert(length);
+						if (length>0) {
+							for (var i=0;i<length-1;i++) {
+								var id = data[i].id;
+								var gcmc= data[i].工程名称;
+								var tzdzt = data[i].通知单状态;
+								var tzdbh= data[i].通知单编号;
+								var jzrq=data[i].截止日期;
+								var sjcCgao=data[i].时间戳;
+								var gcid=data[i].工程id;
+								
+								
+								//获取当天日期，与截止日期比较，划分运行中和延期
+								var xjzrq = new Date(Date.parse(jzrq.replace(/-/g, "/")));
+								var xjzrq = xjzrq.getTime();
+								var today = new Date();
+//								alert(today);
+//								if (xjzrq>today) {
+									dbZg(i,id,gcmc,tzdzt,tzdbh,sjcCgao,gcid); //整改中
+//									alert(id+"  "+gcmc+"  "+tzdzt+"  "+tzdbh+"  "+sjcCgao);
+									yx++;
+//								} else{
+									
+//								}
+							}
+						}else{
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+			});		
+		</script>
+	</body>
+</html>

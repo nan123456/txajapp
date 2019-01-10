@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link href="../css/mui.min.css" rel="stylesheet"/>    
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/iconfont.css">
+		<style>			
+			.mui-input-group {
+				margin-top: 10px;
+			}
+			
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			
+			.mui-input-group label {
+				width: 22%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			
+			.link-area {
+				display: block;
+				margin-top: 25px;
+				text-align: center;
+			}
+			
+			.spliter {
+				color: #bbb;
+				padding: 0px 8px;
+			}
+			
+			.oauth-area {
+				position: absolute;
+				bottom: 20px;
+				left: 0px;
+				text-align: center;
+				width: 100%;
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.oauth-area .oauth-btn {
+				display: inline-block;
+				width: 50px;
+				height: 50px;
+				background-size: 30px 30px;
+				background-position: center center;
+				background-repeat: no-repeat;
+				margin: 0px 20px;
+				/*-webkit-filter: grayscale(100%); */
+				border: solid 1px #ddd;
+				border-radius: 25px;
+			}
+			
+			.oauth-area .oauth-btn:active {
+				border: solid 1px #aaa;
+			}
+			
+			.oauth-area .oauth-btn.disabled {
+				background-color: #ddd;
+			}
+			.mui-table-view-divider {
+				background-color: #efeff4;
+				font-size: 14px;
+			}
+			.mui-table-view-divider:before,
+			.mui-table-view-divider:after {
+				height: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新增项目危险源</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">				
+				<ul id="listUl" class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-divider">二维码</li>
+					<li class="mui-table-view-cell">
+						<a id="qr" class="mui-icon iconfont icon-erweima">
+						扫一扫
+						</a>
+					</li>					
+				</ul>
+			</form>
+		
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			mui.plusReady(function() {
+				//获取传值
+				var self = plus.webview.currentWebview();			
+				mobile = self.mobile;
+				curWebId=self.id;
+				bumen=self.bumen;
+//				alert(mobile);
+				var qr = document.getElementById("qr"); //扫一扫
+				
+				//二维码扫一扫
+				qr.addEventListener("tap",function(event){		
+					mui.openWindow({
+						url: "scan_barcode.html",
+						id: this.href,
+						waiting:{
+							autoShow:false
+						},
+						extras:{
+							
+						}
+					});
+					return;
+				});				
+			});
+			
+			//二维码扫描成功的跳转页面
+			function open_qd(result){
+//				alert(result);
+				var result=result;
+				var strs= new Array();
+				strs=result.split(",");
+//				var gcmc=strs[0]; //工程名称
+//				var gclb=strs[1]; //工程类别
+				var gcid=strs[0]; //工程id
+				var wxyid=strs[1]; //危险源id
+//				alert(result);
+				//扫描自动打开页面
+				mui.openWindow({
+					url: "../QRclouds/new_scan.html",
+					id: "new_scan",
+					extras:{
+						
+					},
+					show:{
+						autoShow:true,//页面loaded事件发生后自动显示
+						aniShow:'slide-in-right',//页面显示动画
+						duration:'100'//页面动画持续时间
+					},
+					waiting:{
+						autoShow:true,//自动显示等待框
+						title:'加载中...'
+					},
+				});
+//				console.log(strs);				
+				localStorage.setItem("targetId",strs);
+				localStorage.setItem("targetId_1",mobile);
+//				localStorage.setItem("targetId_2",strs);
+			}
+		</script>
+	</body>
+
+</html>

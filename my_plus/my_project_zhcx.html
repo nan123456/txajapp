@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			.my_margin{
+				margin-left: 10px;
+				margin-right: 10px;
+			}
+			.mui-control-content {				
+				bottom: 0px;				
+			}	
+			.mui-control-content {
+				height:330px;
+			}
+			/****表格自适应css******/
+			/****大屏幕******/
+			body {
+				font-family: arial;
+			}
+			table {
+				border: 1px solid #ccc;
+				width: 93%;
+				
+				margin:0;
+				padding:0;
+				border-collapse: collapse;
+				border-spacing: 0;
+				margin: 0 auto;
+			}
+			table tr {
+				border: 1px solid #ddd;
+				padding: 5px;
+			}
+			table th, table td {
+				padding: 5px;
+				text-align: center;
+			}
+			table th {
+				text-transform: uppercase;
+				font-size: 14px;
+				letter-spacing: 1px;
+			}
+			/****大屏幕******/
+			/****小屏幕******/
+			@media screen and (max-width: 100px) {
+				table {
+					border: 0;
+				}
+				table thead {
+					display: none;
+				}
+				table tr {
+					margin-bottom: 0px;
+					display: block;
+					border-bottom: 2px solid #ddd;
+				}
+				table td {
+					display: block;
+					text-align: right;
+					font-size: 13px;
+					border-bottom: 1px dotted #ccc;
+				}
+				table td:last-child {
+					border-bottom: 0;
+				}
+				table td:before {
+					content: attr(data-label);
+					float: left;
+					text-transform: uppercase;
+					font-weight: bold;
+				}
+			}
+			/****小屏幕******/
+			.note{
+				max-width: 80%;
+				margin: 0 auto;
+			}
+			/****表格自适应css******/	
+			
+			/**** 饼图样式 ****/
+			.chart {
+				height: 240px;
+				margin: 0px; 
+				padding: 0px; 
+			}		
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>			
+			<h1 class="mui-title">综合查询</h1>
+		</header>
+		<div class="mui-content">
+			<!-- 项目名称 -->
+	        <div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a id="xmmc" class="mui-control-item mui-active" href="">
+						项目名称
+					</a>					
+				</div>
+			</div>
+			<!-- 项目名称 -->
+			
+			<!-- 时间选择器 -->
+			<div class="my_margin">
+				<form class="mui-input-group">					
+					<div class="mui-input-row">
+						<label>起始日期：</label>
+						<input id='qsrq' type="text" placeholder="起始日期" readonly="readonly">						
+					</div>	
+					<div class="mui-input-row">
+						<label>结束日期：</label>
+						<input id='jsrq' type="text" placeholder="结束日期" readonly="readonly">						
+					</div>
+				</form>				
+	        </div>
+	        <!-- 时间选择器 -->
+	        
+	        <!-- 按钮事件 -->
+	        <div class="mui-button-row">
+				<button id="qkong" type="button" class="mui-btn mui-btn-primary" disabled="disabled">清空</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="hzong" type="button" class="mui-btn mui-btn-primary" disabled="disabled">汇总</button>
+			</div>
+	        <!-- 按钮事件 -->
+	        
+	        <!-- 按钮事件响应标题 -->
+	        <div style="padding: 4px 10px;">
+				<div style="padding: 10px 10px;">
+					<div id="segmentedControl" class="mui-segmented-control">
+						<a id="hzjg" class="mui-control-item mui-active" href="">
+							汇总结果
+						</a>					
+					</div>
+				</div>
+			</div>
+			<!-- 按钮事件响应标题 -->
+			
+			<!-- 饼图呈现 -->
+			<div class="mui-content-padded">
+				<div class="chart" id="pieChart">&nbsp;&nbsp;&nbsp;&nbsp;无汇总结果！</div>
+			</div>
+			<!-- 饼图呈现 -->
+			
+		</div>		
+		<script src="../js/mui.min.js"></script>		
+		<script src="../js/service.js" ></script>
+		<script src="../js/chart.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});		
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});					
+			})(mui);		
+            
+			mui.plusReady(function(){
+				//获取项目id、Name值
+				var self = plus.webview.currentWebview();
+				document.getElementById('xmmc').innerText=self.gcmc;
+				userid=self.userid;
+				
+				var qsrq=document.getElementById('qsrq');
+				var jsrq=document.getElementById('jsrq');
+				
+				qsrq.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						qsrq.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						if (qsrq.value&&jsrq.value) {
+							var gksrq=qsrq.value;
+							var gjsrq=jsrq.value;
+							var xgksrq = new Date(Date.parse(gksrq.replace(/-/g, "/")));
+							var xgksrq = xgksrq.getTime();
+							var xgjsrq = new Date(Date.parse(gjsrq.replace(/-/g, "/")));
+							var xgjsrq = xgjsrq.getTime();
+							if (xgjsrq>=xgksrq) {
+								hzong.disabled=false;
+							}else{
+								alert('起始日期不能大于结束日期！');
+								hzong.disabled=true;
+							}
+						}
+						
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});
+				});
+				jsrq.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						jsrq.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						if (qsrq.value&&jsrq.value) {
+							var gksrq=qsrq.value;
+							var gjsrq=jsrq.value;
+							var xgksrq = new Date(Date.parse(gksrq.replace(/-/g, "/")));
+							var xgksrq = xgksrq.getTime();
+							var xgjsrq = new Date(Date.parse(gjsrq.replace(/-/g, "/")));
+							var xgjsrq = xgjsrq.getTime();
+							if (xgjsrq>=xgksrq) {
+								hzong.disabled=false;
+							}else{
+								alert('起始日期不能大于结束日期！');
+								hzong.disabled=true;
+							}
+						}
+						
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});
+				});
+				
+				//清空事件
+				qkong.addEventListener('tap', function() {
+					qsrq.value='';
+					jsrq.value='';
+					var pieChart=document.getElementById("pieChart");
+					pieChart.innerHTML='&nbsp;&nbsp;&nbsp;&nbsp;无汇总结果！';
+					hzong.disabled=true;
+					qkong.disabled=true;
+				});
+				
+				
+			});
+			
+			//异步获取数字
+			var qsrq = document.getElementById("qsrq");
+			var jsrq = document.getElementById("jsrq");
+			var hzong = document.getElementById("hzong");
+			var xmmc = document.getElementById("xmmc");
+			
+			//汇总事件				
+			hzong.addEventListener('tap', function() {
+				qkong.disabled=false;
+				var qsrqvalue=qsrq.value;
+				var jsrqvalue=jsrq.value;
+				var xmmcValue=xmmc.innerText;
+				
+				//异步获取数据
+				mui.ajax(url+'my_plus/my_project_zhcx.php',{
+					data:{
+						qsrqvalue:qsrqvalue, //起始日期
+						jsrqvalue:jsrqvalue, //截止日期
+						gcmc:xmmcValue //工程名称
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){							
+						//alert(data);							
+						var length=data.length;
+						if (length>0) {
+							var cg=data[length-1].countCg;
+							var zgz=data[length-1].countZgz;
+							var yanqi=data[length-1].countYanqi;
+							var yuqi=data[length-1].countYuqi;
+							var wwc=data[length-1].countWwc;
+							var ywc=data[length-1].countYwc;
+							
+							if(cg=="0"&&zgz=="0"&&yanqi=="0"&&yuqi=="0"&&wwc=="0"&&ywc=="0"){
+								alert("无汇总结果！");
+								var pieChart=document.getElementById("pieChart");
+								pieChart.innerHTML='&nbsp;&nbsp;&nbsp;&nbsp;无汇总结果！';
+							}else{
+								hzbt(cg,zgz,yanqi,yuqi,wwc,ywc);
+							}
+							
+						}							
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type);
+					}
+				});
+			});
+			
+			var hzbt=function(cg,zgz,yanqi,yuqi,wwc,ywc){
+				//饼图
+				var getOption = function(chartType) {
+					var chartOption = chartType == 'pie' ? {
+						calculable: false,
+						series: [{
+							name: '访问来源',
+							type: 'pie',
+							radius: '50%',
+							center: ['50%', '50%'],
+							data:[{
+								value: cg,
+								name: '草稿 '+cg+' 份'
+							}, { 
+								value: zgz,
+								name: '整改中 '+zgz+' 份'
+							}, {
+								value: yanqi,
+								name: '延期 '+yanqi+' 份'
+							}, {
+								value: yuqi,
+								name: '逾期 '+yuqi+' 份'
+							}, {
+								value: wwc,
+								name: '未完成 '+wwc+' 份'
+							}, {
+								value: ywc,
+								name: '已完成 '+ywc+' 份'
+							}]
+						}]
+					} : {
+					}
+					return chartOption; 
+				};
+				
+				var byId = function(id) {
+					return document.getElementById(id);
+				};
+				var pieChart = echarts.init(byId('pieChart'));
+				pieChart.setOption(getOption('pie'));
+			};
+			
+		</script>
+	</body>
+</html>

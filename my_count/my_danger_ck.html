@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣项目巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+	</head> 
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="wxyTitle" class="mui-title">危险源统计分析</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron my_list" id="projectlist">
+				<!--<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="../images/xzmc.png">
+						<div class="mui-media-body">
+							空
+							<p class='mui-ellipsis'>xxx施工单位</p>
+						</div>
+					</a>
+				</li>-->
+			</ul>			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/chart.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui.plusReady(function(){
+				
+				function geturl(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]);
+					return null;
+				}
+				zt2=geturl("hehe");
+				zt3=geturl("ztt");
+				gcid=geturl("gcid");
+				zt=decodeURI(zt3);
+				if(zt2==1){
+					zt1 = "基坑支护及降水工程";
+				}else if(zt2==2){
+					zt1 = "土方开挖工程";
+				}else if(zt2==3){ 
+					zt1 = "模板工程支撑体系";
+				}else if(zt2==4){
+					zt1 = "脚手架工程";
+				}else if(zt2==5){
+					zt1 = "起重吊装及安装拆卸工程";
+				}else if(zt2==6){
+					zt1 = "拆除爆破工程";
+				}else if(zt2==7){
+					zt1 = "其他危险性较大的工程";
+				}else{
+					
+				}
+				
+				var wxyTitle=document.getElementById("wxyTitle");
+				wxyTitle.innerText="危险源----"+zt;
+				
+				var xmgc = function(project,wxylx,wxyzt,sgbw){
+					var project = project;
+					var qzjxmc = "类型："+wxylx;
+					var sgbw = sgbw;
+					var wxyzt = wxyzt;
+					//var jiehe="安装位置:"+azbw+"----安装日期:"+sjazrq;
+					//alert(project);
+					//动态生成ul列表
+					var ul = document.getElementsByTagName("ul");
+					var li = document.createElement("li");
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML='<img class="mui-media-object mui-pull-left" src="../images/xxgd.png"><div class="mui-media-body">'+qzjxmc+'<p class="mui-ellipsis">工程名称：'+project+'</p><p class="mui-ellipsis">施工部位：'+sgbw+'</p><p class="mui-ellipsis">状态：'+wxyzt+'</p></div>'
+					ul[0].appendChild(li);
+				}
+				
+				mui.ajax(url+'my_count/my_wxy_sbgl_select.php',{
+					data:{
+						zt1:zt1,
+						zt:zt,
+						gcid:gcid,
+						tjfx:"wxy"
+					},
+					dataType:'json', 
+					type:'POST', 
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length; //数据返回的形式是数组，在这里先判断数组的长度
+						var ul = document.getElementsByTagName('ul');
+						if (length>0) {
+							ul[0].innerHTML='';
+							for (var i=0;i<length-1;i++) {
+								var project = data[i].工程名称;
+								var wxylx = data[i].危险源类型;
+								var wxyzt = data[i].危险源状态;
+								var sgbw = data[i].施工部位;
+								xmgc(project,wxylx,wxyzt,sgbw);
+							}
+						}else{
+							
+						}
+					},
+					
+					error:function(xhr,type,errorThrown){
+	//					alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+			});
+		</script>
+		<script src="../js/setPullToRefresh.js" ></script>
+	</body>
+</html>

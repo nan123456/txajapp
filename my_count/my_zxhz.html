@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>同欣巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			.mui-control-content {
+				bottom: 0px;
+			}
+			/*媒体查询，横屏效果*/
+
+			@media only screen and (orientation:landscape) {
+				.mui-control-content {
+					bottom: 0px;
+				}
+			}
+
+			html,
+			body,
+			.mui-content {
+				height: 0px;
+				margin: 0px;
+				background-color: #efeff4;
+			}
+
+			.mui-control-content {
+				bottom: 0px;
+			}
+
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+
+			* {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+
+			.btn_size {
+				background: #0000FF;
+				color: white;
+			}
+			/*块级按钮按钮样式*/
+
+			.mui-content-padded {
+				margin: 10px;
+			}
+			/*按钮小样式*/
+
+			.mui-btn-block_my {
+				font-size: 16px;
+				display: block;
+				width: 100%;
+				margin-bottom: 10px;
+				padding: 8px 0;
+			}
+
+			.label1 {
+				font-size: initial;
+			}
+
+			.div1 {
+				padding-top: 20px;
+			}
+
+			.div2 {
+				font-size: large;
+				height: 60px!important;
+				padding-top: 8px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">专项汇总分析</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content div1" id="zxhz">
+				<form class="mui-input-group">
+					<div class="mui-input-row div2">
+						<label class="label1">违章大类</label>
+						<select id="_wzdl">
+							<!--<option value="wzall"></option>-->
+						</select>
+					</div>
+					<div class="mui-input-row">
+						<label>部门:</label>
+						<select id="section">
+							<!--<option value="secall"></option>-->
+						</select>
+					</div>
+					<div class="mui-input-row my_none">
+						<label> 工程id：</label>
+						<input id='gcid' type="text" placeholder="工程id" readonly="readonly">
+					</div>
+				</form>
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>起始日期：</label>
+						<input id="star_time" type="text" class="mui-input-clear" readonly="readonly" placeholder="请选择开始日期">
+					</div>
+					<div class="mui-input-row">
+						<label>截止日期：</label>
+						<input id="end_time" type="text" class="mui-input-clear" readonly="readonly" placeholder="请选择结束日期">
+					</div>
+				</form>
+				<div class="mui-content-padded" style="margin-top: 20px">
+					<button id="count" type="button" class="mui-btn mui-btn-primary mui-btn-block_my">点击查询</button>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			mui.plusReady(function() {
+				//获取传值
+				var self = plus.webview.currentWebview();
+				var mobile = self.mobile;
+//				alert(mobile);
+				var sureButton = document.getElementById('sure');
+				var star_time = document.getElementById("star_time")
+				var end_time = document.getElementById("end_time");
+				//定位
+				var count = document.getElementById("count");
+				var gcid = document.getElementById("gcid");
+				var _wzdl = document.getElementById("_wzdl");
+				var section = document.getElementById("section");
+				
+				
+				
+				//异步获取部门
+				mui.ajax(url+'/my_count/my_count_belong.php',{
+					data:{
+						mobile:mobile
+					}, 
+					dataType:'json', 
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						var result = data[0].value;
+//						alert(data[0]);
+						var length=data.length;
+//						alert(data.length);
+						if (length>0) {
+								if(data[0]=='总公司'){
+									
+									section.innerHTML="<option value='secall'></option>";
+									for(var i = 1; i < length; i++) {
+									var sectionOption = data[i];
+											innerSection(sectionOption);
+										}
+								}else{
+									section.innerHTML = "<option>"+data[0]+"</option>";
+								}
+							}
+							
+//							for (var i=0;i<length-1;i++) {
+//								var gcidD=data[i].id;
+//								gcidZh+=gcidD+",";
+//							}
+//							gcid.value=gcidZh;
+						
+					},
+					error:function(xhr,type,errorThrown){
+						alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+				//异步获取所有违章大类
+				mui.ajax(url + 'my_count/my_count_zxhz.php', {
+					data: {
+
+					},
+					dataType: 'json',
+					type: 'post',
+					timeout: 10000,
+					success: function(data) {
+						//						alert(data);
+						var length = data.length;
+						var wzdlString = "";
+						_wzdl.innerHTML="<option value='wzall'></option>";
+						for(var i = 0; i < length - 1; i++) {
+							var wzdl = data[i].违章大类;
+							creatWztmList(wzdl);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+
+				//动态创建违章大类下拉框
+				var creatWztmList = function(wzdl) {
+					var opt = document.createElement("option");
+					opt.value = wzdl;
+					opt.innerHTML = wzdl;
+					_wzdl.appendChild(opt);
+				}
+				
+				
+				//部门筛选
+				function innerSection(sectionOption){
+					var myoption=document.createElement("option");
+					myoption.value = sectionOption;
+					myoption.innerHTML = sectionOption;
+					section.appendChild(myoption);
+//					alert('1');
+				}
+				//点击查询按钮监听
+				count.addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'my_zxhz_count.html',
+						id: 'my_zxhz_count',
+						styles: {
+							hardwareAccelerated: false
+						},
+						extras: {
+							_wzdl: _wzdl.value,
+							star_time: star_time.value,
+							end_time: end_time.value,
+							mobile:mobile,
+							section:section.value
+						},
+						show: {
+							autoShow: true, //页面loaded事件发生后自动显示
+							aniShow: 'slide-in-right', //页面显示动画
+							duration: '100' //页面动画持续时间
+						},
+						waiting: {
+							autoShow: false, //自动显示等待框
+						},
+					})
+				})
+
+				star_time.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						star_time.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						if(star_time.value && end_time.value) {
+							var gksrq = star_time.value;
+							var gjsrq = end_time.value;
+							var xgksrq = new Date(Date.parse(gksrq.replace(/-/g, "/")));
+							var xgksrq = xgksrq.getTime();
+							var xgjsrq = new Date(Date.parse(gjsrq.replace(/-/g, "/")));
+							var xgjsrq = xgjsrq.getTime();
+							if(xgjsrq >= xgksrq) {
+								sureButton.disabled = false;
+							} else {
+								alert('起始日期不能大于结束日期！');
+								sureButton.disabled = true;
+							}
+						}
+
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});
+				});
+				end_time.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						end_time.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						if(star_time.value && end_time.value) {
+							var gksrq = star_time.value;
+							var gjsrq = end_time.value;
+							var xgksrq = new Date(Date.parse(gksrq.replace(/-/g, "/")));
+							var xgksrq = xgksrq.getTime();
+							var xgjsrq = new Date(Date.parse(gjsrq.replace(/-/g, "/")));
+							var xgjsrq = xgjsrq.getTime();
+							if(xgjsrq >= xgksrq) {
+								sureButton.disabled = false;
+							} else {
+								alert('起始日期不能大于结束日期！');
+								sureButton.disabled = true;
+							}
+						}
+
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});
+				});
+			});
+		</script>
+	</body>
+
+</html>

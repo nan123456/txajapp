@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣项目巡检系统</title>		
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/my_css.css">
+		
+	</head>
+	<body>
+		<div class="mui-content">
+			
+			<ul id="yiqi" class="mui-table-view mui-table-view-chevron my_list">
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right" open-type="common" href="my_plus/my_project_list.html">
+						<img class="mui-media-object mui-pull-left" src="images/wdgc.png">
+						<div class="mui-media-body">
+							我的工程
+							<p id='www' class='mui-ellipsis'>0个项目</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a class='mui-navigate-right' href="my_change/my_zhenggai.html">
+						<img class="mui-media-object mui-pull-left" src="images/zjsj.png">
+						<div class="mui-media-body">
+							待办整改
+							<p class='mui-ellipsis'>0项安全隐患尚未整改回复</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right" open-type="common" href="my_count/my_count.html">
+						<img class="mui-media-object mui-pull-left" src="images/wdrw.png">
+						<div class="mui-media-body">
+							统计分析
+							<p class='mui-ellipsis'>共发出0份整改通知</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<div class="title"> 
+						
+			</div>
+			<ul class="mui-table-view mui-table-view-chevron my_list">
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="images/txsc.png">
+						<div class="mui-media-body">
+							企业公告 
+							<p class='mui-ellipsis'>天天有惊喜，人人都开心</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="images/xx.png">
+						<div class="mui-media-body">
+							消&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;息							
+							<p class='mui-ellipsis'>无消息<span class="mui-badge mui-badge-primary mui-pull-right">0</span></p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right" open-type="common" href="my_plus/my_setting.html">
+						<img class="mui-media-object mui-pull-left" src="images/gdsz.png">
+						<div class="mui-media-body">
+							更多设置
+							<p class='mui-ellipsis'>二维码扫描、通用设置等</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/my_js_nextpage.js"></script>
+	<script src="js/service.js"></script>
+	<script>
+		mui.init();
+		//获取传值
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			//全局变量mobile 这里倒是通过手机号码来进行积分
+			mobile = self.mobile;
+			userid1 = self.userid;
+			bumen1 = self.bumen;
+			//alert("+++"+mobile+"  "+bumen1); 
+			
+			var p=document.getElementsByTagName('p');
+			var span=document.getElementsByTagName('span');
+			
+			mui('#yiqi').on('tap', 'a', function() {
+				//alert("测试");
+				var id = this.getAttribute('href');
+				var href = this.href;
+				var webview_style = {
+					popGesture: "close",					
+					hardwareAccelerated:false
+				};
+				mui.openWindow({
+					id: id,
+					url: this.href,
+					styles: webview_style,
+					extras:{
+						mobile:mobile,
+						userid:userid1,
+						bumen:bumen1
+					},
+					show: {
+						aniShow:"pop-in"
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
+			
+			//获取我的工程的工程数量
+			mui.ajax(url+'my_index.php',{
+				data:{
+					mode:'wdgc',
+					mobile:mobile
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data);
+					if (data) {
+						var count=data.count;	//本号码的工程项目个数						
+						p[0].firstChild.nodeValue=count+" 个项目";
+					} else{
+						//alert('');
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					//alert('ajax错误'+type);
+				}
+			});
+			//获取待办整改
+			mui.ajax(url+'dbzg.php',{
+				data:{
+					mobile:mobile,
+					flag:"zhneggai"
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data);
+					var num = data[0].count;
+					var belong = data[0].belong;
+//					alert(belong);
+					p[1].firstChild.nodeValue=num+" 项整改通知单仍在进行中";
+					
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					//alert('ajax错误'+type);
+				}
+			});
+			
+			//获取统计分析异步
+			//这个要优化一下SQL的查询语句，总计有些问题。。
+			mui.ajax(url+'my_index.php',{
+				data:{
+					mode:'tjfx',
+					mobile:mobile
+				},
+				dataType:'json',
+				type:'post',
+				timeout:10000,
+				success:function(data){
+					//alert(data);
+					if (data) {
+						var count=data.count;	//本号码的工程项目个数
+						if(count==0){
+							var countCount=count;
+						}else{
+							var countCount=count;//原本这里为count-1
+						}
+						p[2].firstChild.nodeValue="共发出 "+countCount+" 份整改通知";
+					} else{
+						//alert('');
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					//alert('ajax错误'+type);
+				}
+			});
+		});
+	</script>
+	<script src="js/setPullToRefresh.js" ></script>
+</html>

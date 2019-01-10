@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣项目巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/mui.min.js"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			html,body {
+				background-color: #efeff4;
+			}
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.mui-media-body{
+				color: black;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron my_list" id="projectlist">
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="images/xzmc.png">
+						<div class="mui-media-body">
+							空
+							<p class='mui-ellipsis'>xxx施工单位</p>
+						</div>
+					</a>
+				</li>
+			</ul>			
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/service.js" ></script>
+	<script>
+		mui.init({
+			swipeBack:true //启用右滑关闭功能
+		});
+		mui.plusReady(function() {
+			
+			//获取传值
+			var self = plus.webview.currentWebview();		
+			
+			//全局变量mobile
+			mobile = self.mobile;
+			userid1 = self.userid;
+			bumen1 = self.bumen;
+			
+			var xmgc = function(id,project,unit){
+				var id = id;
+				var project = project;
+				var unit = unit;
+				//汉字编码，为了便于传值
+				var project_c=encodeURI(encodeURI(project));
+				var unit_1=encodeURI(encodeURI(unit));
+				//动态生成ul列表
+				var ul = document.getElementsByTagName("ul");
+				var li = document.createElement("li");
+				li.className = "mui-table-view-cell mui-media";
+				li.innerHTML='<a class="mui-navigate-right" href="team_plus/team_in.html?id='+id+'&project='+project_c+'&unit='+unit_1+'&mobile='+mobile+'"><img class="mui-media-object mui-pull-left" src="images/xzmc.png"><div class="mui-media-body">'+project+'<p class="mui-ellipsis">'+unit+'</p></div></a>'
+				ul[0].appendChild(li);
+				}
+			
+			mui.ajax(url+'team.php',{
+				data:{
+					mobile:mobile
+				},
+				dataType:'json',
+				type:'POST', 
+				timeout:10000,
+				success:function(data){
+					//alert(data);
+					var length=data.length; //数据返回的形式是数组，在这里先判断数组的长度
+					var ul = document.getElementsByTagName('ul');
+					if (length>0) {
+						ul[0].innerHTML='';
+						for (var i=0;i<length-1;i++) {
+							var id = data[i].项目id;
+							var project = data[i].项目名称;
+							var unit = "["+data[i].形象进度+"]"+"工程";
+							xmgc(id,project,unit);
+						}
+					}else{
+					}
+				},
+				
+				error:function(xhr,type,errorThrown){
+//					alert('ajax错误'+type+'---'+errorThrown);
+				}
+			});
+			
+			var aniShow = "pop-in";
+			//只有ios支持的功能需要在Android平台隐藏；
+			if (mui.os.android) {
+				var list = document.querySelectorAll('.ios-only');
+				if (list) {
+					for (var i = 0; i < list.length; i++) {
+						list[i].style.display = 'none';
+					}
+				}
+				//Android平台暂时使用slide-in-right动画
+				if(parseFloat(mui.os.version)<4.4){
+					aniShow = "slide-in-right";
+				}
+			}
+			
+			//主列表点击事件
+			/*若无此点击事件，那么hearder处将显示【小组】*/
+			mui('.my_list').on('tap', 'a', function() {
+				var id = 'team_in.html';
+				var href = this.href;
+				//var type = this.getAttribute("open-type");
+				//alert(type);
+				var webview_style = {
+					popGesture: "close"
+				};
+				//侧滑菜单需动态控制一下zindex值；
+				if (~id.indexOf('offcanvas-')) {
+					webview_style.zindex = 9998;
+					webview_style.popGesture = ~id.indexOf('offcanvas-with-right') ? "close" : "none";
+				}
+				mui.openWindow({
+					id: id,
+					url: this.href,
+					styles: webview_style,
+					extras:{
+						zhi:"www"
+					},
+					show: {
+						aniShow: aniShow
+					},
+					waiting: {
+						autoShow: false,
+						title:'请稍等，数据加载中...'
+					}
+				});
+			});
+			
+		});
+	</script>
+	<script src="js/setPullToRefresh.js" ></script>
+</html>

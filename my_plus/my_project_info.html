@@ -1,0 +1,852 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/my_css.css">
+		<link rel="stylesheet" href="../css/imgView.css">
+		<style>
+			.oa-contact-cell.mui-table .mui-table-cell {
+				padding: 11px 0;
+				vertical-align: middle;
+			}
+			
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+	
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			.oa-contact-avatar img {
+				border-radius: 50%;
+			}
+			.oa-contact-content {
+				width: 100%;
+			}
+			.oa-contact-name {
+				margin-right: 20px;
+			}
+			.oa-contact-name, oa-contact-position {
+				float: left;
+			}
+			
+			.mui-popover {
+				height: 290px;
+			}
+			#zuyPopover{
+				min-width: 300px;
+				height:auto;				
+				top:25% !important;
+		        margin-top: -70px;
+				left: 50% !important;
+				margin-left: -141px;
+			}
+			
+			/*** 开工附件查看样式 ***/
+			.myp{
+				font-size: 1em;
+				color: #000000;			
+			}
+			.imgSize{
+				border:0; 
+				margin:0; 
+				padding:0; 
+				max-width:280px; 
+				width:expression(this.width>280?"280px":this.width); 
+				max-height:280px; 
+				height:expression(this.height>280?"280px":this.height); 
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    	
+		    <!-- 项目人员不能添加——所以这里把它隐藏掉 -->
+		    <a id="my_popover" class="mui-icon mui-icon-bars mui-pull-right my_none"></a>
+		    <h1 class="mui-title">项目基本信息</h1>
+		</header>
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1">
+						基本信息
+					</a>
+					<a class="mui-control-item" href="#item2">
+						人员信息
+					</a>
+					<a class="mui-control-item" href="#item3">
+						备案信息
+					</a>
+					<a class="mui-control-item" href="#item4">
+						形象进度
+					</a>
+				</div>
+			</div>
+			<div class="mui-content-padded">	
+				<!--基本信息-->
+				<div id="item1" class="mui-control-content mui-active">
+					<div class="mui-scroll-wrapper" id="scroll">
+						<div class="mui-content">
+				        	<form class="mui-input-group">
+							   <div class="mui-input-row" >
+						            <label style="font-size: 15px;">项目类别:</label>				        		
+					        		<select id="xmlb1" disabled="disabled" style="font-size: 15px;">
+										<option value ="建筑工程" selected="selected">建筑工程</option>
+										<option value ="市政工程">市政工程</option>
+										<option value ="装修工程">装修工程</option>
+										<option value ="维修加固工程">维修加固工程</option>
+									</select>
+						        </div>
+						        <div class="mui-input-row" >
+						        	<label style="font-size: 15px;">工程名称:</label>
+						        	<input type="text"  id="gcmc1" placeholder="请输入工程名称" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						        <div class="mui-input-row" >
+						            <label style="font-size: 15px;">工程位置:</label>
+						            <input type="text" id="gcwz" placeholder="请选择工程位置" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						        
+						        <div class="mui-input-row" >
+						            <label style="font-size: 15px;">开工日期:</label>
+						            <input type="text" id="kgrq" placeholder="请选择开工日期" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						        <div class="mui-input-row" >
+						            <label style="font-size: 15px;">竣工日期:</label>
+						            <input type="text" name="" id="jgrq" placeholder="请选择竣工日期" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						        <div class="mui-input-row" >
+						        	<label style="font-size: 15px;">建筑面积(㎡):</label>
+						        	<input type="text" name="" id="jzmj" value="" placeholder="请输入建筑面积" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						        <div class="mui-input-row" >
+						        	<label style="font-size: 15px;">基坑深度(m):</label>
+						        	<input type="text" name="" id="jksd" value="" placeholder="请输入基坑深度" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						        <div class="mui-input-row" >
+						        	<label style="font-size: 15px;">建筑高度(m):</label>
+						        	<input type="text" name="" id="jzgd" value="" placeholder="请输入建筑高度" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						        <div class="mui-input-row" >
+						        	<label style="font-size: 15px;">建筑栋数:</label>
+						        	<input type="text" name="" id="jzds" value="" placeholder="请输入建筑栋数" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						        <div class="mui-input-row" >
+						        	<label style="font-size: 15px;">建筑层数:</label>
+						        	<input type="text" name="" id="jzcs" value="" placeholder="请输入建筑层数" readonly="readonly" style="font-size: 15px;">
+						        </div>
+						    </form>
+						    <div id='cityResult3' class="ui-alert"></div>
+						</div>
+						<div class="mui-button-row">
+							<!-- 不允许修改-只能在平台上面进行工程信息的修改 -->
+							<button type="button" id="alter" class="mui-btn mui-btn-primary my_none">修改</button>&nbsp;&nbsp;		
+							<button id="finish" type="button" class="mui-btn mui-btn-primary my_none">完成</button>	
+						</div>
+					</div>
+				</div>
+				<!--基本信息-->
+				
+				<!--人员信息-->
+				<div id="item2" class="mui-control-content">					
+					<div class="mui-scroll-wrapper" id="scroll">
+						<div id="personal_info" class="mui-scroll rwdiv">
+						
+						</div>
+					</div>
+				</div>
+				<div id="zuyPopover" class="mui-popover">
+	        		<div class="mui-popover-arrow"></div>	        		
+	        		<h4 id="title" style="text-align: center;margin-top: 15px;">组员添加</h4>
+	        		<form class="mui-input-group" style="margin-top: 15px;">
+	        			<div class="mui-input-row">
+	        				<label>姓名：</label>
+	        				<input id="xming" type="text" class="" placeholder="姓名">
+	        			</div>	        			
+	        			<div class="mui-input-row">
+	        				<label>性别：</label>
+	        				<select id="gender">
+	        					<option selected="selected">男</option>
+	        					<option>女</option>
+	        				</select>	        				
+	        			</div>
+	        			<div class="mui-input-row">
+	        				<label>管理层次:</label>
+	        				<select id="glcc">
+	        					<option selected="selected">项目经理</option>
+	        					<option>安全主管</option>
+	        					<option>安全员</option>
+	        					<option>机械管理员</option>
+	        				</select>	        				
+	        			</div>
+	        			<div class="mui-input-row">
+	        				<label>职务类别:</label>
+	        				<input id="zwlb" type="text" class="mui-input-clear" placeholder="职务类别">
+	        			</div>
+	        			<div class="mui-input-row">
+	        				<label>身份证号:</label>
+	        				<input id="sfzh" type="number" class="mui-input-clear" placeholder="身份证号">
+	        			</div>    	
+	        			<div class="mui-input-row">
+	        				<label>手机号码:</label>
+	        				<input id="sji" type="number" class="mui-input-clear" placeholder="手机号码">
+	        			</div>    			
+	        		</form>
+					<div class="mui-button-row my_margintop10px">
+						<button id="zygbi" type="button" class="mui-btn mui-btn-primary">关闭</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button id="zyqding" type="button" class="mui-btn mui-btn-primary">确定</button>
+					</div>
+				</div>
+				<!--人员信息-->
+				
+				<!--备案信息-->
+				<div id="item3" class="mui-control-content">
+					<div class="mui-scroll-wrapper" id="scroll">
+						<div class="mui-content">
+			      			<ul class="mui-table-view">
+			      				<li id="sgqkz" class="mui-table-view-cell">
+			      					施工许可证取得情况:
+			      				</li>
+			      				<li id="kgbgT" class="mui-table-view-cell">
+			      					开工报告:
+			      				</li>
+			      			</ul>
+			      		</div>
+			      		
+			      		<div class="mui-content">
+							<div class="mui-content-padded">			
+								<p id="kgbgQk" class="myp">施工许可证预览: </p>
+								<p id="kgbg">
+								
+								</p>		
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--备案信息-->
+				
+				<!--形象进度-->
+				<div id="item4" class="mui-control-content">
+					<form class="mui-input-group">
+						<div class="mui-input-row mui-checkbox mui-right">
+							<!--<label>基础施工</label>-->
+							<!--<input name="checkbox" value="Item 1" type="checkbox" checked="checked">-->
+						</div>
+						<div class="mui-input-row mui-checkbox mui-right">
+							<!--<label>主体施工</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked="checked">-->
+						</div>
+						<div class="mui-input-row mui-checkbox mui-right">
+							<!--<label>装饰装修</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked="checked">-->
+						</div>
+						<div class="mui-input-row mui-checkbox mui-right">
+							<!--<label>收尾阶段</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked="checked">-->
+						</div>
+						<div class="mui-input-row mui-checkbox mui-right">
+							<!--<label>竣工验收</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked="checked">-->
+						</div>
+					</form>
+				</div>
+				<!--形象进度-->
+			</div>						
+		</div>
+		<script src="../js/service.js" ></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.zoom.js"></script>
+		<script src="../js/mui.previewimage.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.previewImage();
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});		
+			})(mui);
+		
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false	
+				}
+			});
+			mui.init({
+					swipeBack:true //启用右滑关闭功能
+			});	
+			
+			//区域滚动,需手动初始化scroll控件
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});					
+			})(mui);
+            mui.plusReady(function(){
+				var alter = document.getElementById("alter");
+				var finish = document.getElementById("finish");
+				var xmlb1 = document.getElementById("xmlb1");
+				var gcmc1 = document.getElementById("gcmc1");
+				var gcwz = document.getElementById("gcwz");
+				var kgrq = document.getElementById("kgrq");
+	            var jgrq = document.getElementById("jgrq");
+				var jzmj = document.getElementById("jzmj");
+				var jksd = document.getElementById("jksd");
+				var jzgd = document.getElementById("jzgd");
+				var jzds = document.getElementById("jzds");
+				var jzcs = document.getElementById("jzcs");
+				var sgqkz = document.getElementById("sgqkz");
+				var kgbgT = document.getElementById("kgbgT");
+				
+				//触发修改按钮
+				alter.addEventListener('tap',function(){
+					plus.nativeUI.toast('现允许您修改！');
+					gcmc1.removeAttribute("readonly");
+					jzmj.removeAttribute("readonly");
+					jksd.removeAttribute("readonly");
+					jzgd.removeAttribute("readonly");
+					jzds.removeAttribute("readonly");
+					jzcs.removeAttribute("readonly");
+					xmlb1.removeAttribute("disabled");
+					//基本信息---开工和竣工日期
+	            	var kgrq = document.getElementById("kgrq");
+	            	var jgrq = document.getElementById("jgrq");
+	            	kgrq.addEventListener('tap',function(){
+	            		plus.nativeUI.pickDate( function(e){
+						d=e.date;
+	                    kgrq.value = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+					   });
+	            	});
+	            	jgrq.addEventListener('tap',function(){
+	            		plus.nativeUI.pickDate( function(e){
+						d=e.date;
+	                    jgrq.value = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+					});
+	            	});
+	            	//基本信息---工程位置选择
+	            	var cityPicker3 = new mui.PopPicker({
+							layer: 3
+					});
+					cityPicker3.setData(cityData3);
+					var showCityPickerButton = document.getElementById('gcwz');
+					showCityPickerButton.addEventListener('tap', function(event) {
+						cityPicker3.show(function(items) {
+							showCityPickerButton.value =  (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+							//返回 false 可以阻止选择框的关闭
+							//return false;
+						});					
+					}, false);
+				});
+				
+				
+				//基本信息异步获取
+				var self = plus.webview.currentWebview();
+                gcid = self.gcid;
+                gcmc = self.gcmc;
+                dq = self.dq;
+				var timestamp = new Date();
+				var mytime = timestamp.getTime();
+				mui.ajax(url+'my_plus/my_project_info.php',{
+					data:{
+						gcid:gcid
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						var length=data.length;
+						for (var i=0;i<length-1;i++) {
+							xmlb1.value=data[i].项目类别;
+							gcmc1.value=data[i].工程名称;
+							gcwz.value=data[i].工程位置;
+							kgrq.value=data[i].开工日期;
+							jgrq.value=data[i].竣工日期;
+							jzmj.value=data[i].建筑面积;
+							jksd.value=data[i].基坑深度;
+							jzgd.value=data[i].建筑高度;
+							jzds.value=data[i].建筑栋数;
+							jzcs.value=data[i].建筑层数;
+						}
+//						alert(data);
+					},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+				
+            	//人员信息动态列表
+            	var createpeoplelist = function(timestamp,xming,gender,glcc,zwlb,sfzh,sji){
+            		var personal_info = document.getElementById("personal_info");
+            		var ul = document.createElement("ul");
+            		var xming_1 = encodeURI(encodeURI(xming));
+            		var gender_1 = encodeURI(encodeURI(gender));
+            		var glcc_1 = encodeURI(encodeURI(glcc));
+            		var zwlb_1 = encodeURI(encodeURI(zwlb));
+            		var zuhe=zwlb+"："+xming;
+            		ul.className = "mui-table-view zy";
+					ul.innerHTML='<li class="mui-table-view-cell" ><div class="mui-slider-cell"><div class="oa-contact-cell mui-table"><div class="oa-contact-avatar mui-table-cell"><img class="mui-media-object mui-pull-left" src="../images/user-photo.png" /></div><div class="oa-contact-content mui-table-cell"><div class="mui-clearfix"><h4 class="oa-contact-name">'+zuhe+'</h4><span class="oa-contact-position mui-h6"></span></div></div></div></div></li>';
+            		personal_info.appendChild(ul);	
+            		var people_info = document.getElementById("timestamp");
+            	};
+            	
+            	//创建回复人函数
+				var fgShuzu=function(zhuhe){
+					//console.log(zhuhe);
+					var zhuheShuzu=zhuhe.split("||");
+					//console.log(zhuheShuzu.length-1);
+					for(var i=0;i<zhuheShuzu.length-1;i++){
+						//console.log(zhuheShuzu[i]);
+						creatHfr(zhuheShuzu[i]);
+					}
+				};
+				var creatHfr=function(hfrName){
+					//console.log(hfrName); 
+					var personal_info = document.getElementById("personal_info");
+            		var ul = document.createElement("ul");
+					ul.className = "mui-table-view zy";
+					ul.innerHTML='<li class="mui-table-view-cell" ><div class="mui-slider-cell"><div class="oa-contact-cell mui-table"><div class="oa-contact-avatar mui-table-cell"><img class="mui-media-object mui-pull-left" src="../images/user-photo.png" /></div><div class="oa-contact-content mui-table-cell"><div class="mui-clearfix"><h4 class="oa-contact-name">'+hfrName+'</h4><span class="oa-contact-position mui-h6"></span></div></div></div></div></li>'
+					personal_info.appendChild(ul);	
+				};
+            	
+            	//获取本工程相关人员
+            	var bgcxgry=function(){
+            		mui.ajax(url+'my_plus/huifuren_du.php',{
+						data:{
+							gcid:gcid,
+							panduan:"project_people_name_get"
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							//alert(data);
+							var length=data.length;
+							for (var i=0;i<length-1;i++) {
+								var xmjl=data[i].项目经理;
+								var aqzg=data[i].安全主管;	
+								var aqy=data[i].安全员;
+								var jxgly=data[i].机械管理员;	
+								var zrr=data[i].责任人;
+								var scjl=data[i].生产经理;
+								var zly=data[i].质量员;
+								var bmfzrA=data[i].部门负责人A;
+								var bmfzrB=data[i].部门负责人B;
+								var bmfzrC=data[i].部门负责人C;
+								var zgsfzrA=data[i].总公司负责人A;
+								var zgsfzrB=data[i].总公司负责人B;
+								var zgsfzrC=data[i].总公司负责人C;
+								var zbxcy=data[i].总部巡查员;
+								var zhuhe="项目经理："+xmjl+"||"+"安全主管："+aqzg+"||"+"安全员："+aqy+"||"+"机械管理员："+jxgly+"||"+"责任人："+zrr+"||"+"生产经理："+scjl+"||"+"质量员："+zly+"||"+"分管领导："+bmfzrA+"||"+"工程部部长："+bmfzrB+"||"+"巡查员："+bmfzrC+"||"+"安全监管部部长："+zgsfzrA+"||"+"安全主管："+zgsfzrB+"||"+"设备管理员："+zgsfzrC+"||"+"总部巡查员："+zbxcy+"||";
+								fgShuzu(zhuhe);
+								xzryHuoqu(gcid);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//alert('ajax错误'+type);
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+            	};
+            	
+            	//获取新增人员信息
+            	var xzryHuoqu=function(){
+            		mui.ajax(url+'my_plus/huifuren_du_xzry.php',{
+						data:{
+							gcid:gcid
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							//alert(data);
+							var length=data.length;
+							for (var i=0;i<length-1;i++) {
+								var gWei=data[i].岗位;
+								var xmName=data[i].姓名;
+								var gwName=gWei+"："+xmName;
+								creatHfr(gwName);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//alert('ajax错误'+type);
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+            	}
+            	
+            	//人员信息读取
+            	mui.ajax(url+'my_plus/my_people_read.php',{
+					data:{ 
+						gcid:gcid,
+						flag:'renyuan'
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;	
+						if(length>1){
+							for (var i=0;i<length-1;i++) {
+								var rysjc=data[i].时间戳;
+								var ryxm=data[i].姓名;
+								var ryxb=data[i].性别;
+								var ryglcc=data[i].管理层次;
+								var ryzwlb=data[i].职务类别;
+								var rysfzh=data[i].身份证号;
+								var rysji=data[i].手机号码;
+								
+								bgcxgry();
+								createpeoplelist(rysjc,ryxm,ryxb,ryglcc,ryzwlb,rysfzh,rysji);
+							}
+						}else{
+							//createpeoplelist('------','------','------','------','------','------','------');
+							bgcxgry();
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						//alert('ajax错误'+type);
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+				
+				//备案信息获取
+				var bafj=[];
+				mui.ajax(url+'my_plus/my_people_read.php',{
+					data:{ 
+						gcid:gcid,
+						flag:'beian'
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;	
+						var kgbgQk=document.getElementById("kgbgQk");
+						var kgbg=document.getElementById("kgbg");
+						if(length>1){
+							for (var i=0;i<length-1;i++) {
+								bafjLength=data[i].开工报告附件上传.length;
+								if(bafjLength!=0){
+									bafj=data[i].开工报告附件上传;
+									kgbgHs('kgbg',bafj);
+								}else{
+									kgbgQk.innerText="施工许可证预览：未上传施工许可证！"
+								}
+								kgbgT.innerText="开工报告："+data[i].开工报告;
+								sgqkz.innerText="施工许可证取得情况："+data[i].施工许可证取得情况;
+							}
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+				
+				var kgbgHs=function(tplx,bafj){
+//					alert(bafj);
+					var mysrc= urlx+"ProjectPlus/upload/"+bafj;
+					//var mysrc=url+"upload/"+bafj;
+					//alert(mysrc+" "+tplx);
+					var fuys=document.getElementById(tplx);
+					var img=document.createElement('img');				
+					img.src=mysrc;
+					img.className="imgSize";
+					img.setAttribute( "data-preview-src", "" );
+					img.setAttribute( "data-preview-group", "1" );
+					fuys.appendChild(img);
+				};
+				
+				//形象进度
+				mui.ajax(url+'my_plus/my_people_read.php',{
+					data:{ 
+						gcid:gcid,
+						flag:'xxjd'
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;	
+						if(length>1){
+							var item4 = document.getElementById("item4");
+							var item4Divshuzu = item4.getElementsByTagName("div");
+							for (var i=0;i<length-1;i++) {
+								var xxjd = data[i].形象进度;
+								if(xxjd=="基础施工"){
+									item4Divshuzu[0].innerHTML='<label>基础施工</label><input name="checkbox" value="Item 1" type="checkbox" checked="checked">';
+									item4Divshuzu[1].innerHTML="<label>主体施工</label>";
+									item4Divshuzu[2].innerHTML="<label>装饰装修</label>";
+									item4Divshuzu[3].innerHTML="<label>收尾阶段</label>";
+									item4Divshuzu[4].innerHTML="<label>竣工验收</label>";
+								}else if(xxjd=="主体施工"){
+									item4Divshuzu[0].innerHTML="<label>基础施工</label>";
+									item4Divshuzu[1].innerHTML='<label>主体施工</label><input name="checkbox" value="Item 1" type="checkbox" checked="checked">';
+									item4Divshuzu[2].innerHTML="<label>装饰装修</label>";
+									item4Divshuzu[3].innerHTML="<label>收尾阶段</label>";
+									item4Divshuzu[4].innerHTML="<label>竣工验收</label>";
+								}else if(xxjd=="装饰装修"){
+									item4Divshuzu[0].innerHTML="<label>基础施工</label>";
+									item4Divshuzu[1].innerHTML="<label>主体施工</label>";
+									item4Divshuzu[2].innerHTML='<label>装饰装修</label><input name="checkbox" value="Item 1" type="checkbox" checked="checked">';
+									item4Divshuzu[3].innerHTML="<label>收尾阶段</label>";
+									item4Divshuzu[4].innerHTML="<label>竣工验收</label>";
+								}else if(xxjd=="收尾阶段"){
+									item4Divshuzu[0].innerHTML="<label>基础施工</label>";
+									item4Divshuzu[1].innerHTML="<label>主体施工</label>";
+									item4Divshuzu[2].innerHTML="<label>装饰装修</label>";
+									item4Divshuzu[3].innerHTML='<label>收尾阶段</label><input name="checkbox" value="Item 1" type="checkbox" checked="checked">';
+									item4Divshuzu[4].innerHTML="<label>竣工验收</label>";
+								}else if(xxjd=="竣工验收"){
+									item4Divshuzu[0].innerHTML="<label>基础施工</label>";
+									item4Divshuzu[1].innerHTML="<label>主体施工</label>";
+									item4Divshuzu[2].innerHTML="<label>装饰装修</label>";
+									item4Divshuzu[3].innerHTML="<label>收尾阶段</label>";
+									item4Divshuzu[4].innerHTML='<label>竣工验收</label><input name="checkbox" value="Item 1" type="checkbox" checked="checked">';
+								}else{
+									
+								}
+							}
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+				
+				//基本信息完成按钮
+				finish.addEventListener('tap',function(){
+					//时间戳
+					var myDate = new Date();
+					var myTime = myDate.getTime();
+					var mydata = {
+						    gcid:gcid,
+							gcmc1:gcmc1.value,
+							xmlb1: xmlb1.value,
+							gcwz: gcwz.value,
+							kgrq: kgrq.value,
+							jgrq: jgrq.value,
+							jzmj: jzmj.value,
+							jksd: jksd.value,
+							jzgd:jzgd.value,
+							jzds:jzds.value,
+							jzcs:jzcs.value,
+							jbxxsjc: mytime
+					};
+					//异步传值
+					jbxxajaxform(mydata, function(err) {
+						if (err) {
+							plus.nativeUI.toast(err);
+							return;
+						}
+						plus.nativeUI.toast('修改成功');
+						window.location.reload();
+					});
+				});
+				
+				
+				//基本信息修改异步
+				var jbxxajaxform = function(mydata,callback){
+					callback = callback || $.noop;
+					mydata = mydata || {};
+					mydata.gcid = mydata.gcid || '';
+					mydata.gcmc1 = mydata.gcmc1 || '';			
+					mydata.xmlb1 = mydata.xmlb1 || '';
+					mydata.gcwz = mydata.gcwz || '';
+					mydata.kgrq = mydata.kgrq || '';
+					mydata.jgrq = mydata.jgrq || '';
+					mydata.jzmj = mydata.jzmj || '';
+					mydata.jksd = mydata.jksd || '';
+					mydata.jzgd = mydata.jzgd || '';
+					mydata.jzds = mydata.jzds || '';
+					mydata.jzcs = mydata.jzcs || '';
+					mydata.jbxxsjc = mydata.jbxxsjc || '';
+					
+					mui.ajax(url+'my_plus/my_project_alter.php',{
+						data:{
+							gcid:mydata.gcid,
+							gcmc1:mydata.gcmc1,
+							xmlb1:mydata.xmlb1,
+							gcwz:mydata.gcwz,
+							kgrq:mydata.kgrq,
+							jgrq:mydata.jgrq,
+							jzmj:mydata.jzmj,
+							jksd:mydata.jksd,
+							jzgd:mydata.jzgd,
+							jzds:mydata.jzds,
+							jzcs:mydata.jzcs,
+							jbxxsjc:mydata.jbxxsjc
+							
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						contentType:"application/x-www-form-urlencoded; charset=utf-8", //避免中文字符串乱码
+						timeout:10000,//超时时间设置为10秒；//利用native.js实习系统分享功能
+	
+						success:function(data){
+							//alert(data);
+							if(data.result=='success'){
+								return callback();
+							}
+							else{
+								return callback('服务器返回error');
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//异常处理
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+				}
+				
+				//人员信息添加				
+				var item=document.getElementsByClassName('mui-control-item');  //找到class="mui-control-item"的位置
+				var content=document.getElementsByClassName('mui-control-content');
+				var xming = document.getElementById("xming");
+				var gender = document.getElementById("gender");
+				var glcc = document.getElementById("glcc");
+				var zwlb = document.getElementById("zwlb");
+				var sfzh = document.getElementById("sfzh");
+				var sji = document.getElementById("sji");
+				var zyqding = document.getElementById("zyqding");
+				var zygbi = document.getElementById("zygbi");
+				var my_popover = document.getElementById("my_popover");
+				my_popover.addEventListener('tap',function(){
+					var btnArray = [
+					{title:"人员添加"}
+					];
+					plus.nativeUI.actionSheet({
+						title:"操作",
+						cancel:"取消",
+						buttons:btnArray
+					},function(e){
+						var index = e.index;	
+						var nextpage='';
+						switch (index){
+							case 1:	//组员添加
+								//模拟点击“组员”选项卡
+								item[0].classList.remove('mui-active');
+								content[0].classList.remove('mui-active');
+								item[1].classList.add('mui-active');
+								content[1].classList.add('mui-active');
+								
+								
+								mui("#zuyPopover").popover("toggle");
+								break;
+						}	
+					  }
+					);
+				});	
+				
+				//人员添加关闭按钮
+				zygbi.addEventListener('tap', function() {
+					mui("#zuyPopover").popover("toggle");
+				});
+				
+				//人员添加确定按钮
+				zyqding.addEventListener('tap',function(){
+					//获取当前时间戳
+					var timestamp = new Date();
+					var mytime = timestamp.getTime();
+					var mydata = {
+							gcid:gcid,
+							gcmc:gcmc,
+							xming: xming.value,
+							gender: gender.value,
+							glcc: glcc.value,
+							zwlb: zwlb.value,
+							sfzh: sfzh.value,
+							sji: sji.value,
+							zysjc: mytime
+						};
+						//异步传值
+						zyajaxform(mydata, function(err) {
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							createpeoplelist(mytime,xming.value,gender.value,glcc.value,zwlb.value,sfzh.value,sji.value);
+							mui("#zuyPopover").popover("toggle");
+							plus.nativeUI.toast('保存成功');
+							window.location.reload();
+						});
+				});
+				
+				
+				//人员信息添加异步
+				var zyajaxform = function(mydata,callback){
+					callback = callback || $.noop;
+					mydata = mydata || {};
+					mydata.gcid = mydata.gcid || '';
+					mydata.gcmc = mydata.gcmc || '';			
+					mydata.xming = mydata.xming || '';
+					mydata.gender = mydata.gender || '';
+					mydata.glcc = mydata.glcc || '';
+					mydata.zwlb = mydata.zwlb || '';
+					mydata.sfzh = mydata.sfzh || '';
+					mydata.sji = mydata.sji || '';
+					mydata.zysjc = mydata.zysjc || '';
+					
+					if (mydata.xming.length < 1) {
+						return callback('姓名不能为空！');
+					}
+					
+					
+					mui.ajax(url+'my_plus/my_people_add.php',{
+						data:{
+							gcid:mydata.gcid,
+							gcmc:mydata.gcmc,
+							xming:mydata.xming,
+							gender:mydata.gender,
+							glcc:mydata.glcc,
+							zwlb:mydata.zwlb,
+							sfzh:mydata.sfzh,
+							sji:mydata.sji,
+							zysjc:mydata.zysjc
+							
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						contentType:"application/x-www-form-urlencoded; charset=utf-8", //避免中文字符串乱码
+						timeout:10000,//超时时间设置为10秒；//利用native.js实习系统分享功能
+	
+						success:function(data){
+	//						alert(data);
+							if(data.result=='success'){
+								return callback();
+							}
+							else{
+								return callback('服务器返回error');
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//异常处理
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+				}
+					
+        	});
+		</script>
+		<!--<script src="../js/setPullToRefresh.js" ></script>-->
+	</body>
+</html>

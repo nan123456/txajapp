@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">		
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">
+		<!--选择事件弹出的界面样式-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style type="text/css">
+			.mui-control-content {				
+				bottom: 0px;	
+			}
+			/*媒体查询，横屏效果*/
+			@media only screen and (orientation:landscape ) {
+				.mui-control-content {
+					bottom: 0px;
+					}			
+			}
+			html,
+			body,
+			.mui-content {
+				height: 0px;
+				margin: 0px;
+				background-color: #efeff4;
+			}
+			.mui-control-content {				
+				bottom: 0px;	
+			}
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			* {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+			.btn_size{
+				background:#0000FF;
+				color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">统计分析</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<form class="mui-input-group">
+				    <div class="mui-input-row">
+				        <label>开始日期：</label>
+				        <input id="star_time" type="text"  class="mui-input-clear" placeholder="请选择开始日期">
+				    </div>
+				    <div class="mui-input-row">
+				        <label>结束日期：</label>
+				        <input id="end_time" type="text" class="mui-input-clear" placeholder="请选择结束日期">
+				    </div>
+				</form>
+				<button id="sure" type="button" class="mui-btn mui-btn-success mui-btn-block btn_size">确定</button>
+			</div>
+		</div>		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.picker.min.js"></script>		
+		<script>
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			// H5 plus事件处理
+//			function plusReady(){
+//			}
+//			if(window.plus){
+//				plusReady();
+//			}else{
+//				document.addEventListener("plusready",plusReady,false);
+//			}
+//			// 选择开始日期
+//			function pickDate(){
+//				plus.nativeUI.pickDate( function(e){
+//					d=e.date;
+//					var result = document.getElementById("result");
+////						console.log( "开始日期："+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate() );
+//                  result.innerText = "开始日期："+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+//				});
+//			}
+//			// 选择结束时间
+//			function pickDate1(){
+//				plus.nativeUI.pickDate( function(e){
+//					d1=e.date;
+//					var result_1 = document.getElementById("result_1");
+//                  result_1.innerText = "结束日期："+d1.getFullYear()+"-"+(d1.getMonth()+1)+"-"+d1.getDate();
+//				});
+//			}
+			mui.plusReady(function() {
+				mui.init();
+				var result = mui('#result')[0];
+				var btns = mui('.btn');
+//				btns.each(function(i, btn) {
+//					btn.addEventListener('tap', function() {
+//						var optionsJson = this.getAttribute('data-options') || '{}';
+//						var options = JSON.parse(optionsJson);
+//						var id = this.getAttribute('id');
+//						var picker = new $.DtPicker(options);
+//						picker.show(function(rs) {
+//							if(id=="start_time"){
+//								result.innerText = '您选择的开始时间是: ' + rs.text;
+//								picker.dispose();
+//							}
+//							else{
+//								result_1.innerText = '您选择的结束时间是: ' + rs.text;
+//								picker.dispose();
+//							}
+//						});
+//					}, false);
+//				});
+				//确定按钮的监听事件
+				var sureButton = document.getElementById('sure');
+				sureButton.addEventListener('tap', function(event) {
+					//跳转函数
+					transfer(); 
+				});
+				//跳转函数
+				var transfer = function() {
+					mui.openWindow({
+						url: 'my_count_count.html',
+						id: 'my_count_count',
+					});
+				}
+				
+				//原生开始日期与结束日期
+				var star_time = document.getElementById("star_time");
+				var end_time = document.getElementById("end_time");
+				star_time.addEventListener('tap',function(){
+					plus.nativeUI.pickDate( function(e){
+					var d=e.date;
+                    star_time.value = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+				  });
+				});
+				end_time.addEventListener('tap',function(){
+					plus.nativeUI.pickDate( function(e){
+					var d=e.date;
+                    end_time.value = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+				  });
+				})
+			});
+			
+		</script>
+		<script src="../js/setPullToRefresh.js" ></script>
+	</body>
+</html>

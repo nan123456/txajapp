@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/my_css.css">
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">详细信息</h1>
+		</header>
+	    <div class="mui-content">
+	        <form class="mui-input-group">
+	            <div class="mui-input-row">
+	                <label>姓名：</label>
+	                <input id="name"  type="text" class="mui-input-clear" readonly="readonly">
+	            </div>
+	            <div class="mui-input-row">
+	                <label>性别：</label>
+	                <input id="sex" type="text" class="mui-input-clear" readonly="readonly">
+	            </div>
+	            <div class="mui-input-row">
+	                <label>管理层次：</label>
+	                <input id="manage_lev" type="text" class="mui-input-clear" readonly="readonly">
+	            </div>
+	            <div class="mui-input-row">
+	                <label>职务类别：</label>
+	                <input id="job_type" type="text" class="mui-input-clear" readonly="readonly">
+	            </div>
+	            <div class="mui-input-row">
+	                <label>身份证号：</label>
+	                <input id="Id_number" type="text" class="mui-input-clear" readonly="readonly">
+	            </div>
+	            <div class="mui-input-row">
+	                <label>手机号码：</label>
+	                <input id="phone_number" type="text" class="mui-input-clear" readonly="readonly">
+	            </div>
+	        </form>
+	    </div>
+		<script src="../js/mui.min.js"></script>				
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function(){
+				//url获取参数
+				function geturl(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]);
+					return null;
+			    }
+				var timestamp = geturl("timestamp");
+				var xming = geturl("xming_1");
+				var gender = geturl("gender_1");
+				var glcc = geturl("glcc_1");
+				var zwlb = geturl("zwlb_1");
+				var sfzh = geturl("sfzh");
+				var sji = geturl("sji");
+				//解码
+			    xming=decodeURI(xming);
+			    gender=decodeURI(gender);
+			    glcc=decodeURI(glcc);
+			    zwlb=decodeURI(zwlb);
+			    //详细信息
+                var doc = document;
+                var name = doc.getElementById("name");
+                var sex = doc.getElementById("sex");
+                var manage_lev = doc.getElementById("manage_lev");
+                var job_type = doc.getElementById("job_type");
+                var Id_number = doc.getElementById("Id_number");
+                var phone_number = doc.getElementById("phone_number");
+                name.value = xming;
+                sex.value = gender;
+                manage_lev.value = glcc;
+                job_type.value = zwlb;
+                Id_number.value = sfzh;
+                phone_number.value = sji;
+                
+			});
+		</script>
+	</body>
+
+</html>

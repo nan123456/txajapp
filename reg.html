@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>同欣项目巡检系统</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 22%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">注册</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>账号:</label>
+					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入账号">
+				</div>
+				<div class="mui-input-row">
+					<label>密码:</label>
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
+				</div>
+				<div class="mui-input-row">
+					<label>确认:</label>
+					<input id='password_confirm' type="password" class="mui-input-clear mui-input" placeholder="请确认密码">
+				</div>
+				<div class="mui-input-row">
+					<label>姓名:</label>
+					<input id='nameX' type="text" class="mui-input-clear mui-input" placeholder="请输入姓名">
+				</div>
+				<div class="mui-input-row">
+					<label>手机:</label>
+					<input id='shji' type="number" class="mui-input-clear mui-input" placeholder="请输入号码">
+				</div>
+				<div class="mui-input-row">
+					<label>邮箱:</label>
+					<input id='email' type="email"  class="mui-input-clear mui-input" placeholder="请输入邮箱(用于密码找回)">
+				</div>
+			</form>
+			<form class="mui-input-group" style="margin-top: 5px;">
+				<div class="mui-input-row">						
+					<label>公司:</label>
+					<select id="fgsxz" style="color: #ACACB4;">
+						<option value ="请选择您所在的公司！" selected="selected">请选择您所在的公司！</option>
+					</select>
+				</div>
+				<!--<div class="mui-input-row">						
+					<label>部门:</label>
+					<select id="bmxz">
+						<option value ="" selected="selected"></option>
+					</select>
+				</div>-->
+			</form>
+			<div class="mui-content-padded">
+				<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+			</div>
+			
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/service.js" ></script>
+		<script>
+			(function($, doc) {
+				$.init();
+				$.plusReady(function() {					
+					var regButton = doc.getElementById('reg');
+					var accountBox = doc.getElementById('account');
+					var passwordBox = doc.getElementById('password');
+					var passwordConfirmBox = doc.getElementById('password_confirm');
+					var emailBox = doc.getElementById('email');
+					var shji = doc.getElementById('shji');
+					var nameX = doc.getElementById("nameX");
+					
+					//新增分公司和部门
+					var fgsxz = doc.getElementById("fgsxz");
+					//var bmxz = doc.getElementById("bmxz");
+					
+					//blur事件是用于注册账号用的
+					accountBox.addEventListener('blur',function(event){
+						//alert('000');
+						var checkAccount = {
+							account: accountBox.value							
+						};
+						app.checkAccount(checkAccount, function(err) {
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							regButton.disabled=false;
+							plus.nativeUI.toast('恭喜，该账号可注册！');	
+							
+						});		
+						
+					});
+					//判断手机号码是否存在
+					shji.addEventListener('blur',function(event){
+						//alert('000');
+						var checkShji = {
+							shji: shji.value							
+						};
+						if(!reg.test(checkShji.shji)){
+							alert("手机号码位数不正确，请检查！");
+						}else{
+							app.checkShji(checkShji, function(err) {
+								if (err) {
+									plus.nativeUI.toast(err);
+									return;
+								}
+								regButton.disabled=false;
+								plus.nativeUI.toast('恭喜，该手机号码可注册！');	
+								
+							});	
+						}
+							
+						
+					});
+					
+					emailBox.addEventListener('blur',function(){
+//						alert("邮箱用于密码找回,请准确填写");
+						var checkEmail = {
+							email: emailBox.value							
+						};
+						if (!checkEmail1(checkEmail.email)) {
+							alert('邮箱地址格式出错，请检查！');
+						}else{
+							app.checkEmail(checkEmail, function(err) {
+								if (err) {
+									plus.nativeUI.toast(err);
+									return;
+								}
+								plus.nativeUI.toast('恭喜，该邮箱可注册！');	
+								
+							});
+						}
+						
+					});
+					
+					regButton.addEventListener('tap', function(event) {
+						var regInfo = {
+							account: accountBox.value,
+							password: passwordBox.value,
+							email: emailBox.value,
+							fgsxz: fgsxz.value,
+							//bmxz: bmxz.value,
+							shji: shji.value,
+							nameX: nameX.value
+						};
+						var passwordConfirm = passwordConfirmBox.value;
+						if (passwordConfirm != regInfo.password) {
+							plus.nativeUI.toast('密码两次输入不一致');
+							return;
+						}										
+						app.reg(regInfo, function(err) {
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							plus.nativeUI.toast('注册成功');
+							$.openWindow({
+								url: 'login.html',
+								id: 'login',
+								show: {
+									aniShow: 'pop-in'
+								}
+							});
+						});						
+						
+					});
+					
+					//创建分公司栏目
+					var createrwmclist=function(fgsjb){
+						//分公司
+						var option=document.createElement('option');
+						option.value=fgsjb;
+						option.text=fgsjb;
+						fgsxz.appendChild(option);
+					};
+					//获取分公司数据
+					mui.ajax(url+'fgs_bm_du.php',{
+						data:{
+							flag:'fgs',
+							fgsxz:''
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							//alert(data);
+							var length=data.length;
+							for (var i=0;i<length-1;i++) {
+								var fgsjb=data[i].部门;
+								createrwmclist(fgsjb);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//异常处理；
+							//alert('ajax错误'+type);
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+					
+					//选择了改变颜色
+					fgsxz.addEventListener('change',function(){
+						fgsxz.setAttribute("style","black")
+					});
+					
+					//创建部门栏目
+//					var createrwmclistBumen=function(bumen){
+//						var option=document.createElement('option');
+//						option.value=bumen;
+//						option.text=bumen;
+//						bmxz.appendChild(option);
+//					};
+					//通过分公司来选择相应的部门
+//					fgsxz.addEventListener('change',function(){
+//						fgsxz.setAttribute("style","black")
+//						bmxz.innerHTML="";
+//						mui.ajax(url+'fgs_bm_du.php',{
+//							data:{
+//								flag:'bumen',
+//								fgsxz:fgsxz.value
+//							},
+//							dataType:'json',
+//							type:'post',
+//							timeout:10000,
+//							success:function(data){
+//								//alert(data);
+//								var length=data.length;
+//								for (var i=0;i<length-1;i++) {
+//								 	var bumen=data[i].部门;
+//									createrwmclistBumen(bumen);
+//								}
+//							},
+//							error:function(xhr,type,errorThrown){
+//								//异常处理；
+//								//alert('ajax错误'+type);
+//								return callback('ajax错误'+type+errorThrown);
+//							}
+//						});
+//					});
+					
+					//检验邮箱合不合法
+					function checkEmail1(email) {
+						email = email || '';
+						return (email.length > 3 && email.indexOf('@') > -1);
+					}
+					//检验手机合不合法
+					var reg = /^1[0-9]{10}$/;
+				});
+			}(mui, document));
+		</script>
+	</body>
+
+</html>

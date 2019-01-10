@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id='wchen' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue my_none">完成</a>
+			<h1 class="mui-title">修改</h1>
+		</header>
+		<div class="mui-content">
+			<!--隐藏的div-->
+			<div id="zuyPopover" class="mui-popover" style="height:80%; width:100%;">
+				<div class="mui-input-row" style="height: 90%;">
+					<div id="scroll"  class="mui-scroll-wrapper">
+		        		<form id="jcnr" class="mui-input-group">
+							<!--检查内容创建区 -->
+						</form>
+					</div>
+					</div>
+					<div style="height:auto; width:auto;position:absolute;bottom:0px;right:0px;">
+						<button style="width: 80px; height: 43px;" id="gb">关闭</button>
+					  	<button style="width: 80px; height: 43px;" id="qd">确定</button>
+					  </div>
+			</div>
+					<!--隐藏的div-->
+			<div id="myform" class="">
+				<div class="mui-content-padded" style="margin: 5px;">
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row my_none">
+							<label>时间：</label>
+							<input id="qdTime" type="text" class="mui-input-clear" placeholder="时间" >
+						</div>
+						<div class="mui-input-row">
+							<label>检查项目：</label>
+							<select id="jcxm" multiple="multiple" style="padding-left:4px;font-size: 14px;padding-top: 7px;" onchange="">
+								<option disabled="disabled">请选择检查项目</option>
+								<option value="现浇混凝土结构观感质量及尺寸偏差">现浇混凝土结构观感质量及尺寸偏差</option>
+								<option value="填充墙砌体工程">填充墙砌体工程</option>
+								<option value="一般抹灰工程">一般抹灰工程</option>
+								<option value="饰面砖粘贴">饰面砖粘贴</option>
+								<option value="大理石面层和花岗石面层">大理石面层和花岗石面层</option>
+							</select>
+						</div>
+						<div class="mui-input-row">
+							<label>检查部位：</label>
+							<input id="jcbw" type="text" class="" style="padding-left:4px;"  placeholder="检查部位">
+						</div>
+						<div class="mui-input-row">
+							<label> 检查日期：</label>
+							<input id='jcrq' type="text" style="padding-left:4px;" placeholder="检查日期" readonly="readonly">						
+						</div>
+						<div class="mui-input-row">
+							<label> 检查人员：</label>
+							<input id='jcry' type="text" style="padding-left:4px;" placeholder="检查人员" readonly="readonly">						
+						</div>
+						<div class="mui-input-row my_none">
+							<label> 检查人员手机：</label>
+							<input id='jcrysj' type="text" style="padding-left:4px;" placeholder="检查人员" readonly="readonly">						
+						</div>
+						<div class="mui-input-row my_none">
+							<label> 时间戳：</label>
+							<input id='sjc' type="text" style="" placeholder="时间戳">						
+						</div>	
+					</form>	
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+	        				<label>检查内容：</label>
+	        				<input id="tapx" type="text" class="" style="padding-left:4px;" placeholder="点击选择检查内容" readonly="readonly"/>
+	        			</div>
+					</form>
+	        	</div>
+	        	<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary mui-action-back">关闭</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<button id="baocun" type="button" class="mui-btn mui-btn-primary">保存</button>
+				</div>
+			</div>
+			
+		</div>		
+		<!--<div id="tu" class="mui-card">
+
+		</div>-->
+		<!-- Placed js at the end of the document so the pages load faster -->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js" ></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/immersed.js" ></script>
+		<!--<script src="../js/my_js_upload.js" ></script>-->
+		<!--<script src="../js/my_tzdxgry_xinxi.js"></script>-->
+		<script>
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					
+					}
+			});
+			mui.plusReady(function(){
+				//接收上一个页面的传值
+				var self = plus.webview.currentWebview();
+				var gcid = self.gcid;
+				var gcmc = self.gcmc;
+				var ulId = self.ulId;
+				var mobile = self.mobile;
+//				alert(gcid+" "+mobile+" "+ulId);
+                //检查人员手机号填入
+				document.getElementById("jcrysj").value=mobile;
+				//自动添加当前时间戳,作为这个新建任务的唯一标识存到数据库，附件上传时会用到
+				var sjc = document.getElementById("sjc");
+				var myDate=new Date();
+				var mytime=myDate.getTime();
+				var mytimeSecond=myDate.getSeconds();
+				var mytimeMilliseconds=myDate.getMilliseconds();
+				sjc.value="qigong"+mytime+mytimeSecond+mytimeMilliseconds+"20180202";
+				
+//				获取数据
+                mui.ajax(url+'my_plus/my_scsl_xcxg.php',{
+                	data:{
+                		flag:'hqsj',
+                		id:ulId
+                	},
+                		dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+//								alert(data); 
+							var name=data[0].检查人员;
+							var jcxm=data[0].记录表类型;
+							var day=data[0].创建时间;
+							var jcnr=data[0].检查内容;
+							var jcbw=data[0].分项工程名称;
+							txsj(sjc,name,jcxm,jcnr,day,jcbw);
+						},
+						error:function(xhr,type,errorThrown){
+							return callback('ajax错误'+type+errorThrown);
+						}
+                });
+                
+//              填写数据
+				var txsj = function(sjc,name,jcxm,jcnr,day,jcbw){
+					var team = document.getElementById("jcxm").getElementsByTagName("option");
+					document.getElementById("jcbw").value = jcbw;
+					document.getElementById("jcrq").value = day;
+					document.getElementById("jcry").value = name;
+					var xm = Array();
+					xm = jcxm.split(",");
+					for(var i=0;i<xm.length;i++){
+						for(var j=0;j<6;j++){
+							if(team[j].value==xm[i]){
+								team[j].selected='selected';
+								break;
+							}
+						}
+					}
+					//异步获取检查内容的信息
+					mui.ajax(url+'my_plus/my_project_scxj_jcnr.php',{
+						data:{
+							flag:'jcnr',
+							jcxm:jcxm+","
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						async:false,
+						success:function(data){
+//							alert(data); 
+							var length=data.length;
+							for (var i=0;i<length-1;i++) {
+								var jcnr=data[i].检查内容;
+								creatJcnr(jcnr);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+					//勾选检查内容并显示有多少条
+					var nradd = document.getElementById("jcnr").getElementsByTagName("input");
+					var nr = new Array();
+					nr = jcnr.split(",");
+					document.getElementById("tapx").value = "已选择"+nr.length+"项检查内容";
+					for(var i=0;i<nr.length;i++){
+						for(var j=0;j<nradd.length;j++){
+							if(nradd[j].value==nr[i]){
+								nradd[j].checked="checked";
+								break;
+							}
+						}
+					}
+				}
+				
+				//禁选某些选项
+				var choice = document.getElementById("jcnr").getElementsByTagName("input");
+				for(var i=0;i<choice.length;i++){
+					if(choice[i].checked){
+						switch(choice[i].value) 
+						{
+							case "一般抹灰-立面垂直度-普通":case "一般抹灰-表面平整度-普通":
+							for(var k=0;k<choice.length;k++){
+								if(choice[k].value=="一般抹灰-立面垂直度-高级"||choice[k].value=="一般抹灰-表面平整度-高级"){
+									choice[k].disabled="disabled";
+								}
+							}
+							break;
+							case "一般抹灰-立面垂直度-高级":case "一般抹灰-表面平整度-高级":
+							for(var k=0;k<choice.length;k++){
+								if(choice[k].value=="一般抹灰-立面垂直度-普通"||choice[k].value=="一般抹灰-表面平整度-普通"){
+									choice[k].disabled="disabled";
+								}
+							}
+							break;
+							case "饰面砖粘贴-立面垂直度-外墙面砖":case "饰面砖粘贴-表面平整度-外墙面砖":
+							for(var k=0;k<choice.length;k++){
+								if(choice[k].value=="饰面砖粘贴-立面垂直度-内墙面砖"||choice[k].value=="饰面砖粘贴-表面平整度-内墙面砖"){
+									choice[k].disabled="disabled";
+								}
+							}
+							break;
+							case "饰面砖粘贴-立面垂直度-内墙面砖":case "饰面砖粘贴-表面平整度-内墙面砖":
+							for(var k=0;k<choice.length;k++){
+								if(choice[k].value=="饰面砖粘贴-立面垂直度-外墙面砖"||choice[k].value=="饰面砖粘贴-表面平整度-外墙面砖"){
+									choice[k].disabled="disabled";
+								}
+							}
+							break;
+						}
+					}
+				}
+				
+				//打开原生日期
+				document.getElementById("jcrq").addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						jcrq.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});	
+				});
+				
+			//根据检查项目创建检查内容
+				var jcxm = document.getElementById("jcxm");
+				jcxm.addEventListener('change',function(){
+					document.getElementById("jcnr").innerHTML="";//清除检查内容
+					document.getElementById("tapx").value="请选择检查内容"
+					//获取选中的option
+					var sele = jcxm.getElementsByTagName("option");
+					var cat = "";
+					for(var i=0;i<sele.length;i++){
+						if(sele[i].selected){
+							cat+=sele[i].value+",";
+						}
+					}
+					
+					//异步获取检查内容的信息
+					mui.ajax(url+'my_plus/my_project_scxj_jcnr.php',{
+						data:{
+							flag:'jcnr',
+							jcxm:cat
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+//							alert(data); 
+							var length=data.length;
+							for (var i=0;i<length-1;i++) {
+								var jcnr=data[i].检查内容;
+								creatJcnr(jcnr);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+					
+					
+					});
+					
+					//动态创建 检查内容
+					var creatJcnr=function(jcnr){
+						//alert(jcxm);
+						var myJcnr = document.getElementById("jcnr");
+						var div = document.createElement("div");
+						var label = document.createElement("label");
+						var input = document.createElement("input");
+						div.className = "mui-input-row mui-checkbox";
+						label.innerHTML = jcnr;
+						input.type = "checkbox";
+						input.name = "checkbox";
+						input.value = jcnr;
+						div.appendChild(label);
+						div.appendChild(input);
+						myJcnr.appendChild(div);
+					};
+					
+					
+					 //隐藏框确定显示检查内容条目
+			           document.getElementById("tapx").addEventListener('tap',function(){
+			           		mui("#zuyPopover").popover("toggle");
+			           });
+			           document.getElementById("gb").addEventListener('tap',function(){
+			           	mui("#zuyPopover").popover("toggle"); 
+			           });
+			           document.getElementById("qd").addEventListener('tap',function(){
+			           		var n=0;
+							var a = document.getElementById("zuyPopover").getElementsByTagName("input");
+							for(var i=0;i<a.length;i++){
+								if(a[i].checked){
+									n++;
+								}
+							}
+							document.getElementById("tapx").value="已选择"+n+"项检查内容";
+			           		mui("#zuyPopover").popover("toggle"); 
+			           });
+			           //点击普通屏蔽高级
+					mui("#jcnr").on('change','input',function(){
+						var choice = document.getElementById("jcnr").getElementsByTagName("input");
+						if(this.checked){
+							switch(this.value)
+							{
+								case "一般抹灰-立面垂直度-普通":case "一般抹灰-表面平整度-普通":
+								for(var k=0;k<choice.length;k++){
+									if(choice[k].value=="一般抹灰-立面垂直度-高级"||choice[k].value=="一般抹灰-表面平整度-高级"){
+										choice[k].disabled="disabled";
+									}
+								}
+								break;
+								case "一般抹灰-立面垂直度-高级":case "一般抹灰-表面平整度-高级":
+								for(var k=0;k<choice.length;k++){
+									if(choice[k].value=="一般抹灰-立面垂直度-普通"||choice[k].value=="一般抹灰-表面平整度-普通"){
+										choice[k].disabled="disabled";
+									}
+								}
+								break;
+								case "饰面砖粘贴-立面垂直度-外墙面砖":case "饰面砖粘贴-表面平整度-外墙面砖":
+								for(var k=0;k<choice.length;k++){
+									if(choice[k].value=="饰面砖粘贴-立面垂直度-内墙面砖"||choice[k].value=="饰面砖粘贴-表面平整度-内墙面砖"){
+										choice[k].disabled="disabled";
+									}
+								}
+								break;
+								case "饰面砖粘贴-立面垂直度-内墙面砖":case "饰面砖粘贴-表面平整度-内墙面砖":
+								for(var k=0;k<choice.length;k++){
+									if(choice[k].value=="饰面砖粘贴-立面垂直度-外墙面砖"||choice[k].value=="饰面砖粘贴-表面平整度-外墙面砖"){
+										choice[k].disabled="disabled";
+									}
+								}
+								break;
+							}
+						}else{
+							for(var j=0;j<choice.length;j++){
+								choice[j].disabled=false;
+							}
+							for(var i=0;i<choice.length;i++){
+								if(choice[i].checked){
+									switch(choice[i].value) 
+									{
+										case "一般抹灰-立面垂直度-普通":case "一般抹灰-表面平整度-普通":
+										for(var k=0;k<choice.length;k++){
+											if(choice[k].value=="一般抹灰-立面垂直度-高级"||choice[k].value=="一般抹灰-表面平整度-高级"){
+												choice[k].disabled="disabled";
+											}
+										}
+										break;
+										case "一般抹灰-立面垂直度-高级":case "一般抹灰-表面平整度-高级":
+										for(var k=0;k<choice.length;k++){
+											if(choice[k].value=="一般抹灰-立面垂直度-普通"||choice[k].value=="一般抹灰-表面平整度-普通"){
+												choice[k].disabled="disabled";
+											}
+										}
+										break;
+										case "饰面砖粘贴-立面垂直度-外墙面砖":case "饰面砖粘贴-表面平整度-外墙面砖":
+										for(var k=0;k<choice.length;k++){
+											if(choice[k].value=="饰面砖粘贴-立面垂直度-内墙面砖"||choice[k].value=="饰面砖粘贴-表面平整度-内墙面砖"){
+												choice[k].disabled="disabled";
+											}
+										}
+										break;
+										case "饰面砖粘贴-立面垂直度-内墙面砖":case "饰面砖粘贴-表面平整度-内墙面砖":
+										for(var k=0;k<choice.length;k++){
+											if(choice[k].value=="饰面砖粘贴-立面垂直度-外墙面砖"||choice[k].value=="饰面砖粘贴-表面平整度-外墙面砖"){
+												choice[k].disabled="disabled";
+											}
+										}
+										break;
+									}
+								}
+							}
+						}
+					});
+					
+				
+				
+				//保存数据
+				var bc = document.getElementById("baocun");
+				bc.addEventListener('tap',function(){
+					nextpage='';
+					var bts=["是","否"];
+					plus.nativeUI.confirm("保存后，实测内的数据会全部清空，需重新输入。",function(e){
+						var i=e.index;
+						if(i==0){
+							//是
+							bc();
+						}else{
+							//否
+						}
+					},"同欣巡检系统",bts);
+				});
+				var bc = function(){
+					var sjc = document.getElementById("sjc").value;//获取时间戳
+                    var jcbw = document.getElementById("jcbw").value;//获取检查部位.数据库对应的是分项工程名称
+                    var jcday = document.getElementById("jcrq").value;//获取检查日期
+                    var mobile = document.getElementById("jcrysj").value;//获取检查人员电话
+                    var jcry = document.getElementById("jcry").value;
+//                  alert(sjc+jcbw+jcday+mobile+jcry);
+
+
+					//获取选中检查内容value
+					var sel = document.getElementById("jcnr").getElementsByTagName("input");
+					var addnr = "";
+					for(var j=0;j<sel.length;j++){
+						if(sel[j].checked){
+							addnr+=sel[j].value+",";
+						}
+					}
+					addnr = addnr.substr(0, addnr.length - 1);
+//					alert(addxm); 
+                    var jcteam = document.getElementById("jcxm").getElementsByTagName("option");
+                    var addjcxm = "";
+                    for(var i=0;i<jcteam.length;i++){
+                    	if(jcteam[i].selected){
+                    		addjcxm +=jcteam[i].value+",";
+                    	}
+                    }
+                    addjcxm = addjcxm.substr(0,addjcxm.length - 1);
+//                  alert(addjcxm+"||"+addnr);
+
+
+//                  异步保存
+                    mui.ajax(url+'my_plus/my_scsl_xcxg.php',{
+                    	data:{
+                    		flag:'xg',
+                    		ulId:ulId,
+                    		gcid:gcid,
+                    		sjc:sjc,
+                    		jcbw:jcbw,
+                    		jcday:jcday,
+                    		mobile:mobile,
+                    		jcry:jcry,
+                    		addnr:addnr,
+                    		addjcxm:addjcxm 
+                    	},
+                    	dataType:'josn', 
+                    	type:'post',
+                    	timeout:10000, 
+                    	success:function(data){
+//                  			alert(data);
+                         mui.back();
+                         mui.toast('新建成功',{duration:'long',type:'div'});
+    						var list=plus.webview.currentWebview().opener();
+							 //触发父页面的自定义事件(refresh),从而进行刷新
+							mui.fire(list, 'refresh');
+							  //返回true,继续页面关闭逻辑
+							return true;                     
+                    	},
+                    	error:function(xhr,type,errorThrown){
+							//异常处理； 
+							//alert('ajax错误'+type);
+							return callback('ajax错误'+type+errorThrown);
+						}
+                    });
+				}
+			});
+		</script>
+	</body>
+</html>

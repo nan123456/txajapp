@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣安检</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />	
+		<style type="text/css">
+			#hfms{
+				min-height: 80px; 
+				height: auto;
+			}
+			#hfjl{
+				padding: 10px;
+				min-height: 80px;
+				height: auto;
+			}
+			/*块级按钮按钮样式*/
+			.mui-content-padded{
+			  	margin: 10px;
+			 }
+			/*按钮小样式*/
+			.mui-btn-block_my{
+				font-size:16px;
+				display:block;
+				width:100%;
+				margin-bottom:10px;
+				padding:8px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="returnUppage" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id='wchen' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue my_none">完成</a>
+			<h1 class="mui-title">违章条目</h1>
+		</header>
+		<div class="mui-content">
+			<div id="wftmtpsc" class="mui-card">
+				<!--<ul class="mui-table-view">
+					<li id="sctp0" class="mui-table-view-cell">
+						<img id="pic0" class="mui-media-object mui-pull-right" src="../images/wztmzj.jpg">
+						<div class="mui-media-body">
+							1、项目负责人对建设行政主管部门或安监站发出的整改通知书未落实整改的	
+						</div>
+					</li>
+				</ul>-->
+			</div>
+			<div id="myform" class="my_none">
+				<div class="mui-content-padded" style="margin: 5px;">
+					<form class="mui-input-group">
+						<div class="mui-input-row">
+							<label> 时间戳：</label>
+							<input id='sjc' type="text" style=" padding-left:15px;" placeholder="时间戳">						
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="mui-content-padded my_margintop10px">
+				<button id="confirm" type="button" class="mui-btn mui-btn-primary mui-btn-block_my" onclick="upload(this.id,'clean_rwfj');">上传</button>
+			</div>
+		</div>
+	
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/common.js"></script>
+		<script type="text/javascript" src="../js/immersed.js" ></script>
+		<script src="../js/service.js" ></script>
+		<script src="../js/my_js_wztmtpsc_xz.js" ></script>	
+		<script>
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+				}
+			});
+			
+			//mui.toast('点击选择照片，长按编辑或删除！');
+			window.addEventListener('json',function(event){
+				var wztmbj=event.detail.flag;
+				var wztmbjId=event.detail.flag1;
+				var p=event.detail.flag3;
+				var hehe=event.detail.flag4;
+				var liid=document.getElementById(wztmbjId);
+				liid.innerHTML='<img id="t'+wztmbjId+'" class="mui-media-object mui-pull-right" src="'+p+'" style="width:50px;height:50px;"><div class="mui-media-body">'+wztmbj+'</div><p>部位：'+hehe+'';
+//				okwetm=wztmbj; 
+			})
+			
+			mui.plusReady(function(){
+//				plus.nativeUI.toast("您好！请先选择违章条目后在对应上传照片！无照片的违章条目请最后选择！",{duration:"long"});
+				//完成按钮监听
+				var wchen=document.getElementById("wchen");
+				wchen.addEventListener('tap',function(){
+					//var target=plus.webview.getWebviewById('my_change_cgxz.html');
+					var target=plus.webview.currentWebview().opener();
+					mui.toast('请保存草稿');
+					mui.fire(target,'weztm',{
+						flag:sjc.value,
+						panduan:'1'
+					});
+					mui.back();
+				});
+			});
+		</script>
+	</body>
+</html>

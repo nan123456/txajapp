@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>华西安检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/my_css.css">	
+		<link rel="stylesheet" href="../css/my_project_fhys_xz.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="fanhui" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="xiugai" class="mui-btn mui-btn-link mui-pull-right mui-btn-#007aff">修改</a>
+			<a id="wancheng" class="mui-btn mui-btn-link mui-pull-right mui-btn-#007aff my_none">完成</a>
+			<h1 class="mui-title">查看草稿</h1>
+		</header>
+		<div class="mui-content">
+			<div id="myform" class="">
+				<div class="mui-content-padded" style="margin: 5px;">
+					<form class="mui-input-group">
+						<div class="mui-input-row">
+	        				<label>检查层级：</label>
+	        				<input id="jccj1" value="" type="text" style="padding-left: 4px;" readonly="readonly"/>
+	        				<select id="jccj" class="my_none" style="padding-left: 4px;font-size: small;">
+	        					<option disabled="disabled" value ="" selected="selected">请选择检查层级</option>
+	        					<option value ="项目部自检">项目部自检</option>
+	        					<option value ="分公司巡查">分公司巡查</option>
+	        					<option value ="分公司月度检查">分公司月度检查</option>
+	        					<option value ="分公司专项检查">分公司专项检查</option>
+	        					<option value ="总部巡查">总部巡查</option>
+	        					<option value ="总部季度检查">总部季度检查</option>
+	        					<option value ="总部专项检查">总部专项检查</option>
+	        				</select>
+	        			</div>
+	        			<div class="mui-input-row my_none">
+							<label>时间：</label>
+							<input id="qdTime" type="text" class="mui-input-clear" placeholder="时间" >
+						</div>
+					</form>
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+							<label>巡查类别：</label>
+							<input id="xclb2" type="text" value="安全" style="padding-left: 4px;" readonly="readonly"/>
+							<select id="xclb" class="my_none" style="padding-left: 4px;font-size: small;">
+								<option disabled="disabled" value ="" selected="selected">请选择违章类别</option>
+								<option value ="安全">安全</option>
+								<option value ="质量">质量</option>
+								<option value ="综合">综合</option>
+							</select>
+						</div>
+					</form>	
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">						
+							<label>通知单编号：</label>
+							<input id="tzdbh" type="text" value="" class="" style="padding-left: 4px;" placeholder="通知单编号"  readonly="readonly">						
+						</div>
+					</form>
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+							<label>检查单位：</label>
+							<input id="jcdwLook" type="text" class="" style="padding-left: 4px;" placeholder="检查单位"  readonly="readonly">
+							<select id="jcdw" class="my_none" style="padding-left: 4px;font-size: 14px;">
+								<option disabled="disabled" value ="" selected="selected"></option>
+							</select>
+						</div>
+						<div class="mui-input-row">
+							<label>检查对象：</label>
+							<input id="jcdx" type="text" class="" style="padding-left: 4px;" placeholder="检查对象"  readonly="readonly">
+						</div>
+						<div class="mui-input-row">
+	        				<label>违章大类：</label> 
+	        				<input id="wzdl2" type="text" value="日常检查"  readonly="readonly" style="padding-left: 4px;"/>
+	        				<select id="wzdl" multiple="multiple" class="my_none" style="padding-left: 4px;font-size: 14px;">
+	        					<!--<option value ="安全管理">安全管理</option>
+	        					<option value ="文明施工">文明施工</option> 
+	        					<option value ="扣件式钢管脚手架">扣件式钢管脚手架</option>
+	        					<option value ="门式钢管脚手架">门式钢管脚手架</option>
+	        					<option value ="承插型盘扣式钢管脚手架">承插型盘扣式钢管脚手架</option>
+	        					<option value ="悬挑式脚手架">悬挑式脚手架</option>
+	        					<option value ="高处作业吊篮">高处作业吊篮</option>
+	        					<option value ="附着式升降脚手架">附着式升降脚手架</option>
+	        					<option value ="基坑工程">基坑工程</option>
+	        					<option value ="模板支架">模板支架</option>
+	        					<option value ="高处作业">高处作业</option>
+	        					<option value ="施工用电">施工用电</option>
+	        					<option value ="物料提升机">物料提升机</option>
+	        					<option value ="施工升降机">施工升降机</option>
+	        					<option value ="塔式起重机">塔式起重机</option>
+	        					<option value ="起重吊装">起重吊装</option>
+	        					<option value ="施工机具">施工机具</option>
+	        					<option value ="碗扣式钢管脚手架">碗扣式钢管脚手架</option>
+	        					<option value ="满堂脚手架">满堂脚手架</option>
+	        					<option value ="其他">其他</option>-->
+	        				</select>
+	        			</div>
+	        			<div class="mui-input-row">
+	        				<label>检查项目：</label>
+	        				<input id="jcxm2" type="text" value="安全管理"  readonly="readonly" style="padding-left: 4px;"/>
+	        				<select id="jcxm" class="my_none" multiple="multiple" style="padding-left: 4px;font-size: 14px;">
+	        					<option id="" value ="">已选择0项</option>
+	        				</select>
+	        			</div> 
+	        			<!-- 后来加的需求 -->
+	        			<div class="mui-input-row">
+	        				<label>检查内容：</label>
+	        				<input id="jcnr2" type="text" value="检查内容"  readonly="readonly" style="padding-left: 4px;"/>
+	        				<select id="jcnr" class="my_none" multiple="multiple" style="padding-left: 4px;font-size: 14px;">
+	        					<option id="" value ="">已选择0项</option>
+	        				</select>
+	        			</div>
+	        			
+						<div class="mui-input-row">
+							<label> 检查日期：</label>
+							<input id='jcrq2' type="text" value=""  readonly="readonly" style="padding-left: 4px;">													
+							<input id='jcrq' class="my_none" type="text" style="padding-left: 4px;" placeholder="检查日期"  readonly="readonly">						
+						</div>	
+					</form>	
+					<div class="mui-input-group" style="margin-top: 5px;">
+						<div id="tiaomu" class="mui-input-row">
+							<label>违章条目：</label>
+							<input id="wztm" type="text" class="" value="" style="padding-left: 4px;" placeholder="点击查看"  readonly="readonly">
+						</div>
+					</div>
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<div class="mui-input-row">
+							<label>违章状态：</label>
+							<input id="wzzt" type="text" class="" style="padding-left: 4px;" placeholder="违章状态"  readonly="readonly">
+						</div>	
+						<div class="mui-input-row my_none">
+							<label> 时间戳：</label>
+							<input id='sjc' type="text" style="padding-left: 4px;" placeholder="时间戳">						
+						</div>	
+						<div class="mui-input-row my_none">
+							<label> 上个页面时间戳：</label>
+							<input id='Sgsjc' type="text" style="padding-left: 4px;" placeholder="时间戳">						
+						</div>
+						<div class="mui-input-row my_none">
+							<label> 上个页面工程id：</label>
+							<input id='Sggcid' type="text" style="padding-left: 4px;" placeholder="工程id">						
+						</div>
+					</form>	
+					<form class="mui-input-group" style="margin-top: 5px;">
+						<!--<div class="mui-input-row">
+							<label>整改期限：</label>
+							<div style="float: left;width: 40%;">
+								<input id="czgqx" type="text" style=" padding-left:15px;" style=" padding-left:15px;" placeholder="整改期限" readonly="readonly">
+							</div>
+							<div style="float: right;width: 20%;">
+								<label>天</label>
+							</div>
+						</div>-->
+						<div class="mui-input-row">
+							<label>截止日期：</label>
+							<input id='czgqx' type="text" style="padding-left: 4px;" placeholder="截止日期" readonly="readonly">						
+						</div>
+						<div class="mui-input-row my_none">
+							<label>是负责人吗：</label>
+							<input id='shjMobile' type="text" style="padding-left: 4px;" placeholder="是负责人吗" readonly="readonly">						
+						</div>
+					</form>
+	        	</div>
+			</div>
+			<div id="uploader" class="my_none">
+
+			</div>
+		</div>		
+		<div id="output">
+			<!--Camera管理摄像头设备，可用于拍摄照片、录制视频文件。      -->
+		</div>
+	
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/immersed.js" ></script>
+		<script src="../js/service.js"></script>
+		<!--<script src="../js/my_js_upload.js" ></script>-->
+		<script>
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					
+					}
+			});
+			mui.plusReady(function(){
+				//获取url参数值
+				function geturl(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]);
+					return null;
+				}
+				//项目名称是汉字，进行解码			
+				var id=geturl("id");
+				sjcCgao=geturl("sjcCgao");
+				flag=geturl("flag");
+				mobile=geturl("mobile");
+				gcid=geturl("gcid");
+				//alert(gcid);
+				
+				//修改按钮监听
+				var xiugai = document.getElementById("xiugai");
+				var qdTime=document.getElementById("qdTime");
+				
+				//定位各个输入框的id
+				var xiugai = document.getElementById("xiugai");						
+				var wancheng = document.getElementById("wancheng");			
+				var jccj = document.getElementById("jccj");
+				var jccj1 = document.getElementById("jccj1");
+				var xclb = document.getElementById("xclb");
+				var xclb2 = document.getElementById("xclb2");
+				var tzdbh = document.getElementById("tzdbh");
+				var jcdw = document.getElementById("jcdw");
+				var jcdwLook = document.getElementById("jcdwLook");
+				var jcdx = document.getElementById("jcdx");
+				var wzdl = document.getElementById("wzdl");
+				var jcxm = document.getElementById("jcxm");
+				var wzdl2 = document.getElementById("wzdl2");
+				var jcxm2 = document.getElementById("jcxm2");
+				var jcnr2 = document.getElementById("jcnr2");
+				var wzzt = document.getElementById("wzzt");
+				var czgqx = document.getElementById("czgqx");
+				var jcrq = document.getElementById("jcrq");
+				var jcrq2 = document.getElementById("jcrq2");
+				var fanhui = document.getElementById("fanhui");
+				var sjc = document.getElementById("sjc");
+				var Sgsjc = document.getElementById("Sgsjc");
+				var Sggcid = document.getElementById("Sggcid");
+				var tiaomu = document.getElementById("tiaomu");
+				//var wztm = document.getElementById("wztm");
+				var shjMobile = document.getElementById("shjMobile");
+				Sgsjc.value=sjcCgao;
+				Sggcid.value=id;
+				
+				if(flag=="tjfx"){
+					xiugai.setAttribute("class","mui-btn mui-btn-link mui-pull-right mui-btn-#007aff my_none");
+				}else{
+					
+				}
+				
+				//获取当前时间
+				var date=new Date();    
+				var year=date.getFullYear(); //获取当前年份
+				var mon=date.getMonth()+1; //获取当前月份    
+				var da=date.getDate(); //获取当前日
+				
+				//判断月份和天数字符串的长度
+				if(String(mon).length==1){
+					var month="0"+String(mon);
+				}else{
+					var month=String(mon);
+				}
+				if(String(da).length==1){
+					var day="0"+String(da);
+				}else{
+					var day=String(da);
+				}
+				var time01=String(year)+month+day;
+				qdTime.value=time01;
+				
+				var wztmcd="";
+				mui.ajax(url+'my_plus/my_change_hqwztm.php',{
+					data:{
+						sjc:Sgsjc.value,
+						zggllx:'chufa'
+					},
+					dataType:'json', 
+					type:'post', 
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;
+						for (var i=0;i<length-1;i++){
+							id=data[i].id;
+							wztm=data[i].内容.split("||");
+							wztmcd=wztm.length-1;
+						}
+						//alert(wztmcd);
+						wztmm(wztmcd);
+					},
+					error:function(xhr,type,errorThrown){
+						//return callback('ajax错误'+type+errorThrown);
+					}
+				}); 
+				
+				var wztmm=function(wztmcd){
+					//wztm.value="测试";
+					//alert("测试"+wztmcd);
+					var wztm = document.getElementById("wztm");
+					wztm.value='已选择'+wztmcd+'项违章条目';
+				};
+				
+				//异步获取查看草稿内容
+				mui.ajax(url+'my_plus/my_change_ck.php',{
+					data:{
+						id:id
+					},
+					dataType:'json',
+					type:'post',
+					timeout:10000,
+					success:function(data){
+						//alert(data);
+						var length=data.length;
+						for (var i=0;i<length-1;i++) {
+							jccj.value=data[i].检查层级;
+							jccj1.value=data[i].检查层级;
+							//xclb.value=data[i].巡查类别;
+							xclb2.value=data[i].巡查类别;
+							tzdbh.value=data[i].通知单编号;
+							//jcdw.value=data[i].检查单位;
+							jcdwLook.value=data[i].检查单位;
+							jcdx.value=data[i].检查对象;
+							
+							wzdl.value=data[i].违章大类;
+							
+							jcxm.value=data[i].检查类型;
+							jcnr.value=data[i].检查内容;
+							sjc.value=data[i].时间戳;
+							jcrq.value=data[i].检查日期;	
+							jcrq2.value=data[i].检查日期;
+							wzzt.value=data[i].违章状态;	
+							czgqx.value=data[i].整改期限;
+							
+							var wzdll2=data[i].违章大类.split("||");
+							var jcxmm2=data[i].检查类型.split("||");
+							var jcnrm2=data[i].检查内容.split("||");
+						}
+						var tzdbh1 = tzdbh.value;
+						panduan(tzdbh1);
+						var a = wzdll2.length-1;
+						var b = jcxmm2.length-1;
+						var c = jcnrm2.length-1;
+						wzdl2.value = '已选择'+a+'项';
+						jcxm2.value = '已选择'+b+'项';
+						jcnr2.value = '已选择'+c+'项';
+						var dj2=xclb2.value;
+						if (jccj1.value=='项目部自检') {
+							jccj1.style.backgroundColor="#007aff";
+						}else if(jccj1.value=='分公司巡查' || jccj1.value=='分公司月度检查' || jccj1.value=='分公司专项检查'){
+							jccj1.style.backgroundColor="#0CAF2D";					
+						}else{
+							jccj1.style.backgroundColor="#8A6DE9";
+						}
+//							if (dj2=='安全') {
+//								xclb2.style.backgroundColor="#007aff";
+//							}else if (dj2=='质量') {
+//								xclb2.style.backgroundColor="#0CAF2D";					
+//							}else if(dj2=='综合'){
+//								xclb2.style.backgroundColor="#8A6DE9";
+//							}else{
+//								xclb2.style.backgroundColor="white";
+//							}
+							
+							
+					},
+					error:function(xhr,type,errorThrown){
+						return callback('ajax错误'+type+errorThrown);
+					}
+				});
+				
+				//修改后，刷新该页面
+				window.addEventListener('wztmck',function(event){						
+					var wobj = plus.webview.currentWebview();					
+					wobj.reload(true);						
+				});
+				
+				//整合后刷新界面
+				window.addEventListener('zhengHe',function(event){						
+					var wobj = plus.webview.currentWebview();					
+					wobj.reload(true);						
+				});
+				var panduan = function(tzdbh1){
+					//手机号码判断
+					mui.ajax(url+'my_plus/my_change_hqwztm.php',{
+						data:{
+							sjc:tzdbh1,
+							mobile:mobile,
+							zggllx:'shjMobile'
+						},
+						dataType:'json', 
+						type:'post', 
+						timeout:10000,
+						success:function(data){
+							//console.log(data);
+							if (data.result=='success'){ 
+								shjMobile.value="Yes"; 
+							}else{
+								shjMobile.value="No";
+							}
+//							alert(shjMobile.value);
+						}, 
+						error:function(xhr,type,errorThrown){
+							//return callback('ajax错误'+type+errorThrown);
+						}
+					});
+				}
+				
+				
+				xiugai.addEventListener('tap',function(){
+					xiugai.classList.add('my_none');					
+					wancheng.classList.remove('my_none');
+					//jccj.classList.remove('my_none');
+					//jccj1.classList.add('my_none');
+					//jcdwLook.classList.add('my_none');
+					//jcdw.classList.remove('my_none');
+					xclb.classList.remove('my_none');
+					xclb2.classList.add('my_none');
+					wzdl.classList.remove('my_none');
+					jcxm.classList.remove('my_none');
+					jcnr.classList.remove('my_none');
+					wzdl2.classList.add('my_none');
+					jcxm2.classList.add('my_none');	
+					jcnr2.classList.add('my_none');	
+					jcrq.classList.remove('my_none');	
+					jcrq2.classList.add('my_none');
+					//fanhui.classList.add('my_none');
+					//tzdbh.readOnly=false;
+					//jcdw.readOnly=false;
+					//jcdx.readOnly=false;
+					//wzzt.readOnly=false;
+					
+					
+					//打开原生日期
+					var czgqx = doc.getElementById("czgqx");
+					czgqx.addEventListener('tap', function() {
+						var dDate = new Date();
+						plus.nativeUI.pickDate(function(e) {
+							var d = e.date;
+							czgqx.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						}, function(e) {
+							//alert(e);
+						}, {
+							title: "请选择日期",
+						});	
+					});
+					
+					//异步获取检查内容的信息
+					mui.ajax(url+'my_plus/my_project_public_port.php',{
+						data:{
+							flag:'jcnr'
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							//alert(data);
+							var length=data.length;
+							for (var i=0;i<length-1;i++) {
+								var jcnr=data[i].检查内容;
+								creatJcnr(jcnr);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+					//动态创建
+					var creatJcnr=function(jcnr){
+						//alert(jcxm);
+						var myJcnr = document.getElementById("jcnr");
+						var option = document.createElement("option");
+						option.value = jcnr;
+						option.innerHTML=jcnr;
+						myJcnr.appendChild(option);
+					};
+				});
+				
+				//检查层级对应检查单位
+				jccj.addEventListener('change',function(){
+					var dw=jccj.value;
+					if(dw=='项目部自检'){
+						createrwmclistFgsjb(dw,dw);
+						createTzdbh("项目部");
+					}else if(dw=='分公司巡查'||dw=='分公司月度检查'||dw=='分公司专项检查'){
+						jcdw.innerHTML="";
+						
+						//由于分公司创建后要选择检查单位来显示通知单编号的汉字部分
+						creatBranch();
+						
+						mui.ajax(url+'fgs_bm_du.php',{
+							data:{
+								flag:'xzcg',
+								fgsxz:''
+							},
+							dataType:'json',
+							type:'post',
+							timeout:10000,
+							success:function(data){
+								//alert(data);
+								var length=data.length;
+								for (var i=0;i<length-1;i++) {
+									 var fgsjb=data[i].公司级别;
+									createrwmclistFgsjb(dw,fgsjb);
+								}
+								mui.toast('请选择检查单位！');
+							},
+							error:function(xhr,type,errorThrown){
+								//异常处理；
+								//alert('ajax错误'+type);
+								//return callback('ajax错误'+type+errorThrown);
+							}
+						});
+					}else{
+						createrwmclistFgsjb(dw,dw);
+						createTzdbh("总公司");
+					}
+				});
+				
+				var creatBranch=function(){
+					//此函数是创建一条空的option来动态改变通知单汉字显示部分
+					tzdbh.value="";
+					var option=document.createElement('option');
+					option.value="";
+					option.text="";
+					jcdw.appendChild(option);
+				};
+				
+				var createTzdbh=function(chineseTzd){
+					//异步获取通知单编号的编号规则
+					mui.ajax(url+'my_plus/my_project_cgxj_bh.php',{
+						data:{
+							gcmc:jcdx.value,
+							chineseTzd:chineseTzd,
+							presentTime:qdTime.value,
+							flag:"liuShuiHao"
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							//alert(data);
+							var length=data.length;
+							if (length>0) {
+								tzdbh.value=chineseTzd+"-"+qdTime.value+"-"+data[length-1].bianhao;							
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//alert('ajax错误'+type+errorThrown);
+						}
+					});
+				};
+				
+				//创建分公司栏目
+				var createrwmclistFgsjb=function(dw,fgsjb){
+					if(dw=='项目部自检'){
+						jcdw.innerHTML="";
+						var option=document.createElement('option');
+						option.value=fgsjb;
+						option.text=fgsjb;
+						jcdw.appendChild(option);
+					}else if(dw=='分公司巡查'||dw=='分公司月度检查'||dw=='分公司专项检查'){
+						var option=document.createElement('option');
+						option.value=fgsjb;
+						option.text=fgsjb;
+						jcdw.appendChild(option);
+					}else{
+						jcdw.innerHTML="";
+						var option=document.createElement('option');
+						option.value=fgsjb;
+						option.text=fgsjb;
+						jcdw.appendChild(option);
+					}
+				};
+				
+				//根据巡查类别来选择违章大类
+				xclb.addEventListener('change',function(){
+					//alert("ceshi");
+					wzdl.innerHTML="";
+					mui.ajax(url+'my_plus/my_project_cgxj_xclb_database.php',{
+						data:{
+							xclb:xclb.value
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+							//alert(data);
+							var length=data.length;
+							for (var i=0;i<length-1;i++) {
+								var weiZhangDaLei=data[i].编号注释;
+								createrwmclist(weiZhangDaLei);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//异常处理；
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+				});
+				
+				jcdw.addEventListener('change',function(){
+					createTzdbh(jcdw.value);
+				});
+				
+				//创建违章大类
+				var createrwmclist=function(weiZhangDaLei){	
+					//alert(weiZhangDaLei);
+					var option=document.createElement('option');
+					option.value=weiZhangDaLei;
+					option.text=weiZhangDaLei;
+					wzdl.appendChild(option);
+				};
+				
+				//完成按钮监听
+				wancheng.addEventListener('tap',function(){
+					var target=plus.webview.getWebviewById('my_change_list.html');
+					mui.fire(target,'json',{
+						flag:'ckcg'
+					});
+					ckcgsc();
+//					alert(jccj.value);
+					mui.back();
+				});
+				
+				//定位效果
+				var doc=document;
+				var czgqx = doc.getElementById("czgqx"); 
+				var jcrq=document.getElementById('jcrq');
+				
+				//巡查类别改变颜色
+				xclb.addEventListener('change', function() {
+					var dj=xclb.value;
+//					if (dj=='安全') {
+//						xclb.style.backgroundColor="#007aff";
+//					}else if (dj=='质量') {
+//						xclb.style.backgroundColor="green";					
+//					}else if(dj=='综合'){
+//						xclb.style.backgroundColor="#8A6DE9";
+//					}else{
+//						xclb.style.backgroundColor="white";
+//					}
+				});	
+				
+				/*----------获取点击检查项目内的值----------*/
+				var wzdl = document.getElementById("wzdl");
+				wzdl.addEventListener('change',function(){
+					var obj = document.getElementById("wzdl").getElementsByTagName("option");
+					var sel='';
+	   				for(var i=0;i<obj.length;i++){
+	   					if(obj[i].selected){
+	   						sel+=obj[i].value+','; //如果选中，将value添加到变量s中
+	   					}
+	   				}
+// 					var a=sel.split(','); 
+	   				wzdlck(sel);
+				});
+
+				//异步获取检查项目内容 
+				var wzdlck=function(sel){
+					var jcxm = jcxm; 
+					var myjcxm = document.getElementById("jcxm");
+					myjcxm.innerHTML="";
+						mui.ajax(url+'my_plus/my_cgxz_jcxm.php',{
+						data:{
+							sel:sel
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+	//						alert(data); 
+							var length=data.length;
+							for (var i=0;i<length-1;i++) {
+								jcxm=data[i].检查项目;
+								hqjcxm1(jcxm);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							return callback('ajax错误'+type+errorThrown);
+						}
+					});
+				}
+				function hqjcxm1(jcxm){
+					//alert(jcxm);
+					var myjcxm = document.getElementById("jcxm");
+					var option = document.createElement("option");
+					option.value = jcxm;
+					option.innerHTML=jcxm;
+					myjcxm.appendChild(option);
+				};
+	//			alert(jcxm); 
+				
+				//打开原生日期
+				jcrq.addEventListener('tap', function() {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						jcrq.value=d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+					}, function(e) {
+						//alert(e);
+					}, {
+						title: "请选择日期",
+					});	
+				});
+				
+				//违章条目按钮监听
+				var tiaomu = document.getElementById("tiaomu");
+				tiaomu.addEventListener('tap',function(){
+					var obdl = document.getElementById("wzdl").getElementsByTagName("option");
+					var obji = document.getElementById("jcxm").getElementsByTagName("option");
+					var sel='';
+					var wzdl='';
+					//拼接违章条目
+					for(var i=0;i<obdl.length;i++){
+	   					if(obdl[i].selected){
+	   						wzdl+=obdl[i].value+','; //如果选中，将value添加到变量s中
+	   					}
+	   				}
+					//拼接检查项目
+	   				for(var i=0;i<obji.length;i++){
+	   					if(obji[i].selected){
+	   						sel+=obji[i].value+','; //如果选中，将value添加到变量s中
+	   					}
+	   				}
+	   				//alert("wzdl："+wzdl+"   sel："+sel);
+					mui.openWindow({
+						url: 'my_change_cgwztmck.html',
+						id: 'my_change_cgwztmck',
+						styles: {
+							hardwareAccelerated:false
+						},
+						extras:{
+							//传递参数
+							name:'wushaohang_lidegejing',
+							gcid:Sggcid.value,
+							gcmc:jcdx.value,
+							tzdbh:tzdbh.value,
+							sjc:sjc.value,
+							wzdl:wzdl,
+							jcxm:sel,
+							flag:flag,
+							mobile:mobile,
+							shjPanduan:shjMobile.value
+						},
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示
+							aniShow:'slide-in-right',//页面显示动画
+							duration:'100'//页面动画持续时间
+						},
+						waiting:{
+							autoShow:false,//自动显示等待框
+						},
+					});
+				}); 
+				
+				//修改后通知单上传
+				function ckcgsc(){
+					//alert("22");
+					mui.ajax(url+'my_plus/my_change_ckcg.php',{
+						data:{
+							jccj:jccj.value,
+							xclb:xclb.value,
+							tzdbh:tzdbh.value,
+							jcdw:jcdw.value,
+							jcdx:jcdx.value,
+							jcrq:jcrq.value,
+							wzzt:wzzt.value,
+							czgqx:czgqx.value,
+							sjc:sjc.value
+						},
+						//dataType:'JSON',
+						type:'POST', 
+						timeout:10000,
+						success:function(data){
+//							alert(data);
+						}, 
+						error:function(xhr,type,errorThrown){
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>同欣巡检系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">			
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/my_css.css">
+		<style>
+			/*按钮小样式*/
+			.mui-btn-block_my{
+				font-size:16px;
+				display:block;
+				width:100%;
+				margin-bottom:10px;
+				padding:8px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>-->
+			<!--<a id='wchen' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue my_none">完成</a>-->
+			<h1 class="mui-title">违章条目编辑</h1>
+			<div align="right">
+			<button id="xg" type="button"  class="mui-btn mui-btn-primary">是否修改</button>
+			</div>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<div class="mui-input-row" style="margin: 10px 5px;">
+					<textarea id="textareaBianji" readonly="readonly" rows="10" placeholder="多行文本框"></textarea>
+				</div>
+			</div>
+			<div class="mui-content-padded" style="margin: 5px;">
+				<div class="mui-input-row" style="margin: 10px 5px;">
+					<textarea id="buwei" rows="1" placeholder="请填写部位"></textarea>
+				</div>
+			</div>
+			<div class="mui-content-padded my_margintop10px">
+				<button id="confirm" type="button" class="mui-btn mui-btn-primary mui-btn-block_my">确定</button>
+			</div>
+		</div>
+	
+		<script src="../js/service.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script>
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能
+				gestureConfig:{					
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					 
+					}
+			});
+			
+			mui.plusReady(function(){
+				//接收上一个页面传递的值
+				var self = plus.webview.currentWebview();
+				var liText = self.liText;
+				var liTextid = self.liTextid;
+				var mysrc = self.mysrc;
+				//var p = self.p;
+				var hehe = self.hehe;
+				//alert(liTextid);
+				xg.addEventListener('tap', function() {
+					var xg = document.getElementById("xg");
+					xg.innerText="确认修改";
+					var textareaBianji = document.getElementById("textareaBianji");
+					textareaBianji.readOnly=false;
+				});
+				
+				var textareaBianji = document.getElementById("textareaBianji");
+				textareaBianji.innerText = liText;
+				//确定按钮监听
+				var confirm = document.getElementById("confirm");
+				confirm.addEventListener('tap',function(){
+					var hehe=buwei.value;
+					var wztmbj=textareaBianji.value;
+					
+					//违章条目新增
+					mui.ajax(url+'/my_plus/wztmnew.php',{
+						data:{
+							liText:liText,
+							wztm:wztmbj
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000,
+						success:function(data){
+//							alert(data);
+//							alert(data[1]);
+						
+						},
+						error:function(xhr,type,errorThrown){
+						//异常处理；
+						//alert('ajax错误'+type);
+//							return callback('ajax错误'+type+errorThrown);
+						}
+				
+						});
+					var target=plus.webview.currentWebview().opener();
+					mui.fire(target,'wetmbj',{
+						flag:wztmbj,
+						flag1:liTextid,
+						flag2:mysrc, 
+//						flag3:p, 
+						flag4:hehe
+					});
+					mui.back();
+				});
+			});
+		</script>
+	</body>
+</html>

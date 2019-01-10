@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<!--<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />-->
+		<style>
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			.mui-content-padded{
+		  	margin: 10px;
+			 }
+			/*按钮小样式*/
+			.mui-btn-block_my{
+				font-size:16px;
+				display:block;
+				width:100%;
+				margin-bottom:10px; 
+				padding:8px 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<!--<a id="wchen" class="mui-btn mui-btn-link mui-pull-right mui-btn-blue">完成</a>-->
+			<h1 class="mui-title">工程基本信息统计分析</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<div class="mui-content" style="padding-top: 20px;">
+					<form class="mui-input-group">
+	        			<div class="mui-input-row" style="font-size: large;height: 60px;padding-top: 8px;">
+	        				<label><span class=" mui-icon iconfont icon-32 mui-pull-left" style="font-size: 25px;margin-top: -3px;margin-left: -6px;"></span>&nbsp;地区(省)</label>
+	        				<select id="dqsheng" style="padding-top: 5px;">
+	        					<option value ="" selected="selected"></option>
+	        				</select>
+	        			</div>
+	        			<div class="mui-input-row" style="font-size: large;height: 60px;padding-top: 8px;">
+	        				<label><span class=" mui-icon iconfont icon-32 mui-pull-left" style="font-size: 25px;margin-top: -3px;margin-left: -6px;"></span>&nbsp;地区(市)</label>
+	        				<select id="dqshi" style="padding-top: 5px;">
+	        					<option value ="" selected="selected"></option>
+	        				</select>
+	        			</div>
+	        			<div class="mui-input-row" style="font-size: large;height: 60px;padding-top: 8px;">
+	        				<label><span class=" mui-icon iconfont icon-riqizhengchangzhuangtai mui-pull-left" style="font-size: 25px;margin-top: -3px;margin-left: -6px;"></span>&nbsp;进度</label>
+	        				<select id="jd" style="padding-top: 5px;">
+	        					<option value ="" selected="selected"></option>
+	        					<option value ="基础施工" >基础施工</option>
+	        					<option value ="主体施工" >主体施工</option>
+	        					<option value ="装饰装修" >装饰装修</option>
+	        					<option value ="收尾阶段" >收尾阶段</option>
+	        					<option value ="竣工验收" >竣工验收</option>
+	        				</select>
+	        			</div>
+	        			<div class="mui-input-row" style="font-size: large;height: 60px;padding-top: 8px;">
+	        				<label><span class=" mui-icon iconfont icon-wodebanji mui-pull-left" style="font-size: 25px;margin-top: -3px;margin-left: -6px;"></span>&nbsp;类别</label>
+	        				<select id="lbbb" style="padding-top: 5px;">
+	        					<option value ="" selected="selected"></option>
+	        					<option value ="建筑工程" >建筑工程</option>
+	        					<option value ="市政工程" >市政工程</option>
+	        					<option value ="装修工程" >装修工程</option>
+	        					<option value ="维修加固工程" >维修加固工程</option>
+	        				</select>
+	        			</div>
+	        			<div class="mui-input-row" style="display: none;">
+							<label> 工程id：</label>
+							<input id='gcid' type="text" placeholder="工程id" readonly="readonly">						
+						</div>
+					</form>
+					<div class="mui-content-padded" style="margin-top: 20px">
+						<button id="count" type="button" class="mui-btn mui-btn-primary mui-btn-block_my">点击查询</button>
+        			</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/service.js"></script>
+		<script>
+			(function($, doc) {
+				mui.init({
+					swipeBack:true, //启用右滑关闭功能
+					gestureConfig:{					
+						doubletap: true, //默认为false
+						longtap: true, //默认为false
+					}
+				});
+				
+				mui.plusReady(function(){
+					var self = plus.webview.currentWebview();
+					var mobile = self.mobile;
+					
+					//完成按钮监听
+					var count = document.getElementById("count");
+					var dqsheng = document.getElementById("dqsheng");
+					var dqshi = document.getElementById("dqshi");
+					var gcid = document.getElementById("gcid");
+					
+					mui.ajax(url+'/my_count/my_count_jiekou.php',{
+					data:{
+						flag:'other',
+						mobile:mobile
+					}, 
+					dataType:'json', 
+					type:'post',
+					timeout:10000,
+					success:function(data){
+//						alert(data);
+						var length=data.length;
+						if (length>0) {
+							var a=b=c=d=e=f=0;
+							var gcidZh="";
+							for (var i=0;i<length-1;i++) {
+								var gcidD=data[i].id;
+								gcidZh+=gcidD+",";
+							}
+							gcid.value=gcidZh;
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						//alert('ajax错误'+type+'---'+errorThrown);
+					}
+				});
+					
+					count.addEventListener('tap',function(){
+						mui.openWindow({
+							url: 'my_pro_count.html', 
+							id: 'my_pro_count',
+							styles: { 
+								hardwareAccelerated:false
+							}, 
+							extras:{
+								dqsheng:dqsheng.value, 
+								dqshi:dqshi.value, 
+								jd:jd.value,
+								lbbb:lbbb.value,
+								mobile:mobile,
+								gcid:gcid.value
+							}, 
+							show:{ 
+								autoShow:true,//页面loaded事件发生后自动显示
+								aniShow:'slide-in-right',//页面显示动画
+								duration:'100'//页面动画持续时间
+							},
+							waiting:{
+								autoShow:false,//自动显示等待框
+							},
+						})
+					})
+					
+					function gcxx(dq,xmlb){
+						var dqsheng = document.getElementById("dqsheng");
+						var option = document.createElement("option");
+						option.value = dq;
+						option.innerHTML = dq;
+						dqsheng.appendChild(option);
+					}
+					var oDqsheng = document.getElementById("dqsheng");
+					oDqsheng.addEventListener('change',function(){
+						var dqshi = document.getElementById("dqshi");
+						dqshi.innerHTML="";
+						hqdqshi("");
+						mui.ajax(url+'my_count/my_pro_sel.php',{
+							data:{
+								flag:'1',
+								dqsheng:dqsheng.value
+							},
+							dataType:'json',
+							type:'post',
+							timeout:10000,
+							success:function(data){
+//								alert(data);
+								var length=data.length;	
+								for (var i=0;i<length-1;i++) {
+									var dq = data[i].地区市;
+									hqdqshi(dq);
+								}
+							},
+							error:function(xhr,type,errorThrown){
+							}
+						});
+						function hqdqshi(dq){
+							var dqshi = document.getElementById("dqshi");
+							var option = document.createElement("option");
+							option.value = dq;
+							option.innerHTML = dq;
+							dqshi.appendChild(option);
+						}
+					});
+					
+					mui.ajax(url+'my_count/my_pro_sel.php',{
+						data:{
+							flag:'' ,
+							dqsheng:''
+						},
+						dataType:'json',
+						type:'post',
+						timeout:10000, 
+						success:function(data){
+//							alert(data);
+							var length=data.length;	
+							for (var i=0;i<length-1;i++) {
+								var dq = data[i].地区省;
+								gcxx(dq);
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//异常处理；
+							//alert('ajax错误'+type);
+						}
+					});
+				});
+				
+			})(mui, document);
+		</script>
+	</body>
+
+</html>
